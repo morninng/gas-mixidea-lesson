@@ -1,7 +1,5 @@
 import { SpreadSheet, SHEET_NAME } from './SpreadSheet';
 import { CourseList } from './CourseList';
-
-
 import { CourseData } from './CourseList';
 
 
@@ -13,10 +11,7 @@ export const CELL_WORDING_MAIL_CONFIRM_COURSE: {[key: string]: string}   = {
   [MAIL_CONFIRM_COURSE_KEY.CourseId]: "Course-ID",
 }
 
-
-
-export class AttendanceConfirmation {
-
+export class AttendanceConfirmCourse {
 
   attendance_confirmation_sheet: GoogleAppsScript.Spreadsheet.Sheet;
   spread_sheet: SpreadSheet;
@@ -26,14 +21,9 @@ export class AttendanceConfirmation {
     this.attendance_confirmation_sheet = this.spread_sheet.getSheet(SHEET_NAME.ATTENDANCE_CONFIRM);
   }
 
-  public hello(){
-    const range: GoogleAppsScript.Spreadsheet.Range = this.attendance_confirmation_sheet.getRange('A1');
-    const value = range.getValue();
-    Logger.log(value);
-  }
 
 
-  public updateLessonData() {
+  public updateCourseData() {
 
     const validate = this.checkActiveSheet();
     if(!validate){
@@ -44,26 +34,26 @@ export class AttendanceConfirmation {
 
     const courseId = this.getCourseId();
     const course_data: CourseData = this.course_list.getCourseDataFromCourseId(courseId);
-    this.writeLessonData(course_data);
+    this.writeCourseData(course_data);
   }
   
-  private writeLessonData(course_data: CourseData){
+  private writeCourseData(course_data: CourseData){
 
     const range = this.attendance_confirmation_sheet.getRange(1, 2, 100, 1 );
     const item_map = range.getValues();
     // Logger.log(item_map);
-    let lessonId = "";
+    let CourseId = "";
     item_map.forEach((item)=>{
       if( item[0] === CELL_WORDING_MAIL_CONFIRM_COURSE.CourseId ){
         Logger.log(item);
-        lessonId = String(item[1]);
+        CourseId = String(item[1]);
       }
     })
   }
 
 
   private getCourseId() {
-    Logger.log('getLessonId');
+    Logger.log('getCourseId');
     const range = this.attendance_confirmation_sheet.getRange(1, 1, 100, 2 );
     const item_map = range.getValues();
     Logger.log(item_map);
