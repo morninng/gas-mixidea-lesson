@@ -1,9 +1,8 @@
 import { SpreadSheet, SHEET_NAME } from './SpreadSheet';
-// import { LessonData } from '../model/lesson';
 import { CourseList } from './CourseList';
 
 
-import { CELL_WORDING_COURSE, CourseDataIndex, CourseData, COURSE_KEY } from './CourseList';
+import { CourseData } from './CourseList';
 
 
 export enum MAIL_CONFIRM_COURSE_KEY {
@@ -52,7 +51,7 @@ export class AttendanceConfirmation {
 
     const range = this.attendance_confirmation_sheet.getRange(1, 2, 100, 1 );
     const item_map = range.getValues();
-    Logger.log(item_map);
+    // Logger.log(item_map);
     let lessonId = "";
     item_map.forEach((item)=>{
       if( item[0] === CELL_WORDING_MAIL_CONFIRM_COURSE.CourseId ){

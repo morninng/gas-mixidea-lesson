@@ -16,7 +16,23 @@ export enum COURSE_KEY {
 }
 
 
-export const CELL_WORDING_COURSE: {[key: string]: string}   = {
+export interface CourseCellKey{
+  [COURSE_KEY.CourseId]?: string
+  [COURSE_KEY.CourseName]?: string;
+  [COURSE_KEY.Term]?: string;
+  [COURSE_KEY.DayOfTheWeek]?: string;
+  [COURSE_KEY.Number]?: string;
+  [COURSE_KEY.UnitLessonPrice]?: string;
+  [COURSE_KEY.CoursePrice]?: string;
+  [COURSE_KEY.ParticipantNumber]?: string;
+  [COURSE_KEY.TotalRevenue]?:string;
+  [COURSE_KEY.PaymentRequestDay]?: string;
+  [COURSE_KEY.LessonStatus]?:string;
+  [COURSE_KEY.Students]?: string;
+}
+
+
+export const CELL_WORDING_COURSE: CourseCellKey   = {
   [COURSE_KEY.CourseId]: "Course-ID",
   [COURSE_KEY.CourseName]: "Course-Name",
   [COURSE_KEY.Term]: "Term",
@@ -96,6 +112,7 @@ export class CourseList {
         course_row_num = i;
       }
     }
+    Logger.log("----course_row_num:----");
     Logger.log(course_row_num);
   
     return course_row_num;
@@ -131,67 +148,28 @@ export class CourseList {
   
     for(let i=0; i< title_arr.length; i++ ){
 
-      // for文ためして、エラーをチェックしてそれをdeactivateする
-
-      if(title_arr[i] === CELL_WORDING_COURSE.CourseId){
-        course_index.CourseId = i;
-      }
-      if(title_arr[i] === CELL_WORDING_COURSE.CourseName){
-        course_index.CourseName = i;
-      }
-      if(title_arr[i] === CELL_WORDING_COURSE.Term){
-        course_index.Term = i;
-      }
-      if(title_arr[i] === CELL_WORDING_COURSE.DayOfTheWeek){
-        course_index.DayOfTheWeek = i;
-      }
-      if(title_arr[i] === CELL_WORDING_COURSE.Number){
-        course_index.Number = i;
-      }
-      if(title_arr[i] === CELL_WORDING_COURSE.UnitLessonPrice){
-        course_index.UnitLessonPrice = i;
-      }
-      if(title_arr[i] === CELL_WORDING_COURSE.CoursePrice){
-        course_index.CoursePrice = i;
-      }
-      if(title_arr[i] === CELL_WORDING_COURSE.ParticipantNumber){
-        course_index.ParticipantNumber = i;
-      }
-      if(title_arr[i] === CELL_WORDING_COURSE.TotalRevenue){
-        course_index.TotalRevenue = i;
-      }
-      if(title_arr[i] === CELL_WORDING_COURSE.PaymentRequestDay){
-        course_index.PaymentRequestDay = i;
-      }
-      if(title_arr[i] === CELL_WORDING_COURSE.LessonStatus){
-        course_index.LessonStatus = i;
-      }
-      if(title_arr[i] === CELL_WORDING_COURSE.Students){
-        course_index.Students = i;
+      for(let key in CELL_WORDING_COURSE){
+        if(title_arr[i] === key){
+          course_index[key] = i;
+        }
       }
     }
+    Logger.log('-- course_index: ');
     Logger.log(course_index);
     const course_data: CourseData = {};
     const range_course = this.course_list_sheet.getRange(course_row_num, 1, 1, 50 );
     const course_map = range_course.getValues();
-    Logger.log(course_map);
     const course_arr = course_map[0];
-    Logger.log(course_arr);
-    course_data.CourseId = String(course_arr[course_index.CourseId]);
-    course_data.CourseName = String(course_arr[course_index.CourseName]);
-    course_data.Term = String(course_arr[course_index.Term]);
-    course_data.DayOfTheWeek = String(course_arr[course_index.DayOfTheWeek]);
-    course_data.Number = String(course_arr[course_index.Number]);
-    course_data.UnitLessonPrice = String(course_arr[course_index.UnitLessonPrice]);
-    course_data.ParticipantNumber = String(course_arr[course_index.ParticipantNumber]);
-    course_data.TotalRevenue = String(course_arr[course_index.TotalRevenue]);
-    course_data.PaymentRequestDay = String(course_arr[course_index.PaymentRequestDay]);
-    course_data.LessonStatus = String(course_arr[course_index.LessonStatus]);
+
+    for(let key in CELL_WORDING_COURSE){
+      if(key !== COURSE_KEY.Students){
+        course_data[key] = String(course_arr[course_index[key]]);
+      }
+    }
     course_data.studentsNameArr = course_arr.slice(course_index.Students, course_index.Students + 20)
                                     .map((element)=>{ return String(element)});
-  
-    Logger.log('--------------------------------------');
-  
+
+    Logger.log('--------------course_data------------------------');
     Logger.log(course_data);
     return course_data;
   }
