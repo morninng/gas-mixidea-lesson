@@ -1,19 +1,22 @@
 import { AttendanceConfirmation } from './class/AttendanceConfirmation';
-import { LessonList } from './class/LessonList';
+import { CourseList } from './class/CourseList';
+
+
 
 function aaa(){
-  console.log('bbb');
+  Logger.log('bbb');
 }
 
 function hello(){
-  const lesson_list = new LessonList();
-  const attendanceConfirmation = new AttendanceConfirmation(lesson_list);
+  const course_list = new CourseList();
+  const attendanceConfirmation = new AttendanceConfirmation(course_list);
   attendanceConfirmation.hello();
 }
 
-function getLessonData() {
-  const lesson_list = new LessonList();
-  const attendanceConfirmation = new AttendanceConfirmation(lesson_list);
-  attendanceConfirmation.getLessonData();
+function updateLessonData() {
+  const course_list = new CourseList();
+  const attendanceConfirmation = new AttendanceConfirmation(course_list);
+  attendanceConfirmation.updateLessonData();
 }
+
 
