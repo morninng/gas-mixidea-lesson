@@ -1,4 +1,4 @@
-import { AttendanceConfirmCourse } from './class/AttendanceConfirmation';
+import { AttendanceConfirmCourse } from './class/AttendanceConfirmCourse';
 import { CourseList } from './class/CourseList';
 
 
