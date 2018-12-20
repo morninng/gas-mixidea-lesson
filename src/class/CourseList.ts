@@ -153,8 +153,19 @@ export class CourseList {
   
     for(let i=0; i< title_arr.length; i++ ){
 
+      // Logger.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+      // Logger.log('-----title_arr[i]----');
+      // Logger.log(title_arr[i]);
+      // Logger.log('-----CELL_WORDING_COURSE----');
+      // Logger.log(CELL_WORDING_COURSE);
+
       for(let key in CELL_WORDING_COURSE){
-        if(title_arr[i] === key){
+        // Logger.log('-----key----');
+        // Logger.log(key);
+        // Logger.log('-----CELL_WORDING_COURSE[key]----');
+        // Logger.log(CELL_WORDING_COURSE[key]);
+        if(title_arr[i] === CELL_WORDING_COURSE[key]){
+          // Logger.log('-----found!!!!!!!!!!----');
           course_index[key] = i;
         }
       }

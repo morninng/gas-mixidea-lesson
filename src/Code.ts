@@ -22,4 +22,3 @@ function updateLessonData() {
   attendanceConfirmCourse.updateCourseData();
 }
 
-
