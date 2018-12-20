@@ -24,8 +24,5 @@ export class User {
   }
   
   
-  
-
-
 
 }

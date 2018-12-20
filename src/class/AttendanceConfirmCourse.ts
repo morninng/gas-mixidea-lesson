@@ -123,21 +123,11 @@ export class AttendanceConfirmCourse {
     const material_key_column = 4;
 
     Logger.log('----------- writeCourseData ----------');
-    const range = this.attendance_confirmation_sheet.getRange(1, material_key_column, 100, 1 );
-    const item_map = range.getValues();
-    Logger.log('--- MailMaterialItem: --');
-    Logger.log(item_map);
 
-    // check 
+    const materkal_key_num = this.spread_sheet.getVerticalRowNum(this.attendance_confirmation_sheet, {row: 1, column: material_key_column}, CELL_WORDING_MAIL_CONFIRM_MailMaterialTitle.Mailmaterial );
 
-    let is_mailmaterial_exist = false;
-    item_map.forEach((item)=>{
-      if( item[0] === CELL_WORDING_MAIL_CONFIRM_MailMaterialTitle.Mailmaterial ){
-        is_mailmaterial_exist = true;
-      }
-    })
-    if(!is_mailmaterial_exist){
-      Browser.msgBox("参照するセルが間違っています。");
+    if(materkal_key_num === -1){
+      Browser.msgBox(`${CELL_WORDING_MAIL_CONFIRM_MailMaterialTitle.Mailmaterial}　は　参照するセルが間違っています。${material_key_column}列目にはありません`);
       return false;
     }
 
@@ -151,6 +141,9 @@ export class AttendanceConfirmCourse {
       CoursePrice: -1,
       PaymentRequestDay: -1,
     }
+
+    const range = this.attendance_confirmation_sheet.getRange(1, material_key_column, 100, 1 );
+    const item_map = range.getValues();
 
     for(let i=0; i< item_map.length; i++ ){
       for(let key in CELL_WORDING_MAIL_CONFIRM_MailMaterialItem){
