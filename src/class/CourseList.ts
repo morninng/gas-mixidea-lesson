@@ -3,6 +3,7 @@ import { SpreadSheet, SHEET_NAME } from './SpreadSheet';
 export enum COURSE_KEY {
   CourseId = 'CourseId',
   CourseName = 'CourseName',
+  Teacher = 'Teacher',
   Term = 'Term',
   DayOfTheWeek = 'DayOfTheWeek',
   Number = 'Number',
@@ -19,6 +20,7 @@ export enum COURSE_KEY {
 export interface CourseCellKey{
   [COURSE_KEY.CourseId]?: string
   [COURSE_KEY.CourseName]?: string;
+  [COURSE_KEY.Teacher]?: string;
   [COURSE_KEY.Term]?: string;
   [COURSE_KEY.DayOfTheWeek]?: string;
   [COURSE_KEY.Number]?: string;
@@ -35,6 +37,7 @@ export interface CourseCellKey{
 export const CELL_WORDING_COURSE: CourseCellKey   = {
   [COURSE_KEY.CourseId]: "Course-ID",
   [COURSE_KEY.CourseName]: "Course-Name",
+  [COURSE_KEY.Teacher]: "Teacher",
   [COURSE_KEY.Term]: "Term",
   [COURSE_KEY.DayOfTheWeek]: "DayOfTheWeek",
   [COURSE_KEY.Number]: "Number",
@@ -50,6 +53,7 @@ export const CELL_WORDING_COURSE: CourseCellKey   = {
 export interface CourseDataIndex{
   [COURSE_KEY.CourseId]: number;
   [COURSE_KEY.CourseName]: number;
+  [COURSE_KEY.Teacher]: number;
   [COURSE_KEY.Term]: number;
   [COURSE_KEY.DayOfTheWeek]: number;
   [COURSE_KEY.Number]: number;
@@ -65,6 +69,7 @@ export interface CourseDataIndex{
 export interface CourseData{
   [COURSE_KEY.CourseId]?: string
   [COURSE_KEY.CourseName]?: string;
+  [COURSE_KEY.Teacher]?: string;
   [COURSE_KEY.Term]?: string;
   [COURSE_KEY.DayOfTheWeek]?: string;
   [COURSE_KEY.Number]?: string;
@@ -134,6 +139,7 @@ export class CourseList {
     const course_index: CourseDataIndex = {
       CourseId: 0,
       CourseName: 0,
+      Teacher: 0,
       Term: 0,
       DayOfTheWeek: 0,
       Number: 0,
