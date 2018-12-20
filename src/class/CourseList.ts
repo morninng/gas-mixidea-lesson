@@ -128,7 +128,6 @@ export class CourseList {
   
   private getCourseDataFromRowNum(course_row_num: number): CourseData{
   
-  
     Logger.log(`------ getCourseDataFromRowNum ------------- ${course_row_num} row`)
   
     const range_title = this.course_list_sheet.getRange(1, 1, 1, 50 );

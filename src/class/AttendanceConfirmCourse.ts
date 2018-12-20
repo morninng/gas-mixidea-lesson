@@ -56,9 +56,6 @@ interface CellWordingMailconfirmMaterialItem {
   [MAIL_CONFIRM_COURSE_KEY.PaymentRequestDay]: string,
 }
 
-
-
-
 export interface MailConfirmCourseMaterialIndex {
   [MAIL_CONFIRM_COURSE_KEY.CourseId]: number,
   [MAIL_CONFIRM_COURSE_KEY.CourseName]: number,
@@ -156,11 +153,23 @@ export class AttendanceConfirmCourse {
     }
     Logger.log('-------- mailmaterial_index ------------');
     Logger.log(mailmaterial_index);
+    // Logger.log('-------- course_data ------------');
+    // Logger.log(course_data);
+
+// write 
+
+    for(let key in CELL_WORDING_MAIL_CONFIRM_MailMaterialItem){
+        this.attendance_confirmation_sheet
+        .getRange(mailmaterial_index[key] +1, material_key_column + 1)
+        .setValue( course_data[key] || '');
+    }
+
+    // this.attendance_confirmation_sheet
+    //   .getRange(mailmaterial_index.CourseId +1, material_key_column + 1)
+    //   .setValue( course_data.CourseId || '');
 
 
-    this.attendance_confirmation_sheet
-      .getRange(mailmaterial_index.CourseId +1, material_key_column + 1)
-      .setValue( course_data.CourseId || '');
+
 
   }
 
