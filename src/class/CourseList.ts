@@ -100,7 +100,6 @@ export class CourseList {
 
     const course_row_num: number = this.getCourseIdRowNum(courseId);
     if(course_row_num === -1){
-      Browser.msgBox(`course id ${courseId} not exist in course sheet`);
       return null;
     }
     const course_data: CourseData | null = this.getCourseDataFromRowNum(course_row_num);
@@ -115,22 +114,11 @@ export class CourseList {
   private getCourseIdRowNum(courseId: string): number{
   
     Logger.log('------ getCourseIdRowNum -------------')
-  
-    const range = this.course_list_sheet.getRange(1, 1, 100, 1 );
-    const item_map = range.getValues();
-    Logger.log(item_map);
-  
-    let course_row_num = -1;
-    for(let i=0; i< item_map.length; i++){
-      if(item_map[i][0] == courseId){
-        course_row_num = i;
-      }
+    const course_row_num = this.spread_sheet.getVerticalRowNum(this.course_list_sheet, {row: 1, column: 1}, courseId );
+    if(course_row_num === -1){
+      Browser.msgBox(`course id ${courseId} not exist in course sheet`);
     }
-    Logger.log("----course_row_num:----");
-    Logger.log(course_row_num);
-  
     return course_row_num;
-  
   }
   
   

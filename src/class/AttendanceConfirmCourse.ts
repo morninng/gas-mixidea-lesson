@@ -189,22 +189,26 @@ export class AttendanceConfirmCourse {
   }
 
 
-  public getMailCourseId() {
+  public getMailCourseId(): string | null {
 
-    Logger.log('---- getCourseId -----');
-    const range = this.attendance_confirmation_sheet.getRange(1, 1, 10, 2 );
-    const item_map = range.getValues();
-    Logger.log(item_map);
-    let mailCourseId = "";
-    item_map.forEach((item)=>{
-      if( item[0] === CELL_WORDING_MAIL_CONFIRM_ID.MailCourseId){
-        mailCourseId = String(item[1]);
-      }
-    })
+    Logger.log('---- getMailCourseId -----');
+    const mailcourse_id_row_num = this.spread_sheet.getVerticalRowNum(this.attendance_confirmation_sheet, {row: 1, column: 1}, CELL_WORDING_MAIL_CONFIRM_ID.MailCourseId );
 
-    Logger.log('---- mailCourseId -----');
-    Logger.log(mailCourseId);
-    return mailCourseId;
+    if(mailcourse_id_row_num === -1){
+      Browser.msgBox(`mail course id ${CELL_WORDING_MAIL_CONFIRM_ID.MailCourseId} not exist`);
+      return null;
+    }else{
+      Logger.log(`mailcourse_id_row_num:  ${mailcourse_id_row_num}`);  
+    }
+
+    const mailCourseId = this.attendance_confirmation_sheet.getRange(mailcourse_id_row_num +1 , 2).getValue();
+    if(!mailCourseId){
+      Browser.msgBox(`mailCourseId not exist`);
+      return null;
+    }
+
+    Logger.log(`---- mailCourseId:  ${mailCourseId}`);
+    return String(mailCourseId);
   }
 
   checkActiveSheet(){

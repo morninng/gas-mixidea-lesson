@@ -20,7 +20,7 @@ export class User {
   private getMail(userName: string): string{
     
 
-    return;
+    return '';
   }
   
   
