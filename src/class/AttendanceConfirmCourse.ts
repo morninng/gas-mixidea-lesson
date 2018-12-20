@@ -105,11 +105,19 @@ export class AttendanceConfirmCourse {
       Browser.msgBox("no mail course id found");
       return;
     }
-    const course_data: CourseData = this.course_list.getCourseDataFromCourseId(mailCourseId);
-    this.writeCourseData(course_data);
+    const course_data: CourseData | null = this.course_list.getCourseDataFromCourseId(mailCourseId);
+    if(!course_data){
+      Logger.log("course data not found");
+      return;
+    }
+    const result = this.writeCourseData(course_data);
+    if(!result){
+      Logger.log("writeCourseData failed");
+      return; 
+    }
   }
   
-  private writeCourseData(course_data: CourseData){
+  private writeCourseData(course_data: CourseData): boolean{
 
 
     const material_key_column = 4;
@@ -130,18 +138,18 @@ export class AttendanceConfirmCourse {
     })
     if(!is_mailmaterial_exist){
       Browser.msgBox("参照するセルが間違っています。");
-      return;
+      return false;
     }
 
     const mailmaterial_index: MailConfirmCourseMaterialIndex = {
-      CourseId: 0,
-      CourseName: 0,
-      Teacher: 0,
-      Students: 0,
-      Number: 0,
-      Term: 0,
-      CoursePrice: 0,
-      PaymentRequestDay: 0,
+      CourseId: -1,
+      CourseName: -1,
+      Teacher: -1,
+      Students: -1,
+      Number: -1,
+      Term: -1,
+      CoursePrice: -1,
+      PaymentRequestDay: -1,
     }
 
     for(let i=0; i< item_map.length; i++ ){
@@ -153,6 +161,14 @@ export class AttendanceConfirmCourse {
     }
     Logger.log('-------- mailmaterial_index ------------');
     Logger.log(mailmaterial_index);
+
+    for(let key in mailmaterial_index){
+      if(mailmaterial_index[key] === -1){
+        Browser.msgBox(`mailmaterial_index ${mailmaterial_index[key]} not found`);
+        Logger.log(`mailmaterial_index ${mailmaterial_index[key]} not found`)
+        return false;
+      }
+    }
     // Logger.log('-------- course_data ------------');
     // Logger.log(course_data);
 
@@ -164,12 +180,11 @@ export class AttendanceConfirmCourse {
         .setValue( course_data[key] || '');
     }
 
+    return true;
+
     // this.attendance_confirmation_sheet
     //   .getRange(mailmaterial_index.CourseId +1, material_key_column + 1)
     //   .setValue( course_data.CourseId || '');
-
-
-
 
   }
 

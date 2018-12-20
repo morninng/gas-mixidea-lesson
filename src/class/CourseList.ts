@@ -96,10 +96,19 @@ export class CourseList {
   }
 
 
-  getCourseDataFromCourseId(courseId: string): CourseData{
+  getCourseDataFromCourseId(courseId: string): CourseData | null{
 
     const course_row_num: number = this.getCourseIdRowNum(courseId);
-    const course_data: CourseData = this.getCourseDataFromRowNum(course_row_num);
+    if(course_row_num === -1){
+      Browser.msgBox(`course id ${courseId} not exist in course sheet`);
+      return null;
+    }
+    const course_data: CourseData | null = this.getCourseDataFromRowNum(course_row_num);
+
+    if( !course_data ){
+      Browser.msgBox("getCourseDataFromRowNum failed");
+      return null;
+    }
     return course_data;
   }
 
@@ -111,7 +120,7 @@ export class CourseList {
     const item_map = range.getValues();
     Logger.log(item_map);
   
-    let course_row_num = 0;
+    let course_row_num = -1;
     for(let i=0; i< item_map.length; i++){
       if(item_map[i][0] == courseId){
         course_row_num = i;
@@ -126,7 +135,7 @@ export class CourseList {
   
   
   
-  private getCourseDataFromRowNum(course_row_num: number): CourseData{
+  private getCourseDataFromRowNum(course_row_num: number): CourseData | null{
   
     Logger.log(`------ getCourseDataFromRowNum ------------- ${course_row_num} row`)
   
@@ -136,19 +145,19 @@ export class CourseList {
     const title_arr: string[] = title_map[0].map((element)=>{ return String(element) });
   
     const course_index: CourseDataIndex = {
-      CourseId: 0,
-      CourseName: 0,
-      Teacher: 0,
-      Term: 0,
-      DayOfTheWeek: 0,
-      Number: 0,
-      UnitLessonPrice: 0,
-      CoursePrice: 0,
-      ParticipantNumber: 0,
-      TotalRevenue: 0,
-      PaymentRequestDay: 0,
-      LessonStatus: 0,
-      Students: 0,
+      CourseId: -1,
+      CourseName: -1,
+      Teacher: -1,
+      Term: -1,
+      DayOfTheWeek: -1,
+      Number: -1,
+      UnitLessonPrice: -1,
+      CoursePrice: -1,
+      ParticipantNumber: -1,
+      TotalRevenue: -1,
+      PaymentRequestDay: -1,
+      LessonStatus: -1,
+      Students: -1,
     }; 
   
     for(let i=0; i< title_arr.length; i++ ){
@@ -168,6 +177,12 @@ export class CourseList {
           // Logger.log('-----found!!!!!!!!!!----');
           course_index[key] = i;
         }
+      }
+    }
+    for(let key in course_index){
+      if(course_index[key] === -1){
+        Browser.msgBox("some course cell not found on title bar");
+        return null;
       }
     }
     Logger.log('-- course_index: ');
