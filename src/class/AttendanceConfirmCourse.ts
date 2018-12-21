@@ -149,9 +149,17 @@ export class AttendanceConfirmCourse {
 // write 
 
     for(let key in mailmaterial_index){
+      if(key === this.course_list.getStudentsKey()){
+
+        const students = course_data[key].join(' , ')
+        this.attendance_confirmation_sheet
+        .getRange(mailmaterial_index[key], material_key_column + 1)
+        .setValue( students );
+      }else{
         this.attendance_confirmation_sheet
         .getRange(mailmaterial_index[key], material_key_column + 1)
         .setValue( course_data[key] || '');
+      }
     }
 
     return true;

@@ -95,6 +95,10 @@ export class CourseList {
     this.course_list_sheet = this.spread_sheet.getSheet(SHEET_NAME.COURSE_LIST);
   }
 
+  getStudentsKey(){
+    return CELL_WORDING_COURSE.Students;
+  }
+
 
   getCourseDataFromCourseId(courseId: string): CourseData | null{
 
@@ -138,12 +142,27 @@ export class CourseList {
       Logger.log(course_index);
     }
 
-    const course_data = this.spread_sheet.getHorzontalDataFromIndex(this.course_list_sheet, {row: course_row_num, column: 1}, course_index)
-    // course_data.studentsNameArr = course_arr.slice(course_index.Students, course_index.Students + 20)
-    //                                 .map((element)=>{ return String(element)});
+    const course_data: {[key: string]: string} |  {[key: string]: string[]} 
+      = this.spread_sheet.getHorzontalDataFromIndex(this.course_list_sheet, {row: course_row_num, column: 1}, course_index)
 
     Logger.log('--------------course_data------------------------');
     Logger.log(course_data);
+
+    const students_column_index = course_index.Students;
+    const students_data  = 
+      this.spread_sheet.getHorzontalData(this.course_list_sheet, {row: course_row_num, column: students_column_index}, 20)
+      .filter((element) =>{ return !!element})
+      .map((element)=>{ return String(element)});
+
+    Logger.log(students_data);
+
+
+    // course_data.studentsNameArr = course_arr.slice(course_index.Students, course_index.Students + 20)
+    //                                 .map((element)=>{ return String(element)});
+
+    course_data.Students = students_data;
+
+
     return course_data;
   }
 

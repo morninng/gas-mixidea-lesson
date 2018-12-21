@@ -18,3 +18,8 @@ function updateLessonData() {
   attendanceConfirmCourse.updateCourseData();
 }
 
+// function getCourseDataFromRowNum() {
+//   const course_list = new CourseList();
+//   course_list.getCourseDataFromRowNum(5);
+// }
+

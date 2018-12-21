@@ -105,8 +105,8 @@ export class SpreadSheet {
       index[key] = -1;
     }
     
-    const range_title = sheet.getRange(initialPosition.row, initialPosition.column, 1, 50 );
-    const item_map = range_title.getValues();
+    const range = sheet.getRange(initialPosition.row, initialPosition.column, 1, 50 );
+    const item_map = range.getValues();
     const item_arr: string[] = item_map[0].map((element)=>{ return String(element) });
   
     for(let i=0; i< item_arr.length; i++ ){
@@ -130,19 +130,32 @@ export class SpreadSheet {
   getHorzontalDataFromIndex(
       sheet: GoogleAppsScript.Spreadsheet.Sheet, 
       initialPosition: SheetPosition, 
-      index: {[key: string]: number} ): {[key: string]: string}{
+      index: {[key: string]: number} ){
 
     const data = {};
     const range = sheet.getRange(initialPosition.row, initialPosition.column, 1, 50 );
-    const course_map = range.getValues();
-    const course_arr = course_map[0]; /// course_arr is from 0 and incex is from 1
+    const item_map = range.getValues();
+    const item_arr = item_map[0]; /// course_arr is from 0 and incex is from 1
 
     for(let key in index){
-      data[key] = String(course_arr[index[key] - 1]);
+      data[key] = String(item_arr[index[key] - 1]);
     }
 
     return data;
 
+  }
+
+  getHorzontalData(
+    sheet: GoogleAppsScript.Spreadsheet.Sheet, 
+    initialPosition: SheetPosition, 
+    number_of_cell: number ):  string[] {
+
+
+    const range = sheet.getRange(initialPosition.row, initialPosition.column, 1, number_of_cell );
+    const item_map = range.getValues();
+    const item_arr: string[] = item_map[0].map((element)=>{ return String(element) });
+
+    return item_arr;
   }
 
 
