@@ -54,7 +54,7 @@ export class SpreadSheet {
     let row_num = -1;
     for(let i=0; i< item_map.length; i++){
       if(item_map[i][0] == search_value){
-        row_num = i;
+        row_num = i + 1;  // array is from 0 but row/column is from 1
       }
     }
     if(row_num === -1 ){
@@ -79,7 +79,7 @@ export class SpreadSheet {
     for(let i=0; i< item_map.length; i++ ){
       for(let key in cell_wording){
         if(item_map[i][0] === cell_wording[key]){
-          index[key] = i;
+          index[key] = i + 1; // array is from 0 but row/column is from 1
         }
       }
     }
@@ -113,7 +113,7 @@ export class SpreadSheet {
 
       for(let key in cell_wording){;
         if(item_arr[i] === cell_wording[key]){
-          index[key] = i;
+          index[key] = i + 1; // array is from 0 but row/column is from 1
         }
       }
     }
@@ -135,10 +135,10 @@ export class SpreadSheet {
     const data = {};
     const range = sheet.getRange(initialPosition.row, initialPosition.column, 1, 50 );
     const course_map = range.getValues();
-    const course_arr = course_map[0];
+    const course_arr = course_map[0]; /// course_arr is from 0 and incex is from 1
 
     for(let key in index){
-      data[key] = String(course_arr[index[key]]);
+      data[key] = String(course_arr[index[key] - 1]);
     }
 
     return data;

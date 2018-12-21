@@ -124,7 +124,11 @@ export class AttendanceConfirmCourse {
 
     Logger.log('----------- writeCourseData ----------');
 
-    const materkal_key_num = this.spread_sheet.getVerticalRowNum(this.attendance_confirmation_sheet, {row: 1, column: material_key_column}, CELL_WORDING_MAIL_CONFIRM_MailMaterialTitle.Mailmaterial );
+    const materkal_key_num 
+      = this.spread_sheet.getVerticalRowNum(
+          this.attendance_confirmation_sheet, 
+          {row: 1, column: material_key_column}, 
+          CELL_WORDING_MAIL_CONFIRM_MailMaterialTitle.Mailmaterial );
 
     if(materkal_key_num === -1){
       Browser.msgBox(`${CELL_WORDING_MAIL_CONFIRM_MailMaterialTitle.Mailmaterial}　は　参照するセルが間違っています。${material_key_column}列目にはありません`);
@@ -142,25 +146,15 @@ export class AttendanceConfirmCourse {
       return false;
     }
 
-
-
-    // Logger.log('-------- course_data ------------');
-    // Logger.log(course_data);
-
 // write 
 
     for(let key in mailmaterial_index){
         this.attendance_confirmation_sheet
-        .getRange(mailmaterial_index[key] +1, material_key_column + 1)
+        .getRange(mailmaterial_index[key], material_key_column + 1)
         .setValue( course_data[key] || '');
     }
 
     return true;
-
-    // this.attendance_confirmation_sheet
-    //   .getRange(mailmaterial_index.CourseId +1, material_key_column + 1)
-    //   .setValue( course_data.CourseId || '');
-
   }
 
 
@@ -176,9 +170,12 @@ export class AttendanceConfirmCourse {
       Logger.log(`mailcourse_id_row_num:  ${mailcourse_id_row_num}`);  
     }
 
-    const mailCourseId = this.attendance_confirmation_sheet.getRange(mailcourse_id_row_num +1 , 2).getValue();
+    const mailCourseId = this.attendance_confirmation_sheet.getRange(mailcourse_id_row_num , 2).getValue();
     if(!mailCourseId){
       Browser.msgBox(`mailCourseId not exist`);
+      return null;
+    }else if(isNaN( Number(mailCourseId))){
+      Browser.msgBox(`mailCourseId is  not a number`);
       return null;
     }
 
