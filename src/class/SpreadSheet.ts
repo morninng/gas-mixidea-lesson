@@ -67,5 +67,84 @@ export class SpreadSheet {
 
   }
 
+  getVerticalIndex(sheet: GoogleAppsScript.Spreadsheet.Sheet, initialPosition: SheetPosition, cell_wording){
+
+    const index = {}
+    for(let key in cell_wording){
+      index[key] = -1;
+    }
+    const range = sheet.getRange(initialPosition.row, initialPosition.column, 100, 1 );
+    const item_map = range.getValues();
+
+    for(let i=0; i< item_map.length; i++ ){
+      for(let key in cell_wording){
+        if(item_map[i][0] === cell_wording[key]){
+          index[key] = i;
+        }
+      }
+    }
+    Logger.log(`-------- index -------${index}-----`);
+    for(let key in index){
+      if(index[key] === -1){
+        Browser.msgBox(`vertical index ${key} not found`);
+        Logger.log(`vertical index ${key} not found`)
+        return null;
+      }
+    }
+    return index;
+  }
+
+  getHorizontalIndex(
+    sheet: GoogleAppsScript.Spreadsheet.Sheet, 
+    initialPosition: SheetPosition, 
+    cell_wording: {[key: string]: string}): {[key: string]: number} | null {
+
+
+    const index = {}; 
+    for(let key in cell_wording){
+      index[key] = -1;
+    }
+    
+    const range_title = sheet.getRange(initialPosition.row, initialPosition.column, 1, 50 );
+    const item_map = range_title.getValues();
+    const item_arr: string[] = item_map[0].map((element)=>{ return String(element) });
+  
+    for(let i=0; i< item_arr.length; i++ ){
+
+      for(let key in cell_wording){;
+        if(item_arr[i] === cell_wording[key]){
+          index[key] = i;
+        }
+      }
+    }
+    for(let key in index){
+      if(index[key] === -1){
+        Browser.msgBox(`horizontal index ${key} not found`);
+        Logger.log(`horizontal index ${key} not found`)
+        return null;
+      }
+    }
+    return index;
+  }
+
+  getHorzontalDataFromIndex(
+      sheet: GoogleAppsScript.Spreadsheet.Sheet, 
+      initialPosition: SheetPosition, 
+      index: {[key: string]: number} ): {[key: string]: string}{
+
+    const data = {};
+    const range = sheet.getRange(initialPosition.row, initialPosition.column, 1, 50 );
+    const course_map = range.getValues();
+    const course_arr = course_map[0];
+
+    for(let key in index){
+      data[key] = String(course_arr[index[key]]);
+    }
+
+    return data;
+
+  }
+
+
 
 }

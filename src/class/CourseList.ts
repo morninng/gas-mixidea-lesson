@@ -17,24 +17,24 @@ export enum COURSE_KEY {
 }
 
 
-export interface CourseCellKey{
-  [COURSE_KEY.CourseId]?: string
-  [COURSE_KEY.CourseName]?: string;
-  [COURSE_KEY.Teacher]?: string;
-  [COURSE_KEY.Term]?: string;
-  [COURSE_KEY.DayOfTheWeek]?: string;
-  [COURSE_KEY.Number]?: string;
-  [COURSE_KEY.UnitLessonPrice]?: string;
-  [COURSE_KEY.CoursePrice]?: string;
-  [COURSE_KEY.ParticipantNumber]?: string;
-  [COURSE_KEY.TotalRevenue]?:string;
-  [COURSE_KEY.PaymentRequestDay]?: string;
-  [COURSE_KEY.LessonStatus]?:string;
-  [COURSE_KEY.Students]?: string;
-}
+// export interface CourseCellKey{
+//   [COURSE_KEY.CourseId]?: string
+//   [COURSE_KEY.CourseName]?: string;
+//   [COURSE_KEY.Teacher]?: string;
+//   [COURSE_KEY.Term]?: string;
+//   [COURSE_KEY.DayOfTheWeek]?: string;
+//   [COURSE_KEY.Number]?: string;
+//   [COURSE_KEY.UnitLessonPrice]?: string;
+//   [COURSE_KEY.CoursePrice]?: string;
+//   [COURSE_KEY.ParticipantNumber]?: string;
+//   [COURSE_KEY.TotalRevenue]?:string;
+//   [COURSE_KEY.PaymentRequestDay]?: string;
+//   [COURSE_KEY.LessonStatus]?:string;
+//   [COURSE_KEY.Students]?: string;
+// }
 
 
-export const CELL_WORDING_COURSE: CourseCellKey   = {
+export const CELL_WORDING_COURSE: {[key: string]: string}   = {
   [COURSE_KEY.CourseId]: "Course-ID",
   [COURSE_KEY.CourseName]: "Course-Name",
   [COURSE_KEY.Teacher]: "Teacher",
@@ -123,70 +123,24 @@ export class CourseList {
   
   
   
-  private getCourseDataFromRowNum(course_row_num: number): CourseData | null{
+  public getCourseDataFromRowNum(course_row_num: number): CourseData | null{
   
-    Logger.log(`------ getCourseDataFromRowNum ------------- ${course_row_num} row`)
+    Logger.log(`------ getCourseDataFromRowNum ------------- ${course_row_num} row`);
+    
   
-    const range_title = this.course_list_sheet.getRange(1, 1, 1, 50 );
-    const title_map = range_title.getValues();
-    Logger.log(title_map);
-    const title_arr: string[] = title_map[0].map((element)=>{ return String(element) });
-  
-    const course_index: CourseDataIndex = {
-      CourseId: -1,
-      CourseName: -1,
-      Teacher: -1,
-      Term: -1,
-      DayOfTheWeek: -1,
-      Number: -1,
-      UnitLessonPrice: -1,
-      CoursePrice: -1,
-      ParticipantNumber: -1,
-      TotalRevenue: -1,
-      PaymentRequestDay: -1,
-      LessonStatus: -1,
-      Students: -1,
-    }; 
-  
-    for(let i=0; i< title_arr.length; i++ ){
+    const course_index = this.spread_sheet.getHorizontalIndex(this.course_list_sheet, {row: 1, column: 1}, CELL_WORDING_COURSE);
+    if(!course_index){
+      Browser.msgBox(`course index cannot retrieve`);
 
-      // Logger.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
-      // Logger.log('-----title_arr[i]----');
-      // Logger.log(title_arr[i]);
-      // Logger.log('-----CELL_WORDING_COURSE----');
-      // Logger.log(CELL_WORDING_COURSE);
+      return null;
+    }else{
+      Logger.log('course_index');
+      Logger.log(course_index);
+    }
 
-      for(let key in CELL_WORDING_COURSE){
-        // Logger.log('-----key----');
-        // Logger.log(key);
-        // Logger.log('-----CELL_WORDING_COURSE[key]----');
-        // Logger.log(CELL_WORDING_COURSE[key]);
-        if(title_arr[i] === CELL_WORDING_COURSE[key]){
-          // Logger.log('-----found!!!!!!!!!!----');
-          course_index[key] = i;
-        }
-      }
-    }
-    for(let key in course_index){
-      if(course_index[key] === -1){
-        Browser.msgBox("some course cell not found on title bar");
-        return null;
-      }
-    }
-    Logger.log('-- course_index: ');
-    Logger.log(course_index);
-    const course_data: CourseData = {};
-    const range_course = this.course_list_sheet.getRange(course_row_num, 1, 1, 50 );
-    const course_map = range_course.getValues();
-    const course_arr = course_map[0];
-
-    for(let key in CELL_WORDING_COURSE){
-      if(key !== COURSE_KEY.Students){
-        course_data[key] = String(course_arr[course_index[key]]);
-      }
-    }
-    course_data.studentsNameArr = course_arr.slice(course_index.Students, course_index.Students + 20)
-                                    .map((element)=>{ return String(element)});
+    const course_data = this.spread_sheet.getHorzontalDataFromIndex(this.course_list_sheet, {row: course_row_num, column: 1}, course_index)
+    // course_data.studentsNameArr = course_arr.slice(course_index.Students, course_index.Students + 20)
+    //                                 .map((element)=>{ return String(element)});
 
     Logger.log('--------------course_data------------------------');
     Logger.log(course_data);

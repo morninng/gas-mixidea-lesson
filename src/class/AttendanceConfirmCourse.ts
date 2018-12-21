@@ -131,43 +131,25 @@ export class AttendanceConfirmCourse {
       return false;
     }
 
-    const mailmaterial_index: MailConfirmCourseMaterialIndex = {
-      CourseId: -1,
-      CourseName: -1,
-      Teacher: -1,
-      Students: -1,
-      Number: -1,
-      Term: -1,
-      CoursePrice: -1,
-      PaymentRequestDay: -1,
+
+    const mailmaterial_index = 
+      this.spread_sheet.getVerticalIndex(
+          this.attendance_confirmation_sheet, 
+          {row: 1, column: material_key_column}, 
+          CELL_WORDING_MAIL_CONFIRM_MailMaterialItem );
+    if(!mailmaterial_index){
+      Browser.msgBox(`index not found for mail material`);
+      return false;
     }
 
-    const range = this.attendance_confirmation_sheet.getRange(1, material_key_column, 100, 1 );
-    const item_map = range.getValues();
 
-    for(let i=0; i< item_map.length; i++ ){
-      for(let key in CELL_WORDING_MAIL_CONFIRM_MailMaterialItem){
-        if(item_map[i][0] === CELL_WORDING_MAIL_CONFIRM_MailMaterialItem[key]){
-          mailmaterial_index[key] = i;
-        }
-      }
-    }
-    Logger.log('-------- mailmaterial_index ------------');
-    Logger.log(mailmaterial_index);
 
-    for(let key in mailmaterial_index){
-      if(mailmaterial_index[key] === -1){
-        Browser.msgBox(`mailmaterial_index ${mailmaterial_index[key]} not found`);
-        Logger.log(`mailmaterial_index ${mailmaterial_index[key]} not found`)
-        return false;
-      }
-    }
     // Logger.log('-------- course_data ------------');
     // Logger.log(course_data);
 
 // write 
 
-    for(let key in CELL_WORDING_MAIL_CONFIRM_MailMaterialItem){
+    for(let key in mailmaterial_index){
         this.attendance_confirmation_sheet
         .getRange(mailmaterial_index[key] +1, material_key_column + 1)
         .setValue( course_data[key] || '');
