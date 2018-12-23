@@ -7,18 +7,29 @@ const UserListRowNum = 200;
 export class User {
 
 
+  private static _instance: User;
 
   user_sheet: GoogleAppsScript.Spreadsheet.Sheet ;
   spread_sheet: SpreadSheet;
   user_data : {[key: string]: string[]} | null = null;
 
 
-  constructor(){
-    this.spread_sheet = SpreadSheet.instance;
-    this.user_sheet = this.spread_sheet.getSheet(SHEET_NAME.User);
-  }
+  private constructor(){}
+
+  public static get instance():User{
+    if(!this._instance){
+      this._instance = new User();
+      Logger.log('User created');
+    } else {
+      Logger.log('User instance called but already created');
+    }
+    return this._instance;
+  };
 
   retrieveUserdata(){
+    this.spread_sheet = SpreadSheet.instance;
+    this.user_sheet = this.spread_sheet.getSheet(SHEET_NAME.User);
+
     if(!this.user_data){
       Logger.log('userdata retrieve');
       const range = this.user_sheet.getRange( 1 , 1, 100, 10 );

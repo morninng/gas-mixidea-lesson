@@ -87,11 +87,12 @@ export class AttendanceConfirmCourse {
 
   attendance_confirmation_sheet: GoogleAppsScript.Spreadsheet.Sheet;
   spread_sheet: SpreadSheet;
+  user: User
 
   constructor(
     private course_list : CourseList,
-    private user: User
   ){
+    this.user = User.instance;
     this.spread_sheet = SpreadSheet.instance;
     this.attendance_confirmation_sheet = this.spread_sheet.getSheet(SHEET_NAME.ATTENDANCE_CONFIRM);
   }

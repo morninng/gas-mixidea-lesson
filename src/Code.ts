@@ -13,9 +13,14 @@ import { User } from './class/User';
 
 function updateCourseData() {
   const course_list = new CourseList();
-  const user = new User();
-  const attendanceConfirmCourse = new AttendanceConfirmCourse(course_list, user);
+  const attendanceConfirmCourse = new AttendanceConfirmCourse(course_list);
   attendanceConfirmCourse.updateCourseData();
+}
+
+function sendCourseMail(){
+  const course_list = new CourseList();
+  const attendanceConfirmCourse = new AttendanceConfirmCourse(course_list);
+  attendanceConfirmCourse.sendMail();
 }
 
 // function getCourseDataFromRowNum() {
@@ -41,10 +46,3 @@ function updateCourseData() {
 //   const attendanceConfirmCourse = new AttendanceConfirmCourse(course_list, user);
 //   attendanceConfirmCourse.setEmailAddress(['aa@bb', 'cc@dd']);
 // }
-
-function sendMail(){
-  const course_list = new CourseList();
-  const user = new User();
-  const attendanceConfirmCourse = new AttendanceConfirmCourse(course_list, user);
-  attendanceConfirmCourse.sendMail();
-}
