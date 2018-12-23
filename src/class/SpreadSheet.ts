@@ -2,6 +2,7 @@
 export enum SHEET_NAME {
   ATTENDANCE_CONFIRM = 'メール（コース受講確認）',
   COURSE_LIST = 'Course-List',
+  User = 'User',
 }
 
 export interface SheetPosition {

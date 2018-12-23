@@ -1,7 +1,7 @@
 import { SpreadSheet, SHEET_NAME } from './SpreadSheet';
 import { CourseList } from './CourseList';
 import { CourseData } from './CourseList';
-
+import { User } from './User';
 
 export enum MAIL_CONFIRM_COURSE_KEY {
   MailCourseId = 'MailCourseId',
@@ -18,6 +18,7 @@ export enum MAIL_CONFIRM_COURSE_KEY {
   MailmDataCc= 'MailmDataCc',
   MailmDataTitle = 'MailmDataTitle',
   MailmDataContent = 'MailmDataContent',
+  To = 'To',
 }
 
 export const CELL_WORDING_MAIL_CONFIRM_ID: CellWordingMailconfirmId   = {
@@ -27,6 +28,12 @@ interface CellWordingMailconfirmId {
   [MAIL_CONFIRM_COURSE_KEY.MailCourseId]: string 
 }
 
+export const CELL_WORDING_MAIL_CONFIRM_TO: CellWordingMailconfirmTo   = {
+  [MAIL_CONFIRM_COURSE_KEY.To]: "To",
+}
+interface CellWordingMailconfirmTo {
+  [MAIL_CONFIRM_COURSE_KEY.To]: string;
+}
 
 export const CELL_WORDING_MAIL_CONFIRM_MailMaterialTitle: CellWordingMailconfirmMaterialTitle   = {
   [MAIL_CONFIRM_COURSE_KEY.Mailmaterial]: "mail-data-material-key",
@@ -86,7 +93,10 @@ export class AttendanceConfirmCourse {
   attendance_confirmation_sheet: GoogleAppsScript.Spreadsheet.Sheet;
   spread_sheet: SpreadSheet;
 
-  constructor(private course_list : CourseList){
+  constructor(
+    private course_list : CourseList,
+    private user: User
+  ){
     this.spread_sheet = SpreadSheet.instance;
     this.attendance_confirmation_sheet = this.spread_sheet.getSheet(SHEET_NAME.ATTENDANCE_CONFIRM);
   }
@@ -115,6 +125,10 @@ export class AttendanceConfirmCourse {
       Logger.log("writeCourseData failed");
       return; 
     }
+
+    const email_arr = this.getEmailAddress(course_data);
+    Logger.log(email_arr);
+    this.setEmailAddress(email_arr);
   }
   
   private writeCourseData(course_data: CourseData): boolean{
@@ -161,8 +175,38 @@ export class AttendanceConfirmCourse {
         .setValue( course_data[key] || '');
       }
     }
-
     return true;
+  }
+
+  getEmailAddress(course_data: CourseData ): string[]{
+
+    const teacher = course_data.Teacher;
+    const students_arr = course_data.Students || [];
+
+    const teacher_email = this.user.getMail(teacher || '');
+    const students_email_arr = this.user.getMailList(students_arr) || [];
+    
+    return [ ...students_email_arr, ...teacher_email ]
+
+  }
+
+  setEmailAddress(email_arr: string[]){
+
+    const email_column_num = 2
+
+    Logger.log('---- getMailCourseId -----');
+    const to_row_num = this.spread_sheet.getVerticalRowNum(this.attendance_confirmation_sheet, {row: 1, column: email_column_num}, CELL_WORDING_MAIL_CONFIRM_TO.To );
+
+    if(to_row_num === -1){
+      Browser.msgBox(`identifier tonot exist`);
+      return null;
+    }else{
+      Logger.log(`to_row_num:  ${to_row_num}`);  
+    }
+
+    this.attendance_confirmation_sheet
+    .getRange( to_row_num, email_column_num + 1)
+    .setValue( email_arr.join(" , ") );
   }
 
 
