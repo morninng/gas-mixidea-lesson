@@ -19,6 +19,8 @@ export enum MAIL_CONFIRM_COURSE_KEY {
   MailmDataTitle = 'MailmDataTitle',
   MailmDataContent = 'MailmDataContent',
   To = 'To',
+  Title = 'Title',
+  Content = 'Content',
 }
 
 export const CELL_WORDING_MAIL_CONFIRM_ID: CellWordingMailconfirmId   = {
@@ -28,11 +30,15 @@ interface CellWordingMailconfirmId {
   [MAIL_CONFIRM_COURSE_KEY.MailCourseId]: string 
 }
 
-export const CELL_WORDING_MAIL_CONFIRM_TO: CellWordingMailconfirmTo   = {
+export const CELL_WORDING_MAIL_CONFIRM_EMAIL: CellWordingMailconfirmEmail   = {
   [MAIL_CONFIRM_COURSE_KEY.To]: "To",
+  [MAIL_CONFIRM_COURSE_KEY.Title]: "Title",
+  [MAIL_CONFIRM_COURSE_KEY.Content]: "Content",
 }
-interface CellWordingMailconfirmTo {
+interface CellWordingMailconfirmEmail {
   [MAIL_CONFIRM_COURSE_KEY.To]: string;
+  [MAIL_CONFIRM_COURSE_KEY.Title]: string;
+  [MAIL_CONFIRM_COURSE_KEY.Content]: string;
 }
 
 export const CELL_WORDING_MAIL_CONFIRM_MailMaterialTitle: CellWordingMailconfirmMaterialTitle   = {
@@ -74,19 +80,8 @@ export interface MailConfirmCourseMaterialIndex {
   [MAIL_CONFIRM_COURSE_KEY.PaymentRequestDay]: number,
 }
 
-export const CELL_WORDING_MAIL_CONFIRM_MailData: {[key: string]: string}   = {
-  [MAIL_CONFIRM_COURSE_KEY.MailmDataTo]: "To",
-  [MAIL_CONFIRM_COURSE_KEY.MailmDataCc]: "Cc",
-  [MAIL_CONFIRM_COURSE_KEY.MailmDataTitle]: "title",
-  [MAIL_CONFIRM_COURSE_KEY.MailmDataContent]: "content",
-}
+const EMAIL_COLUMN_NUM = 2
 
-export interface MailConfirmCourseMailIndex {
-  [MAIL_CONFIRM_COURSE_KEY.MailmDataTo]: number,
-  [MAIL_CONFIRM_COURSE_KEY.MailmDataCc]: number,
-  [MAIL_CONFIRM_COURSE_KEY.MailmDataTitle]: number,
-  [MAIL_CONFIRM_COURSE_KEY.MailmDataContent]: number,
-}
 
 export class AttendanceConfirmCourse {
 
@@ -130,6 +125,52 @@ export class AttendanceConfirmCourse {
     Logger.log(email_arr);
     this.setEmailAddress(email_arr);
   }
+
+  sendMail(){
+    Logger.log('--------sendMail-----');
+
+    const to_row_num = this.spread_sheet.getVerticalRowNum(this.attendance_confirmation_sheet, {row: 1, column: EMAIL_COLUMN_NUM}, CELL_WORDING_MAIL_CONFIRM_EMAIL.To );
+    if(to_row_num === -1){
+      Browser.msgBox(`to_row_num not exist`);
+      return null;
+    }else{
+      Logger.log(`to_row_num:  ${to_row_num}`); 
+    }
+    const email_to = this.attendance_confirmation_sheet
+    .getRange( to_row_num, EMAIL_COLUMN_NUM + 1)
+    .getValue();
+    Logger.log(`email_to:  : ${email_to}`)
+
+
+    const title_row_num = this.spread_sheet.getVerticalRowNum(this.attendance_confirmation_sheet, {row: 1, column: EMAIL_COLUMN_NUM}, CELL_WORDING_MAIL_CONFIRM_EMAIL.Title );
+    if(title_row_num === -1){
+      Browser.msgBox(`title_row_num not exist`);
+      return null;
+    }else{
+      Logger.log(`title_row_num:  ${to_row_num}`);  
+    }
+    const email_title = this.attendance_confirmation_sheet
+    .getRange( title_row_num, EMAIL_COLUMN_NUM + 1)
+    .getValue();
+    Logger.log(`email_title:  : ${email_title}`)
+
+
+    const content_row_num = this.spread_sheet.getVerticalRowNum(this.attendance_confirmation_sheet, {row: 1, column: EMAIL_COLUMN_NUM}, CELL_WORDING_MAIL_CONFIRM_EMAIL.Content );
+    if(content_row_num === -1){
+      Browser.msgBox(`content_row_num not exist`);
+      return null;
+    }else{
+      Logger.log(`content_row_num:  ${content_row_num}`);  
+    }
+    const email_content = this.attendance_confirmation_sheet
+    .getRange( content_row_num, EMAIL_COLUMN_NUM + 1)
+    .getValue();
+    Logger.log(`content_row_num ${email_content}`);
+
+    MailApp.sendEmail( String(email_to), String(email_title), String(email_content) );
+
+  }
+
   
   private writeCourseData(course_data: CourseData): boolean{
 
@@ -192,20 +233,19 @@ export class AttendanceConfirmCourse {
 
   setEmailAddress(email_arr: string[]){
 
-    const email_column_num = 2
 
-    Logger.log('---- getMailCourseId -----');
-    const to_row_num = this.spread_sheet.getVerticalRowNum(this.attendance_confirmation_sheet, {row: 1, column: email_column_num}, CELL_WORDING_MAIL_CONFIRM_TO.To );
+    Logger.log('---- setEmailAddress -----');
+    const to_row_num = this.spread_sheet.getVerticalRowNum(this.attendance_confirmation_sheet, {row: 1, column: EMAIL_COLUMN_NUM}, CELL_WORDING_MAIL_CONFIRM_EMAIL.To );
 
     if(to_row_num === -1){
-      Browser.msgBox(`identifier tonot exist`);
+      Browser.msgBox(`to_row_num not exist`);
       return null;
     }else{
       Logger.log(`to_row_num:  ${to_row_num}`);  
     }
 
     this.attendance_confirmation_sheet
-    .getRange( to_row_num, email_column_num + 1)
+    .getRange( to_row_num, EMAIL_COLUMN_NUM + 1)
     .setValue( email_arr.join(" , ") );
   }
 

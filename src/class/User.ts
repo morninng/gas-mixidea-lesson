@@ -68,8 +68,8 @@ export class User {
       this.retrieveUserdata();
     }
     this.user_data = this.user_data || {}
-    if(!this.user_data[userName]){
-      Browser.msgBox(`${userName} do not have email`);
+    if(!this.user_data[userName] || this.user_data[userName].length === 0 ){
+      Browser.msgBox(`!!!!!!!!!!!!!!!!!!!!!!! ${userName} do not have email`);
     }
     return this.user_data[userName] || [];
   }
