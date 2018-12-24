@@ -1,170 +1,169 @@
 import { SpreadSheet, SHEET_NAME } from './SpreadSheet';
 
-export enum COURSE_KEY {
-  CourseId = 'CourseId',
-  CourseName = 'CourseName',
+export enum SINGLE_LESSON_KEY {
+  SingleLessonId = 'SingleLessonId',
+  SingleLessonName = 'SingleLessonName',
   Teacher = 'Teacher',
-  Term = 'Term',
-  DayOfTheWeek = 'DayOfTheWeek',
-  Number = 'Number',
-  UnitLessonPrice = 'UnitLessonPrice',
-  CoursePrice = 'CoursePrice',
-  ParticipantNumber = 'ParticipantNumber',
-  TotalRevenue = 'TotalRevenue',
+  Date = 'Date',
+  Price = 'Price',
+  PaidStudentsNum = 'PaidStudentsNum',
+  FreeStudentsNum = 'FreeStudentsNum',
   PaymentRequestDay = 'PaymentRequestDay',
   LessonStatus = 'LessonStatus',
-  Students = 'Students',
+  PaidStudents = 'PaidStudents',
+  FreeStudents = 'FreeStudents',
+  Mentor = 'Mentor',
 }
 
 
-// export interface CourseCellKey{
-//   [COURSE_KEY.CourseId]?: string
-//   [COURSE_KEY.CourseName]?: string;
-//   [COURSE_KEY.Teacher]?: string;
-//   [COURSE_KEY.Term]?: string;
-//   [COURSE_KEY.DayOfTheWeek]?: string;
-//   [COURSE_KEY.Number]?: string;
-//   [COURSE_KEY.UnitLessonPrice]?: string;
-//   [COURSE_KEY.CoursePrice]?: string;
-//   [COURSE_KEY.ParticipantNumber]?: string;
-//   [COURSE_KEY.TotalRevenue]?:string;
-//   [COURSE_KEY.PaymentRequestDay]?: string;
-//   [COURSE_KEY.LessonStatus]?:string;
-//   [COURSE_KEY.Students]?: string;
+export const CELL_WORDING_SINGLE_LESSON: {[key: string]: string}   = {
+  [SINGLE_LESSON_KEY.SingleLessonId]: "SingleLessonId",
+  [SINGLE_LESSON_KEY.SingleLessonName]: "SingleLessonName",
+  [SINGLE_LESSON_KEY.Teacher]: "Teacher",
+  [SINGLE_LESSON_KEY.Date]: "Date",
+  [SINGLE_LESSON_KEY.Price]: "Price",
+  [SINGLE_LESSON_KEY.PaidStudentsNum]: "PaidStudentsNum",
+  [SINGLE_LESSON_KEY.FreeStudentsNum]: "FreeStudentsNum",
+  [SINGLE_LESSON_KEY.PaymentRequestDay]: "PaymentRequestDay",
+  [SINGLE_LESSON_KEY.LessonStatus]: "LessonStatus",
+  [SINGLE_LESSON_KEY.PaidStudents]: "PaidStudents",
+  [SINGLE_LESSON_KEY.FreeStudents]: "FreeStudents",
+  [SINGLE_LESSON_KEY.Mentor]: "Mentor",
+}
+
+// export interface CourseDataIndex{
+//   [SINGLE_LESSON_KEY.SingleLessonId]: number;
+//   [SINGLE_LESSON_KEY.SingleLessonName]: number;
+//   [SINGLE_LESSON_KEY.Teacher]: number;
+//   [SINGLE_LESSON_KEY.Date]: number;
+//   [SINGLE_LESSON_KEY.Price]: number;
+//   [SINGLE_LESSON_KEY.PaidStudentsNum]: number;
+//   [SINGLE_LESSON_KEY.FreeStudentsNum]: number;
+//   [SINGLE_LESSON_KEY.PaymentRequestDay]: number;
+//   [SINGLE_LESSON_KEY.LessonStatus]: number;
+//   [SINGLE_LESSON_KEY.PaidStudents]: number;
+//   [SINGLE_LESSON_KEY.FreeStudents]: number;
+//   [SINGLE_LESSON_KEY.Mentor]: number;
 // }
 
-
-export const CELL_WORDING_COURSE: {[key: string]: string}   = {
-  [COURSE_KEY.CourseId]: "Course-ID",
-  [COURSE_KEY.CourseName]: "Course-Name",
-  [COURSE_KEY.Teacher]: "Teacher",
-  [COURSE_KEY.Term]: "Term",
-  [COURSE_KEY.DayOfTheWeek]: "DayOfTheWeek",
-  [COURSE_KEY.Number]: "Number",
-  [COURSE_KEY.UnitLessonPrice]: "UnitLessonPrice",
-  [COURSE_KEY.CoursePrice]: "CoursePrice",
-  [COURSE_KEY.ParticipantNumber]: "ParticipantNumber",
-  [COURSE_KEY.TotalRevenue]: "TotalRevenue",
-  [COURSE_KEY.PaymentRequestDay]: "PaymentRequestDay",
-  [COURSE_KEY.LessonStatus]: "LessonStatus",
-  [COURSE_KEY.Students]: "Students",
+export interface SingleLessonData{
+  [SINGLE_LESSON_KEY.SingleLessonId]?: string
+  [SINGLE_LESSON_KEY.SingleLessonName]?: string;
+  [SINGLE_LESSON_KEY.Teacher]?: string;
+  [SINGLE_LESSON_KEY.Date]?: string;
+  [SINGLE_LESSON_KEY.Price]?: string;
+  [SINGLE_LESSON_KEY.PaidStudentsNum]?: string;
+  [SINGLE_LESSON_KEY.FreeStudentsNum]?: string;
+  [SINGLE_LESSON_KEY.PaymentRequestDay]?: string;
+  [SINGLE_LESSON_KEY.LessonStatus]?:string;
+  [SINGLE_LESSON_KEY.PaidStudents]?: string[];
+  [SINGLE_LESSON_KEY.FreeStudents]?: string[];
+  [SINGLE_LESSON_KEY.Mentor]?: string[];
 }
 
-export interface CourseDataIndex{
-  [COURSE_KEY.CourseId]: number;
-  [COURSE_KEY.CourseName]: number;
-  [COURSE_KEY.Teacher]: number;
-  [COURSE_KEY.Term]: number;
-  [COURSE_KEY.DayOfTheWeek]: number;
-  [COURSE_KEY.Number]: number;
-  [COURSE_KEY.UnitLessonPrice]: number;
-  [COURSE_KEY.CoursePrice]: number;
-  [COURSE_KEY.ParticipantNumber]: number;
-  [COURSE_KEY.TotalRevenue]: number;
-  [COURSE_KEY.PaymentRequestDay]: number;
-  [COURSE_KEY.LessonStatus]: number;
-  [COURSE_KEY.Students]: number;
-}
+const PAID_USER_MAX_NUM = 25;
+const FREE_USER_MAX_NUM = 5;
+const MENTOR_USER_MAX_NUM = 2;
 
-export interface CourseData{
-  [COURSE_KEY.CourseId]?: string
-  [COURSE_KEY.CourseName]?: string;
-  [COURSE_KEY.Teacher]?: string;
-  [COURSE_KEY.Term]?: string;
-  [COURSE_KEY.DayOfTheWeek]?: string;
-  [COURSE_KEY.Number]?: string;
-  [COURSE_KEY.UnitLessonPrice]?: string;
-  [COURSE_KEY.CoursePrice]?: string;
-  [COURSE_KEY.ParticipantNumber]?: string;
-  [COURSE_KEY.TotalRevenue]?:string;
-  [COURSE_KEY.PaymentRequestDay]?: string;
-  [COURSE_KEY.LessonStatus]?:string;
-  [COURSE_KEY.Students]?: string[];
-  studentsNameArr?: string[];
-}
+export class ListSingleLesson {
 
 
-export class ListCourse {
-
-
-  course_list_sheet: GoogleAppsScript.Spreadsheet.Sheet ;
+  single_lesson_list_sheet: GoogleAppsScript.Spreadsheet.Sheet ;
   spread_sheet: SpreadSheet;
 
   constructor(){
     this.spread_sheet = SpreadSheet.instance;
-    this.course_list_sheet = this.spread_sheet.getSheet(SHEET_NAME.COURSE_LIST);
+    this.single_lesson_list_sheet = this.spread_sheet.getSheet(SHEET_NAME.SINGLE_LESSON_LIST);
   }
 
-  getStudentsKey(){
-    return CELL_WORDING_COURSE.Students;
+  getMultipleItemKey(){
+    return [CELL_WORDING_SINGLE_LESSON.PaidStudents, CELL_WORDING_SINGLE_LESSON.FreeStudents, CELL_WORDING_SINGLE_LESSON.Mentor ];
   }
 
 
-  getCourseDataFromCourseId(courseId: string): CourseData | null{
+  getSingleLessonDataFromId(singleLessonId: string): SingleLessonData | null{
 
-    const course_row_num: number = this.getCourseIdRowNum(courseId);
-    if(course_row_num === -1){
+    Logger.log(`-------- getSingleLessonDataFromId -------------`)
+
+    const single_lesson_row_num: number = this.getSingleLessonIdRowNum(singleLessonId);
+    if(single_lesson_row_num === -1){
       return null;
+    }else{
+      Logger.log(`single_lesson_row_num = ${single_lesson_row_num}`)
     }
-    const course_data: CourseData | null = this.getCourseDataFromRowNum(course_row_num);
+    const single_lesson_data: SingleLessonData | null = this.getSingleLessonDataFromRowNum(single_lesson_row_num);
 
-    if( !course_data ){
+    if( !single_lesson_data ){
       Browser.msgBox("getCourseDataFromRowNum failed");
       return null;
+    }else{
+      Logger.log(single_lesson_data);
     }
-    return course_data;
+    return single_lesson_data;
   }
 
-  private getCourseIdRowNum(courseId: string): number{
+  private getSingleLessonIdRowNum(singleLessonId: string): number{
   
     Logger.log('------ getCourseIdRowNum -------------')
-    const course_row_num = this.spread_sheet.getVerticalRowNum(this.course_list_sheet, {row: 1, column: 1}, courseId );
-    if(course_row_num === -1){
-      Browser.msgBox(`course id ${courseId} not exist in course sheet`);
+    const single_lesson_row_num = this.spread_sheet.getVerticalRowNum(this.single_lesson_list_sheet, {row: 1, column: 1}, singleLessonId );
+    if(single_lesson_row_num === -1){
+      Browser.msgBox(`course id ${singleLessonId} not exist in course sheet`);
     }
-    return course_row_num;
+    return single_lesson_row_num;
   }
   
   
   
-  public getCourseDataFromRowNum(course_row_num: number): CourseData | null{
+  public getSingleLessonDataFromRowNum(single_lesson_row_num: number): SingleLessonData | null{
   
-    Logger.log(`------ getCourseDataFromRowNum ------------- ${course_row_num} row`);
+    Logger.log(`------ getSingleLessonDataFromRowNum ------------- ${single_lesson_row_num} row`);
     
   
-    const course_index = this.spread_sheet.getHorizontalIndex(this.course_list_sheet, {row: 1, column: 1}, CELL_WORDING_COURSE);
-    if(!course_index){
-      Browser.msgBox(`course index cannot retrieve`);
+    const single_lesson_index = this.spread_sheet.getHorizontalIndex(this.single_lesson_list_sheet, {row: 1, column: 1}, CELL_WORDING_SINGLE_LESSON);
+    if(!single_lesson_index){
+      Browser.msgBox(`single_lesson_index cannot retrieve`);
 
       return null;
     }else{
-      Logger.log('course_index');
-      Logger.log(course_index);
+      Logger.log(' --------- single_lesson_index --------- ');
+      Logger.log(single_lesson_index);
     }
 
-    const course_data: {[key: string]: string} |  {[key: string]: string[]} 
-      = this.spread_sheet.getHorzontalDataFromIndex(this.course_list_sheet, {row: course_row_num, column: 1}, course_index)
+    const single_lesson_data: {[key: string]: string} |  {[key: string]: string[]} 
+      = this.spread_sheet.getHorzontalDataFromIndex(this.single_lesson_list_sheet, {row: single_lesson_row_num, column: 1}, single_lesson_index)
 
-    Logger.log('--------------course_data------------------------');
-    Logger.log(course_data);
+    Logger.log('--------------single_lesson_data------------------------');
+    Logger.log(single_lesson_data);
 
-    const students_column_index = course_index.Students;
-    const students_data  = 
-      this.spread_sheet.getHorzontalData(this.course_list_sheet, {row: course_row_num, column: students_column_index}, 20)
+    const paid_students_column_index = single_lesson_index.PaidStudents;
+    const paid_students_data  = 
+      this.spread_sheet.getHorzontalData(this.single_lesson_list_sheet, {row: single_lesson_row_num, column: paid_students_column_index}, PAID_USER_MAX_NUM )
       .filter((element) =>{ return !!element})
       .map((element)=>{ return String(element)});
 
-    Logger.log(students_data);
+
+      const free_students_column_index = single_lesson_index.FreeStudents;
+      const free_students_data  = 
+        this.spread_sheet.getHorzontalData(this.single_lesson_list_sheet, {row: single_lesson_row_num, column: free_students_column_index}, FREE_USER_MAX_NUM )
+        .filter((element) =>{ return !!element})
+        .map((element)=>{ return String(element)});
+  
+  
+      const mentor_column_index = single_lesson_index.Mentor;
+      const mentor_data  = 
+        this.spread_sheet.getHorzontalData(this.single_lesson_list_sheet, {row: single_lesson_row_num, column: mentor_column_index}, MENTOR_USER_MAX_NUM )
+        .filter((element) =>{ return !!element})
+        .map((element)=>{ return String(element)});      
 
 
-    // course_data.studentsNameArr = course_arr.slice(course_index.Students, course_index.Students + 20)
-    //                                 .map((element)=>{ return String(element)});
+    single_lesson_data.PaidStudents = paid_students_data || [];
+    single_lesson_data.FreeStudents = free_students_data || [];
+    single_lesson_data.Mentor = mentor_data || [];
 
-    course_data.Students = students_data;
 
-
-    return course_data;
+    return single_lesson_data;
   }
 
 
 }
+

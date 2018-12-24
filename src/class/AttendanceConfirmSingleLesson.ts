@@ -1,103 +1,107 @@
 import { SpreadSheet, SHEET_NAME } from './SpreadSheet';
-import { ListCourse } from './ListCourse';
-import { CourseData } from './ListCourse';
+import { ListSingleLesson, SingleLessonData } from './ListSingleLesson';
 import { User } from './User';
 
-export enum MAIL_CONFIRM_COURSE_KEY {
-  MailCourseId = 'MailCourseId',
+export enum MAIL_CONFIRM_SINGLE_LESSON_KEY {
+  MailSingleLessonId = 'MailSingleLessonId',
   Mailmaterial = 'Mailmaterial',
-  CourseId = 'CourseId',
-  CourseName = 'CourseName',
+
+  SingleLessonId = 'SingleLessonId',
+  SingleLessonName = 'SingleLessonName',
   Teacher = 'Teacher',
-  Students = 'Students',
-  Number = 'Number',
-  Term = 'Term',
-  CoursePrice = 'CoursePrice',
+  Date = 'Date',
+  Price = 'Price',
+  PaidStudents = 'PaidStudents',
+  FreeStudents = 'FreeStudents',
+  Mentor = 'Mentor',
   PaymentRequestDay = 'PaymentRequestDay',
-  MailmDataTo = 'MailmDataTo',
-  MailmDataCc= 'MailmDataCc',
-  MailmDataTitle = 'MailmDataTitle',
-  MailmDataContent = 'MailmDataContent',
+
+  LessonStatus = 'LessonStatus',
   To = 'To',
   Title = 'Title',
   Content = 'Content',
 }
 
-export const CELL_WORDING_MAIL_CONFIRM_ID: CellWordingMailconfirmId   = {
-  [MAIL_CONFIRM_COURSE_KEY.MailCourseId]: "Mail-Course-ID",
+export const CELL_WORDING_MAIL_CONFIRM_ID = {
+  [MAIL_CONFIRM_SINGLE_LESSON_KEY.MailSingleLessonId]: "Mail-SingleLesson-ID",
 }
 interface CellWordingMailconfirmId {
-  [MAIL_CONFIRM_COURSE_KEY.MailCourseId]: string 
+  [MAIL_CONFIRM_SINGLE_LESSON_KEY.MailSingleLessonId]: string 
 }
 
 export const CELL_WORDING_MAIL_CONFIRM_EMAIL: CellWordingMailconfirmEmail   = {
-  [MAIL_CONFIRM_COURSE_KEY.To]: "To",
-  [MAIL_CONFIRM_COURSE_KEY.Title]: "Title",
-  [MAIL_CONFIRM_COURSE_KEY.Content]: "Content",
+  [MAIL_CONFIRM_SINGLE_LESSON_KEY.To]: "To",
+  [MAIL_CONFIRM_SINGLE_LESSON_KEY.Title]: "Title",
+  [MAIL_CONFIRM_SINGLE_LESSON_KEY.Content]: "Content",
 }
 interface CellWordingMailconfirmEmail {
-  [MAIL_CONFIRM_COURSE_KEY.To]: string;
-  [MAIL_CONFIRM_COURSE_KEY.Title]: string;
-  [MAIL_CONFIRM_COURSE_KEY.Content]: string;
+  [MAIL_CONFIRM_SINGLE_LESSON_KEY.To]: string;
+  [MAIL_CONFIRM_SINGLE_LESSON_KEY.Title]: string;
+  [MAIL_CONFIRM_SINGLE_LESSON_KEY.Content]: string;
 }
 
 export const CELL_WORDING_MAIL_CONFIRM_MailMaterialTitle: CellWordingMailconfirmMaterialTitle   = {
-  [MAIL_CONFIRM_COURSE_KEY.Mailmaterial]: "mail-data-material-key",
+  [MAIL_CONFIRM_SINGLE_LESSON_KEY.Mailmaterial]: "mail-data-material-key",
 }
 interface CellWordingMailconfirmMaterialTitle {
-  [MAIL_CONFIRM_COURSE_KEY.Mailmaterial]: string 
+  [MAIL_CONFIRM_SINGLE_LESSON_KEY.Mailmaterial]: string 
 }
 
 export const CELL_WORDING_MAIL_CONFIRM_MailMaterialItem: CellWordingMailconfirmMaterialItem  = {
-  [MAIL_CONFIRM_COURSE_KEY.CourseId]: "Course-ID",
-  [MAIL_CONFIRM_COURSE_KEY.CourseName]: "Course-NAME",
-  [MAIL_CONFIRM_COURSE_KEY.Teacher]: "Teacher",
-  [MAIL_CONFIRM_COURSE_KEY.Students]: "Students",
-  [MAIL_CONFIRM_COURSE_KEY.Number]: "Number",
-  [MAIL_CONFIRM_COURSE_KEY.Term]: "Term",
-  [MAIL_CONFIRM_COURSE_KEY.CoursePrice]: "CoursePrice",
-  [MAIL_CONFIRM_COURSE_KEY.PaymentRequestDay]: "PaymentRequestDay",
+  [MAIL_CONFIRM_SINGLE_LESSON_KEY.SingleLessonId]: "SingleLessonId",
+  [MAIL_CONFIRM_SINGLE_LESSON_KEY.SingleLessonName]: "SingleLessonName",
+  [MAIL_CONFIRM_SINGLE_LESSON_KEY.Teacher]: "Teacher",
+  [MAIL_CONFIRM_SINGLE_LESSON_KEY.Date]: "Date",
+  [MAIL_CONFIRM_SINGLE_LESSON_KEY.Price]: "Price",
+  [MAIL_CONFIRM_SINGLE_LESSON_KEY.PaidStudents]: "PaidStudents",
+  [MAIL_CONFIRM_SINGLE_LESSON_KEY.FreeStudents]: "FreeStudents",
+  [MAIL_CONFIRM_SINGLE_LESSON_KEY.Mentor]: "Mentor",
+  [MAIL_CONFIRM_SINGLE_LESSON_KEY.PaymentRequestDay]: "PaymentRequestDay",
 }
 interface CellWordingMailconfirmMaterialItem {
-  [MAIL_CONFIRM_COURSE_KEY.CourseId]: string,
-  [MAIL_CONFIRM_COURSE_KEY.CourseName]: string,
-  [MAIL_CONFIRM_COURSE_KEY.Teacher]: string,
-  [MAIL_CONFIRM_COURSE_KEY.Students]: string,
-  [MAIL_CONFIRM_COURSE_KEY.Number]: string,
-  [MAIL_CONFIRM_COURSE_KEY.Term]: string,
-  [MAIL_CONFIRM_COURSE_KEY.CoursePrice]: string,
-  [MAIL_CONFIRM_COURSE_KEY.PaymentRequestDay]: string,
+  [MAIL_CONFIRM_SINGLE_LESSON_KEY.SingleLessonId]: string,
+  [MAIL_CONFIRM_SINGLE_LESSON_KEY.SingleLessonName]: string,
+  [MAIL_CONFIRM_SINGLE_LESSON_KEY.Teacher]: string,
+  [MAIL_CONFIRM_SINGLE_LESSON_KEY.Date]: string,
+  [MAIL_CONFIRM_SINGLE_LESSON_KEY.Price]: string,
+  [MAIL_CONFIRM_SINGLE_LESSON_KEY.PaidStudents]: string,
+  [MAIL_CONFIRM_SINGLE_LESSON_KEY.FreeStudents]: string,
+  [MAIL_CONFIRM_SINGLE_LESSON_KEY.Mentor]: string,
+  [MAIL_CONFIRM_SINGLE_LESSON_KEY.PaymentRequestDay]: string,
 }
 
 export interface MailConfirmCourseMaterialIndex {
-  [MAIL_CONFIRM_COURSE_KEY.CourseId]: number,
-  [MAIL_CONFIRM_COURSE_KEY.CourseName]: number,
-  [MAIL_CONFIRM_COURSE_KEY.Teacher]: number,
-  [MAIL_CONFIRM_COURSE_KEY.Students]: number,
-  [MAIL_CONFIRM_COURSE_KEY.Number]: number,
-  [MAIL_CONFIRM_COURSE_KEY.Term]: number,
-  [MAIL_CONFIRM_COURSE_KEY.CoursePrice]: number,
-  [MAIL_CONFIRM_COURSE_KEY.PaymentRequestDay]: number,
+  [MAIL_CONFIRM_SINGLE_LESSON_KEY.SingleLessonId]: number,
+  [MAIL_CONFIRM_SINGLE_LESSON_KEY.SingleLessonName]: number,
+  [MAIL_CONFIRM_SINGLE_LESSON_KEY.Teacher]: number,
+  [MAIL_CONFIRM_SINGLE_LESSON_KEY.Date]: number,
+  [MAIL_CONFIRM_SINGLE_LESSON_KEY.Price]: number,
+  [MAIL_CONFIRM_SINGLE_LESSON_KEY.PaidStudents]: number,
+  [MAIL_CONFIRM_SINGLE_LESSON_KEY.FreeStudents]: number,
+  [MAIL_CONFIRM_SINGLE_LESSON_KEY.Mentor]: number,
+  [MAIL_CONFIRM_SINGLE_LESSON_KEY.PaymentRequestDay]: number,
 }
 
 const EMAIL_COLUMN_NUM = 2
 
 
-export class AttendanceConfirmCourse {
+export class AttendanceConfirmSingleLesson {
 
   attendance_confirmation_sheet: GoogleAppsScript.Spreadsheet.Sheet;
   spread_sheet: SpreadSheet;
   user: User
 
   constructor(
-    private list_course : ListCourse,
+    private list_single_lesson : ListSingleLesson,
   ){
     this.user = User.instance;
     this.spread_sheet = SpreadSheet.instance;
-    this.attendance_confirmation_sheet = this.spread_sheet.getSheet(SHEET_NAME.ATTENDANCE_CONFIRM);
+    Logger.log(`SHEET_NAME.ATTENDANCE_CONFIRM_SINGLE_LESSON ${SHEET_NAME.ATTENDANCE_CONFIRM_SINGLE_LESSON}`);
+    this.attendance_confirmation_sheet = this.spread_sheet.getSheet(SHEET_NAME.ATTENDANCE_CONFIRM_SINGLE_LESSON);
+
   }
 
-  public updateCourseData() {
+  public updateSingleLessonData() {
 
     const validate = this.checkActiveSheet();
     if(!validate){
@@ -105,24 +109,28 @@ export class AttendanceConfirmCourse {
       return;
     }
 
-    const mailCourseId = this.getMailCourseId();
-    if(!mailCourseId){
-      Logger.log("no mail course id found");
-      Browser.msgBox("no mail course id found");
+    const mailSingleLessonId = this.getMailSingleLessonId();
+    if(!mailSingleLessonId){
+      Logger.log("no mailSingleLessonId found");
+      Browser.msgBox("no mailSingleLessonId found");
       return;
+    }else{
+      Logger.log(`mailSingleLessonId = ${mailSingleLessonId}`);  
     }
-    const course_data: CourseData | null = this.list_course.getCourseDataFromCourseId(mailCourseId);
-    if(!course_data){
-      Logger.log("course data not found");
+    const single_lesson_data: SingleLessonData | null = this.list_single_lesson.getSingleLessonDataFromId(mailSingleLessonId);
+    if(!single_lesson_data){
+      Logger.log("single_lesson_data not found");
       return;
+    }else{
+      Logger.log(single_lesson_data);
     }
-    const result = this.writeCourseData(course_data);
+    const result = this.writeSingleLessonData(single_lesson_data);
     if(!result){
-      Logger.log("writeCourseData failed");
+      Logger.log("writeSingleLessonData failed");
       return; 
     }
 
-    const email_arr = this.getEmailAddress(course_data);
+    const email_arr = this.getEmailAddress(single_lesson_data);
     Logger.log(email_arr);
     this.setEmailAddress(email_arr);
   }
@@ -173,12 +181,12 @@ export class AttendanceConfirmCourse {
   }
 
   
-  private writeCourseData(course_data: CourseData): boolean{
+  private writeSingleLessonData(single_lesson_data: SingleLessonData): boolean{
 
 
     const material_key_column = 4;
 
-    Logger.log('----------- writeCourseData ----------');
+    Logger.log('----------- writeSingleLessonData ----------');
 
     const materkal_key_num 
       = this.spread_sheet.getVerticalRowNum(
@@ -204,31 +212,39 @@ export class AttendanceConfirmCourse {
 
 // write 
 
-    for(let key in mailmaterial_index){
-      if(key === this.list_course.getStudentsKey()){
+    const multiple_items_key: string[] = this.list_single_lesson.getMultipleItemKey();
 
-        const students = course_data[key].join(' , ')
+    for(let key in mailmaterial_index){
+      Logger.log(`key ${key}`);
+      if( multiple_items_key.indexOf(key) !== -1){
+        Logger.log(single_lesson_data[key] );
+        const name_arr: string[] = (single_lesson_data[key] || []).join(' , ')
         this.attendance_confirmation_sheet
         .getRange(mailmaterial_index[key], material_key_column + 1)
-        .setValue( students );
+        .setValue( name_arr );
+
       }else{
         this.attendance_confirmation_sheet
         .getRange(mailmaterial_index[key], material_key_column + 1)
-        .setValue( course_data[key] || '');
+        .setValue( single_lesson_data[key] || '');
       }
     }
     return true;
   }
 
-  getEmailAddress(course_data: CourseData ): string[]{
+  getEmailAddress(single_lesson_data: SingleLessonData ): string[]{
 
-    const teacher = course_data.Teacher;
-    const students_arr = course_data.Students || [];
+    const teacher = single_lesson_data.Teacher;
+    const paid_students_arr = single_lesson_data.PaidStudents || [];
+    const free_students_arr = single_lesson_data.PaidStudents || [];
+    const mentor_arr = single_lesson_data.Mentor || [];
 
     const teacher_email = this.user.getMail(teacher || '');
-    const students_email_arr = this.user.getMailList(students_arr) || [];
+    const paid_students_email_arr = this.user.getMailList(paid_students_arr) || [];
+    const free_students_email_arr = this.user.getMailList(free_students_arr) || [];
+    const mentor_email_arr = this.user.getMailList(mentor_arr) || [];
     
-    return [ ...students_email_arr, ...teacher_email ]
+    return [ ...paid_students_email_arr, ...free_students_email_arr, ...mentor_email_arr, ...teacher_email ]
 
   }
 
@@ -251,29 +267,30 @@ export class AttendanceConfirmCourse {
   }
 
 
-  public getMailCourseId(): string | null {
+  public getMailSingleLessonId(): string | null {
 
-    Logger.log('---- getMailCourseId -----');
-    const mailcourse_id_row_num = this.spread_sheet.getVerticalRowNum(this.attendance_confirmation_sheet, {row: 1, column: 1}, CELL_WORDING_MAIL_CONFIRM_ID.MailCourseId );
+    Logger.log('---- getMailSingleLessonId -----');
+    Logger.log(`this.spread_sheet ${this.spread_sheet}`)
+    const mail_single_lesson_id_row_num = this.spread_sheet.getVerticalRowNum(this.attendance_confirmation_sheet, {row: 1, column: 1}, CELL_WORDING_MAIL_CONFIRM_ID.MailSingleLessonId );
 
-    if(mailcourse_id_row_num === -1){
-      Browser.msgBox(`mail course id ${CELL_WORDING_MAIL_CONFIRM_ID.MailCourseId} not exist`);
+    if(mail_single_lesson_id_row_num === -1){
+      Browser.msgBox(`mail_single_lesson_id_row_num ${CELL_WORDING_MAIL_CONFIRM_ID.MailSingleLessonId} not exist`);
       return null;
     }else{
-      Logger.log(`mailcourse_id_row_num:  ${mailcourse_id_row_num}`);  
+      Logger.log(`mail_single_lesson_id_row_num:  ${mail_single_lesson_id_row_num}`);  
     }
 
-    const mailCourseId = this.attendance_confirmation_sheet.getRange(mailcourse_id_row_num , 2).getValue();
-    if(!mailCourseId){
-      Browser.msgBox(`mailCourseId not exist`);
+    const mailSingleLessonId = this.attendance_confirmation_sheet.getRange(mail_single_lesson_id_row_num , 2).getValue();
+    if(!mailSingleLessonId){
+      Browser.msgBox(`mailSingleLessonId not exist`);
       return null;
-    }else if(isNaN( Number(mailCourseId))){
-      Browser.msgBox(`mailCourseId is  not a number`);
+    }else if(isNaN( Number(mailSingleLessonId))){
+      Browser.msgBox(`mailSingleLessonId is  not a number`);
       return null;
     }
 
-    Logger.log(`---- mailCourseId:  ${mailCourseId}`);
-    return String(mailCourseId);
+    Logger.log(`---- mailSingleLessonId:  ${mailSingleLessonId}`);
+    return String(mailSingleLessonId);
   }
 
   checkActiveSheet(){

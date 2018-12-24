@@ -1,5 +1,7 @@
 import { AttendanceConfirmCourse } from './class/AttendanceConfirmCourse';
+import { AttendanceConfirmSingleLesson } from './class/AttendanceConfirmSingleLesson';
 import { ListCourse } from './class/ListCourse';
+import { ListSingleLesson } from './class/ListSingleLesson';
 import { User } from './class/User';
 
 // function getMailCourseId(){
@@ -9,6 +11,24 @@ import { User } from './class/User';
 //   attendanceConfirmCourse.getMailCourseId();
 // }
 
+
+// function getMailSingleLessonId(){
+//   const single_lesson_list = new ListSingleLesson();
+//   const attendanceConfirmSingleLesson = new AttendanceConfirmSingleLesson( single_lesson_list );
+//   attendanceConfirmSingleLesson.getMailSingleLessonId();
+// }
+
+function updateSingleLessonData(){
+  const single_lesson_list = new ListSingleLesson();
+  const attendanceConfirmSingleLesson = new AttendanceConfirmSingleLesson( single_lesson_list );
+  attendanceConfirmSingleLesson.updateSingleLessonData();
+}
+
+function sendSingleLessonMail(){
+  const single_lesson_list = new ListSingleLesson();
+  const attendanceConfirmSingleLesson = new AttendanceConfirmSingleLesson( single_lesson_list );
+  attendanceConfirmSingleLesson.sendMail();
+}
 
 
 function updateCourseData() {
@@ -22,6 +42,8 @@ function sendCourseMail(){
   const attendanceConfirmCourse = new AttendanceConfirmCourse(course_list);
   attendanceConfirmCourse.sendMail();
 }
+
+
 
 // function getCourseDataFromRowNum() {
 //   const course_list = new CourseList();

@@ -50,21 +50,6 @@ export const CELL_WORDING_COURSE: {[key: string]: string}   = {
   [COURSE_KEY.Students]: "Students",
 }
 
-export interface CourseDataIndex{
-  [COURSE_KEY.CourseId]: number;
-  [COURSE_KEY.CourseName]: number;
-  [COURSE_KEY.Teacher]: number;
-  [COURSE_KEY.Term]: number;
-  [COURSE_KEY.DayOfTheWeek]: number;
-  [COURSE_KEY.Number]: number;
-  [COURSE_KEY.UnitLessonPrice]: number;
-  [COURSE_KEY.CoursePrice]: number;
-  [COURSE_KEY.ParticipantNumber]: number;
-  [COURSE_KEY.TotalRevenue]: number;
-  [COURSE_KEY.PaymentRequestDay]: number;
-  [COURSE_KEY.LessonStatus]: number;
-  [COURSE_KEY.Students]: number;
-}
 
 export interface CourseData{
   [COURSE_KEY.CourseId]?: string

@@ -48,6 +48,7 @@ export class SpreadSheet {
 
   getVerticalRowNum(sheet: GoogleAppsScript.Spreadsheet.Sheet, initialPosition: SheetPosition, search_value: string): number{
 
+    Logger.log(`------ sheet: ${sheet}`)
     Logger.log(`------ getVerticalRowNum: ${search_value}`)
   
     const range = sheet.getRange(initialPosition.row, initialPosition.column, 100, 1 );
@@ -108,7 +109,7 @@ export class SpreadSheet {
       index[key] = -1;
     }
     
-    const range = sheet.getRange(initialPosition.row, initialPosition.column, 1, 50 );
+    const range = sheet.getRange(initialPosition.row, initialPosition.column, 1, 100 );
     const item_map = range.getValues();
     const item_arr: string[] = item_map[0].map((element)=>{ return String(element) });
   
