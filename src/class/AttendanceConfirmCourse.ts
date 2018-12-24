@@ -1,6 +1,6 @@
 import { SpreadSheet, SHEET_NAME } from './SpreadSheet';
-import { CourseList } from './CourseList';
-import { CourseData } from './CourseList';
+import { CourseList } from './ListCourse';
+import { CourseData } from './ListCourse';
 import { User } from './User';
 
 export enum MAIL_CONFIRM_COURSE_KEY {

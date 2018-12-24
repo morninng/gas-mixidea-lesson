@@ -1,5 +1,5 @@
 import { AttendanceConfirmCourse } from './class/AttendanceConfirmCourse';
-import { CourseList } from './class/CourseList';
+import { CourseList } from './class/ListCourse';
 import { User } from './class/User';
 
 // function getMailCourseId(){
