@@ -2,6 +2,8 @@
 export enum SHEET_NAME {
   ATTENDANCE_CONFIRM = 'メール（コース受講確認）',
   COURSE_LIST = 'Course-List',
+  ATTENDANCE_CONFIRM_SINGLE_LESSON = 'メール（単発Lesson受講確認）',
+  SINGLE_LESSON_LIST = '単発Lesson-List',
   User = 'User',
 }
 
