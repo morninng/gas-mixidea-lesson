@@ -1,5 +1,7 @@
-import { SpreadSheet, SHEET_NAME } from './SpreadSheet';
+import { SpreadSheetNamespace} from './SpreadSheet';
 
+
+export namespace UserNameSpace {
 
 const UserListRowNum = 200;
 
@@ -10,7 +12,7 @@ export class User {
   private static _instance: User;
 
   user_sheet: GoogleAppsScript.Spreadsheet.Sheet ;
-  spread_sheet: SpreadSheet;
+  spread_sheet: SpreadSheetNamespace.SpreadSheet;
   user_data : {[key: string]: string[]} | null = null;
 
 
@@ -27,8 +29,8 @@ export class User {
   };
 
   retrieveUserdata(){
-    this.spread_sheet = SpreadSheet.instance;
-    this.user_sheet = this.spread_sheet.getSheet(SHEET_NAME.User);
+    this.spread_sheet = SpreadSheetNamespace.SpreadSheet.instance;
+    this.user_sheet = this.spread_sheet.getSheet(SpreadSheetNamespace.SHEET_NAME.User);
 
     if(!this.user_data){
       Logger.log('userdata retrieve');
@@ -86,5 +88,7 @@ export class User {
   }
   
 
+
+}
 
 }

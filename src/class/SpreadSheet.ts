@@ -1,4 +1,7 @@
 
+export namespace SpreadSheetNamespace {
+
+
 export enum SHEET_NAME {
   ATTENDANCE_CONFIRM = 'メール（コース受講確認）',
   COURSE_LIST = 'Course-List',
@@ -6,6 +9,7 @@ export enum SHEET_NAME {
   SINGLE_LESSON_LIST = '単発Lesson-List',
   User = 'User',
 }
+
 
 export interface SheetPosition {
   row: number,
@@ -163,5 +167,7 @@ export class SpreadSheet {
   }
 
 
+
+}
 
 }

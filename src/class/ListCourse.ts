@@ -1,4 +1,6 @@
-import { SpreadSheet, SHEET_NAME } from './SpreadSheet';
+import { SpreadSheetNamespace } from './SpreadSheet';
+
+export namespace ListCourseNameSpace {
 
 export enum COURSE_KEY {
   CourseId = 'CourseId',
@@ -73,11 +75,11 @@ export class ListCourse {
 
 
   course_list_sheet: GoogleAppsScript.Spreadsheet.Sheet ;
-  spread_sheet: SpreadSheet;
+  spread_sheet: SpreadSheetNamespace.SpreadSheet;
 
   constructor(){
-    this.spread_sheet = SpreadSheet.instance;
-    this.course_list_sheet = this.spread_sheet.getSheet(SHEET_NAME.COURSE_LIST);
+    this.spread_sheet = SpreadSheetNamespace.SpreadSheet.instance;
+    this.course_list_sheet = this.spread_sheet.getSheet(SpreadSheetNamespace.SHEET_NAME.COURSE_LIST);
   }
 
   getStudentsKey(){
@@ -151,5 +153,7 @@ export class ListCourse {
     return course_data;
   }
 
+
+}
 
 }

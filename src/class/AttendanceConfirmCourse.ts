@@ -1,7 +1,8 @@
-import { SpreadSheet, SHEET_NAME } from './SpreadSheet';
-import { ListCourse } from './ListCourse';
-import { CourseData } from './ListCourse';
-import { User } from './User';
+import { SpreadSheetNamespace } from './SpreadSheet';
+import { ListCourseNameSpace } from './ListCourse';
+import { UserNameSpace } from './User';
+
+export namespace AttendanceConfirmCourseNameSpace {
 
 export enum MAIL_CONFIRM_COURSE_KEY {
   MailCourseId = 'MailCourseId',
@@ -82,15 +83,15 @@ const EMAIL_COLUMN_NUM = 2
 export class AttendanceConfirmCourse {
 
   attendance_confirmation_sheet: GoogleAppsScript.Spreadsheet.Sheet;
-  spread_sheet: SpreadSheet;
-  user: User
+  spread_sheet: SpreadSheetNamespace.SpreadSheet;
+  user: UserNameSpace.User
 
   constructor(
-    private list_course : ListCourse,
+    private list_course : ListCourseNameSpace.ListCourse,
   ){
-    this.user = User.instance;
-    this.spread_sheet = SpreadSheet.instance;
-    this.attendance_confirmation_sheet = this.spread_sheet.getSheet(SHEET_NAME.ATTENDANCE_CONFIRM);
+    this.user = UserNameSpace.User.instance;
+    this.spread_sheet = SpreadSheetNamespace.SpreadSheet.instance;
+    this.attendance_confirmation_sheet = this.spread_sheet.getSheet(SpreadSheetNamespace.SHEET_NAME.ATTENDANCE_CONFIRM);
   }
 
   public updateCourseData() {
@@ -107,7 +108,7 @@ export class AttendanceConfirmCourse {
       Browser.msgBox("no mail course id found");
       return;
     }
-    const course_data: CourseData | null = this.list_course.getCourseDataFromCourseId(mailCourseId);
+    const course_data: ListCourseNameSpace.CourseData | null = this.list_course.getCourseDataFromCourseId(mailCourseId);
     if(!course_data){
       Logger.log("course data not found");
       return;
@@ -169,7 +170,7 @@ export class AttendanceConfirmCourse {
   }
 
   
-  private writeCourseData(course_data: CourseData): boolean{
+  private writeCourseData(course_data: ListCourseNameSpace.CourseData): boolean{
 
 
     const material_key_column = 4;
@@ -216,7 +217,7 @@ export class AttendanceConfirmCourse {
     return true;
   }
 
-  getEmailAddress(course_data: CourseData ): string[]{
+  getEmailAddress(course_data: ListCourseNameSpace.CourseData ): string[]{
 
     const teacher = course_data.Teacher;
     const students_arr = course_data.Students || [];
@@ -249,8 +250,11 @@ export class AttendanceConfirmCourse {
 
   public getMailCourseId(): string | null {
 
-    Logger.log('---- getMailCourseId -----');
-    const mailcourse_id_row_num = this.spread_sheet.getVerticalRowNum(this.attendance_confirmation_sheet, {row: 1, column: 1}, CELL_WORDING_MAIL_CONFIRM_ID.MailCourseId );
+    Logger.log(`---- getMailCourseId -- ${CELL_WORDING_MAIL_CONFIRM_ID.MailCourseId} ---`);
+    Logger.log(CELL_WORDING_MAIL_CONFIRM_ID);
+
+    const mailcourse_id_row_num
+     = this.spread_sheet.getVerticalRowNum(this.attendance_confirmation_sheet, {row: 1, column: 1}, CELL_WORDING_MAIL_CONFIRM_ID.MailCourseId );
 
     if(mailcourse_id_row_num === -1){
       Browser.msgBox(`mail course id ${CELL_WORDING_MAIL_CONFIRM_ID.MailCourseId} not exist`);
@@ -275,4 +279,6 @@ export class AttendanceConfirmCourse {
   checkActiveSheet(){
     return true;
   }
+}
+
 }

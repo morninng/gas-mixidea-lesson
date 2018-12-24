@@ -1,13 +1,12 @@
-import { AttendanceConfirmCourse } from './class/AttendanceConfirmCourse';
-import { AttendanceConfirmSingleLesson } from './class/AttendanceConfirmSingleLesson';
-import { ListCourse } from './class/ListCourse';
-import { ListSingleLesson } from './class/ListSingleLesson';
-import { User } from './class/User';
+import { AttendanceConfirmCourseNameSpace } from './class/AttendanceConfirmCourse';
+import { AttendanceConfirmSingleLessonNameSpace } from './class/AttendanceConfirmSingleLesson';
+import { ListCourseNameSpace } from './class/ListCourse';
+import { ListSingleLessonNameSpace } from './class/ListSingleLesson';
+import { UserNameSpace } from './class/User';
 
 // function getMailCourseId(){
-//   const course_list = new CourseList();
-//   const user = new User();
-//   const attendanceConfirmCourse = new AttendanceConfirmCourse(course_list, user);
+//   const course_list = new ListCourseNameSpace.ListCourse();
+//   const attendanceConfirmCourse = new AttendanceConfirmCourseNameSpace.AttendanceConfirmCourse(course_list);
 //   attendanceConfirmCourse.getMailCourseId();
 // }
 
@@ -19,27 +18,27 @@ import { User } from './class/User';
 // }
 
 function updateSingleLessonData(){
-  const single_lesson_list = new ListSingleLesson();
-  const attendanceConfirmSingleLesson = new AttendanceConfirmSingleLesson( single_lesson_list );
+  const single_lesson_list = new ListSingleLessonNameSpace.ListSingleLesson();
+  const attendanceConfirmSingleLesson = new AttendanceConfirmSingleLessonNameSpace.AttendanceConfirmSingleLesson( single_lesson_list );
   attendanceConfirmSingleLesson.updateSingleLessonData();
 }
 
 function sendSingleLessonMail(){
-  const single_lesson_list = new ListSingleLesson();
-  const attendanceConfirmSingleLesson = new AttendanceConfirmSingleLesson( single_lesson_list );
+  const single_lesson_list = new ListSingleLessonNameSpace.ListSingleLesson();
+  const attendanceConfirmSingleLesson = new AttendanceConfirmSingleLessonNameSpace.AttendanceConfirmSingleLesson( single_lesson_list );
   attendanceConfirmSingleLesson.sendMail();
 }
 
 
 function updateCourseData() {
-  const course_list = new ListCourse();
-  const attendanceConfirmCourse = new AttendanceConfirmCourse(course_list);
+  const course_list = new ListCourseNameSpace.ListCourse();
+  const attendanceConfirmCourse = new AttendanceConfirmCourseNameSpace.AttendanceConfirmCourse(course_list);
   attendanceConfirmCourse.updateCourseData();
 }
 
 function sendCourseMail(){
-  const course_list = new ListCourse();
-  const attendanceConfirmCourse = new AttendanceConfirmCourse(course_list);
+  const course_list = new ListCourseNameSpace.ListCourse();
+  const attendanceConfirmCourse = new AttendanceConfirmCourseNameSpace.AttendanceConfirmCourse(course_list);
   attendanceConfirmCourse.sendMail();
 }
 

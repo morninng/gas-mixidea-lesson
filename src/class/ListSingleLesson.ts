@@ -1,4 +1,7 @@
-import { SpreadSheet, SHEET_NAME } from './SpreadSheet';
+import { SpreadSheetNamespace } from './SpreadSheet';
+
+
+export namespace ListSingleLessonNameSpace {
 
 export enum SINGLE_LESSON_KEY {
   SingleLessonId = 'SingleLessonId',
@@ -67,13 +70,12 @@ const MENTOR_USER_MAX_NUM = 2;
 
 export class ListSingleLesson {
 
-
   single_lesson_list_sheet: GoogleAppsScript.Spreadsheet.Sheet ;
-  spread_sheet: SpreadSheet;
+  spread_sheet: SpreadSheetNamespace.SpreadSheet;
 
   constructor(){
-    this.spread_sheet = SpreadSheet.instance;
-    this.single_lesson_list_sheet = this.spread_sheet.getSheet(SHEET_NAME.SINGLE_LESSON_LIST);
+    this.spread_sheet = SpreadSheetNamespace.SpreadSheet.instance;
+    this.single_lesson_list_sheet = this.spread_sheet.getSheet( SpreadSheetNamespace.SHEET_NAME.SINGLE_LESSON_LIST);
   }
 
   getMultipleItemKey(){
@@ -167,3 +169,5 @@ export class ListSingleLesson {
 
 }
 
+
+}

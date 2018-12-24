@@ -1,6 +1,9 @@
-import { SpreadSheet, SHEET_NAME } from './SpreadSheet';
-import { ListSingleLesson, SingleLessonData } from './ListSingleLesson';
-import { User } from './User';
+import { SpreadSheetNamespace } from './SpreadSheet';
+import { ListSingleLessonNameSpace } from './ListSingleLesson';
+import { UserNameSpace } from './User';
+
+export namespace AttendanceConfirmSingleLessonNameSpace {
+
 
 export enum MAIL_CONFIRM_SINGLE_LESSON_KEY {
   MailSingleLessonId = 'MailSingleLessonId',
@@ -88,16 +91,16 @@ const EMAIL_COLUMN_NUM = 2
 export class AttendanceConfirmSingleLesson {
 
   attendance_confirmation_sheet: GoogleAppsScript.Spreadsheet.Sheet;
-  spread_sheet: SpreadSheet;
-  user: User
+  spread_sheet: SpreadSheetNamespace.SpreadSheet;
+  user: UserNameSpace.User
 
   constructor(
-    private list_single_lesson : ListSingleLesson,
+    private list_single_lesson : ListSingleLessonNameSpace.ListSingleLesson,
   ){
-    this.user = User.instance;
-    this.spread_sheet = SpreadSheet.instance;
-    Logger.log(`SHEET_NAME.ATTENDANCE_CONFIRM_SINGLE_LESSON ${SHEET_NAME.ATTENDANCE_CONFIRM_SINGLE_LESSON}`);
-    this.attendance_confirmation_sheet = this.spread_sheet.getSheet(SHEET_NAME.ATTENDANCE_CONFIRM_SINGLE_LESSON);
+    this.user = UserNameSpace.User.instance;
+    this.spread_sheet = SpreadSheetNamespace.SpreadSheet.instance;
+    Logger.log(`SHEET_NAME.ATTENDANCE_CONFIRM_SINGLE_LESSON ${SpreadSheetNamespace.SHEET_NAME.ATTENDANCE_CONFIRM_SINGLE_LESSON}`);
+    this.attendance_confirmation_sheet = this.spread_sheet.getSheet(SpreadSheetNamespace.SHEET_NAME.ATTENDANCE_CONFIRM_SINGLE_LESSON);
 
   }
 
@@ -117,7 +120,7 @@ export class AttendanceConfirmSingleLesson {
     }else{
       Logger.log(`mailSingleLessonId = ${mailSingleLessonId}`);  
     }
-    const single_lesson_data: SingleLessonData | null = this.list_single_lesson.getSingleLessonDataFromId(mailSingleLessonId);
+    const single_lesson_data: ListSingleLessonNameSpace.SingleLessonData | null = this.list_single_lesson.getSingleLessonDataFromId(mailSingleLessonId);
     if(!single_lesson_data){
       Logger.log("single_lesson_data not found");
       return;
@@ -181,7 +184,7 @@ export class AttendanceConfirmSingleLesson {
   }
 
   
-  private writeSingleLessonData(single_lesson_data: SingleLessonData): boolean{
+  private writeSingleLessonData(single_lesson_data: ListSingleLessonNameSpace.SingleLessonData): boolean{
 
 
     const material_key_column = 4;
@@ -232,7 +235,7 @@ export class AttendanceConfirmSingleLesson {
     return true;
   }
 
-  getEmailAddress(single_lesson_data: SingleLessonData ): string[]{
+  getEmailAddress(single_lesson_data: ListSingleLessonNameSpace.SingleLessonData ): string[]{
 
     const teacher = single_lesson_data.Teacher;
     const paid_students_arr = single_lesson_data.PaidStudents || [];
@@ -296,4 +299,6 @@ export class AttendanceConfirmSingleLesson {
   checkActiveSheet(){
     return true;
   }
+}
+
 }
