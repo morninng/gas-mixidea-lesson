@@ -1,5 +1,5 @@
 import { AttendanceConfirmCourse } from './class/AttendanceConfirmCourse';
-import { CourseList } from './class/ListCourse';
+import { ListCourse } from './class/ListCourse';
 import { User } from './class/User';
 
 // function getMailCourseId(){
@@ -12,13 +12,13 @@ import { User } from './class/User';
 
 
 function updateCourseData() {
-  const course_list = new CourseList();
+  const course_list = new ListCourse();
   const attendanceConfirmCourse = new AttendanceConfirmCourse(course_list);
   attendanceConfirmCourse.updateCourseData();
 }
 
 function sendCourseMail(){
-  const course_list = new CourseList();
+  const course_list = new ListCourse();
   const attendanceConfirmCourse = new AttendanceConfirmCourse(course_list);
   attendanceConfirmCourse.sendMail();
 }

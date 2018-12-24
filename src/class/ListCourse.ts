@@ -84,7 +84,7 @@ export interface CourseData{
 }
 
 
-export class CourseList {
+export class ListCourse {
 
 
   course_list_sheet: GoogleAppsScript.Spreadsheet.Sheet ;

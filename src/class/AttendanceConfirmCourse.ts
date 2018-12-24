@@ -1,5 +1,5 @@
 import { SpreadSheet, SHEET_NAME } from './SpreadSheet';
-import { CourseList } from './ListCourse';
+import { ListCourse } from './ListCourse';
 import { CourseData } from './ListCourse';
 import { User } from './User';
 
@@ -90,7 +90,7 @@ export class AttendanceConfirmCourse {
   user: User
 
   constructor(
-    private course_list : CourseList,
+    private list_course : ListCourse,
   ){
     this.user = User.instance;
     this.spread_sheet = SpreadSheet.instance;
@@ -111,7 +111,7 @@ export class AttendanceConfirmCourse {
       Browser.msgBox("no mail course id found");
       return;
     }
-    const course_data: CourseData | null = this.course_list.getCourseDataFromCourseId(mailCourseId);
+    const course_data: CourseData | null = this.list_course.getCourseDataFromCourseId(mailCourseId);
     if(!course_data){
       Logger.log("course data not found");
       return;
@@ -205,7 +205,7 @@ export class AttendanceConfirmCourse {
 // write 
 
     for(let key in mailmaterial_index){
-      if(key === this.course_list.getStudentsKey()){
+      if(key === this.list_course.getStudentsKey()){
 
         const students = course_data[key].join(' , ')
         this.attendance_confirmation_sheet
