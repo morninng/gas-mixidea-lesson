@@ -34,20 +34,6 @@ export const CELL_WORDING_SINGLE_LESSON: {[key: string]: string}   = {
   [SINGLE_LESSON_KEY.Mentor]: "Mentor",
 }
 
-// export interface CourseDataIndex{
-//   [SINGLE_LESSON_KEY.SingleLessonId]: number;
-//   [SINGLE_LESSON_KEY.SingleLessonName]: number;
-//   [SINGLE_LESSON_KEY.Teacher]: number;
-//   [SINGLE_LESSON_KEY.Date]: number;
-//   [SINGLE_LESSON_KEY.Price]: number;
-//   [SINGLE_LESSON_KEY.PaidStudentsNum]: number;
-//   [SINGLE_LESSON_KEY.FreeStudentsNum]: number;
-//   [SINGLE_LESSON_KEY.PaymentRequestDay]: number;
-//   [SINGLE_LESSON_KEY.LessonStatus]: number;
-//   [SINGLE_LESSON_KEY.PaidStudents]: number;
-//   [SINGLE_LESSON_KEY.FreeStudents]: number;
-//   [SINGLE_LESSON_KEY.Mentor]: number;
-// }
 
 export interface SingleLessonData{
   [SINGLE_LESSON_KEY.SingleLessonId]?: string
