@@ -25,25 +25,25 @@ export enum MAIL_CONFIRM_SINGLE_LESSON_KEY {
   Content = 'Content',
 }
 
-export const CELL_WORDING_MAIL_CONFIRM_ID: CellWordingMailconfirmId = {
+export const CELL_WORDING_MAIL_CONFIRM_ID = {
   [MAIL_CONFIRM_SINGLE_LESSON_KEY.MailSingleLessonId]: "Mail-SingleLesson-ID",
 }
-interface CellWordingMailconfirmId {
-  [MAIL_CONFIRM_SINGLE_LESSON_KEY.MailSingleLessonId]: string 
-}
+// interface CellWordingMailconfirmId {
+//   [MAIL_CONFIRM_SINGLE_LESSON_KEY.MailSingleLessonId]: string 
+// }
 
-export const CELL_WORDING_MAIL_CONFIRM_EMAIL: CellWordingMailconfirmEmail   = {
+export const CELL_WORDING_MAIL_CONFIRM_EMAIL = {
   [MAIL_CONFIRM_SINGLE_LESSON_KEY.To]: "To",
   [MAIL_CONFIRM_SINGLE_LESSON_KEY.Title]: "Title",
   [MAIL_CONFIRM_SINGLE_LESSON_KEY.Content]: "Content",
 }
-interface CellWordingMailconfirmEmail {
-  [MAIL_CONFIRM_SINGLE_LESSON_KEY.To]: string;
-  [MAIL_CONFIRM_SINGLE_LESSON_KEY.Title]: string;
-  [MAIL_CONFIRM_SINGLE_LESSON_KEY.Content]: string;
-}
+// interface CellWordingMailconfirmEmail {
+//   [MAIL_CONFIRM_SINGLE_LESSON_KEY.To]: string;
+//   [MAIL_CONFIRM_SINGLE_LESSON_KEY.Title]: string;
+//   [MAIL_CONFIRM_SINGLE_LESSON_KEY.Content]: string;
+// }
 
-export const CELL_WORDING_MAIL_CONFIRM_MailMaterialTitle   = {
+export const CELL_WORDING_MAIL_CONFIRM_MailMaterialTitle = {
   [MAIL_CONFIRM_SINGLE_LESSON_KEY.Mailmaterial]: "mail-data-material-key",
 }
 // interface CellWordingMailconfirmMaterialTitle {
