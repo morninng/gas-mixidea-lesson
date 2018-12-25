@@ -25,7 +25,7 @@ export enum MAIL_CONFIRM_SINGLE_LESSON_KEY {
   Content = 'Content',
 }
 
-export const CELL_WORDING_MAIL_CONFIRM_ID = {
+export const CELL_WORDING_MAIL_CONFIRM_ID: CellWordingMailconfirmId = {
   [MAIL_CONFIRM_SINGLE_LESSON_KEY.MailSingleLessonId]: "Mail-SingleLesson-ID",
 }
 interface CellWordingMailconfirmId {
@@ -43,14 +43,14 @@ interface CellWordingMailconfirmEmail {
   [MAIL_CONFIRM_SINGLE_LESSON_KEY.Content]: string;
 }
 
-export const CELL_WORDING_MAIL_CONFIRM_MailMaterialTitle: CellWordingMailconfirmMaterialTitle   = {
+export const CELL_WORDING_MAIL_CONFIRM_MailMaterialTitle   = {
   [MAIL_CONFIRM_SINGLE_LESSON_KEY.Mailmaterial]: "mail-data-material-key",
 }
-interface CellWordingMailconfirmMaterialTitle {
-  [MAIL_CONFIRM_SINGLE_LESSON_KEY.Mailmaterial]: string 
-}
+// interface CellWordingMailconfirmMaterialTitle {
+//   [MAIL_CONFIRM_SINGLE_LESSON_KEY.Mailmaterial]: string 
+// }
 
-export const CELL_WORDING_MAIL_CONFIRM_MailMaterialItem: CellWordingMailconfirmMaterialItem  = {
+export const CELL_WORDING_MAIL_CONFIRM_MailMaterialItem = {
   [MAIL_CONFIRM_SINGLE_LESSON_KEY.SingleLessonId]: "SingleLessonId",
   [MAIL_CONFIRM_SINGLE_LESSON_KEY.SingleLessonName]: "SingleLessonName",
   [MAIL_CONFIRM_SINGLE_LESSON_KEY.Teacher]: "Teacher",
@@ -61,29 +61,29 @@ export const CELL_WORDING_MAIL_CONFIRM_MailMaterialItem: CellWordingMailconfirmM
   [MAIL_CONFIRM_SINGLE_LESSON_KEY.Mentor]: "Mentor",
   [MAIL_CONFIRM_SINGLE_LESSON_KEY.PaymentRequestDay]: "PaymentRequestDay",
 }
-interface CellWordingMailconfirmMaterialItem {
-  [MAIL_CONFIRM_SINGLE_LESSON_KEY.SingleLessonId]: string,
-  [MAIL_CONFIRM_SINGLE_LESSON_KEY.SingleLessonName]: string,
-  [MAIL_CONFIRM_SINGLE_LESSON_KEY.Teacher]: string,
-  [MAIL_CONFIRM_SINGLE_LESSON_KEY.Date]: string,
-  [MAIL_CONFIRM_SINGLE_LESSON_KEY.Price]: string,
-  [MAIL_CONFIRM_SINGLE_LESSON_KEY.PaidStudents]: string,
-  [MAIL_CONFIRM_SINGLE_LESSON_KEY.FreeStudents]: string,
-  [MAIL_CONFIRM_SINGLE_LESSON_KEY.Mentor]: string,
-  [MAIL_CONFIRM_SINGLE_LESSON_KEY.PaymentRequestDay]: string,
-}
+// interface CellWordingMailconfirmMaterialItem {
+//   [MAIL_CONFIRM_SINGLE_LESSON_KEY.SingleLessonId]: string,
+//   [MAIL_CONFIRM_SINGLE_LESSON_KEY.SingleLessonName]: string,
+//   [MAIL_CONFIRM_SINGLE_LESSON_KEY.Teacher]: string,
+//   [MAIL_CONFIRM_SINGLE_LESSON_KEY.Date]: string,
+//   [MAIL_CONFIRM_SINGLE_LESSON_KEY.Price]: string,
+//   [MAIL_CONFIRM_SINGLE_LESSON_KEY.PaidStudents]: string,
+//   [MAIL_CONFIRM_SINGLE_LESSON_KEY.FreeStudents]: string,
+//   [MAIL_CONFIRM_SINGLE_LESSON_KEY.Mentor]: string,
+//   [MAIL_CONFIRM_SINGLE_LESSON_KEY.PaymentRequestDay]: string,
+// }
 
-export interface MailConfirmCourseMaterialIndex {
-  [MAIL_CONFIRM_SINGLE_LESSON_KEY.SingleLessonId]: number,
-  [MAIL_CONFIRM_SINGLE_LESSON_KEY.SingleLessonName]: number,
-  [MAIL_CONFIRM_SINGLE_LESSON_KEY.Teacher]: number,
-  [MAIL_CONFIRM_SINGLE_LESSON_KEY.Date]: number,
-  [MAIL_CONFIRM_SINGLE_LESSON_KEY.Price]: number,
-  [MAIL_CONFIRM_SINGLE_LESSON_KEY.PaidStudents]: number,
-  [MAIL_CONFIRM_SINGLE_LESSON_KEY.FreeStudents]: number,
-  [MAIL_CONFIRM_SINGLE_LESSON_KEY.Mentor]: number,
-  [MAIL_CONFIRM_SINGLE_LESSON_KEY.PaymentRequestDay]: number,
-}
+// export interface MailConfirmCourseMaterialIndex {
+//   [MAIL_CONFIRM_SINGLE_LESSON_KEY.SingleLessonId]: number,
+//   [MAIL_CONFIRM_SINGLE_LESSON_KEY.SingleLessonName]: number,
+//   [MAIL_CONFIRM_SINGLE_LESSON_KEY.Teacher]: number,
+//   [MAIL_CONFIRM_SINGLE_LESSON_KEY.Date]: number,
+//   [MAIL_CONFIRM_SINGLE_LESSON_KEY.Price]: number,
+//   [MAIL_CONFIRM_SINGLE_LESSON_KEY.PaidStudents]: number,
+//   [MAIL_CONFIRM_SINGLE_LESSON_KEY.FreeStudents]: number,
+//   [MAIL_CONFIRM_SINGLE_LESSON_KEY.Mentor]: number,
+//   [MAIL_CONFIRM_SINGLE_LESSON_KEY.PaymentRequestDay]: number,
+// }
 
 const EMAIL_COLUMN_NUM = 2
 
