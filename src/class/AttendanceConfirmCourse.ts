@@ -124,7 +124,7 @@ export class AttendanceConfirmCourse {
     this.setEmailAddress(email_arr);
   }
 
-  sendMail(){
+  createMailDraft(){
     Logger.log('--------sendMail-----');
 
     const to_row_num = this.spread_sheet.getVerticalRowNum(this.attendance_confirmation_sheet, {row: 1, column: EMAIL_COLUMN_NUM}, CELL_WORDING_MAIL_CONFIRM_EMAIL.To );
@@ -134,10 +134,10 @@ export class AttendanceConfirmCourse {
     }else{
       Logger.log(`to_row_num:  ${to_row_num}`); 
     }
-    const email_to = this.attendance_confirmation_sheet
+    const email_bcc = this.attendance_confirmation_sheet
     .getRange( to_row_num, EMAIL_COLUMN_NUM + 1)
     .getValue();
-    Logger.log(`email_to:  : ${email_to}`)
+    Logger.log(`email_bcc:  : ${email_bcc}`)
 
 
     const title_row_num = this.spread_sheet.getVerticalRowNum(this.attendance_confirmation_sheet, {row: 1, column: EMAIL_COLUMN_NUM}, CELL_WORDING_MAIL_CONFIRM_EMAIL.Title );
@@ -165,7 +165,10 @@ export class AttendanceConfirmCourse {
     .getValue();
     Logger.log(`content_row_num ${email_content}`);
 
-    MailApp.sendEmail( String(email_to), String(email_title), String(email_content) );
+    const objArgs = { bcc: email_bcc };
+    const email_to = "mixidea.online.discuss@gmail.com";
+
+    GmailApp.createDraft( String(email_to), String(email_title), String(email_content) );
 
   }
 

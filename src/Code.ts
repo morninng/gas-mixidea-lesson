@@ -23,10 +23,10 @@ function updateSingleLessonData(){
   attendanceConfirmSingleLesson.updateSingleLessonData();
 }
 
-function sendSingleLessonMail(){
+function createSingleLessonMailDreft(){
   const single_lesson_list = new ListSingleLessonNameSpace.ListSingleLesson();
   const attendanceConfirmSingleLesson = new AttendanceConfirmSingleLessonNameSpace.AttendanceConfirmSingleLesson( single_lesson_list );
-  attendanceConfirmSingleLesson.sendMail();
+  attendanceConfirmSingleLesson.createMailDraft();
 }
 
 
@@ -36,10 +36,10 @@ function updateCourseData() {
   attendanceConfirmCourse.updateCourseData();
 }
 
-function sendCourseMail(){
+function createCourseMailDraft(){
   const course_list = new ListCourseNameSpace.ListCourse();
   const attendanceConfirmCourse = new AttendanceConfirmCourseNameSpace.AttendanceConfirmCourse(course_list);
-  attendanceConfirmCourse.sendMail();
+  attendanceConfirmCourse.createMailDraft();
 }
 
 
