@@ -168,7 +168,7 @@ export class AttendanceConfirmCourse {
     const objArgs = { bcc: email_bcc };
     const email_to = "mixidea.online.discuss@gmail.com";
 
-    GmailApp.createDraft( String(email_to), String(email_title), String(email_content) );
+    GmailApp.createDraft( String(email_to), String(email_title), String(email_content), objArgs );
 
   }
 
