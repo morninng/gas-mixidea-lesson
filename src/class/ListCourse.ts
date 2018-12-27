@@ -37,8 +37,8 @@ export enum COURSE_KEY {
 
 
 export const CELL_WORDING_COURSE: {[key: string]: string}   = {
-  [COURSE_KEY.CourseId]: "Course-ID",
-  [COURSE_KEY.CourseName]: "Course-Name",
+  [COURSE_KEY.CourseId]: "CourseId",
+  [COURSE_KEY.CourseName]: "CourseName",
   [COURSE_KEY.Teacher]: "Teacher",
   [COURSE_KEY.Term]: "Term",
   [COURSE_KEY.DayOfTheWeek]: "DayOfTheWeek",
