@@ -7,7 +7,7 @@ export enum LESSON_IN_COURSE_KEY {
   LessonInCourseId = 'LessonInCourseId',
   CourseId = 'CourseId',
   CourseName = 'CourseName',
-  EachLessonSuffux = 'EachLessonSuffux',
+  EachLessonSuffix = 'EachLessonSuffix',
   Teacher = 'Teacher',
   Date = 'Date',
   Price = 'Price',
@@ -20,11 +20,11 @@ export enum LESSON_IN_COURSE_KEY {
   Mentor = 'Mentor',
 }
 
-export const CELL_WORDING_LESSON_IN_COURSE: {[key: string]: string}   = {
+export const CELL_WORDING_LESSON_IN_COURSE: CellWordingLessonInCourse   = {
   [LESSON_IN_COURSE_KEY.LessonInCourseId]: "LessonInCourseId",
   [LESSON_IN_COURSE_KEY.CourseId]: "CourseId",
   [LESSON_IN_COURSE_KEY.CourseName]: "CourseName",
-  [LESSON_IN_COURSE_KEY.EachLessonSuffux]: "EachLessonSuffux",
+  [LESSON_IN_COURSE_KEY.EachLessonSuffix]: "EachLessonSuffix",
   [LESSON_IN_COURSE_KEY.Teacher]: "Teacher",
   [LESSON_IN_COURSE_KEY.Date]: "Date",
   [LESSON_IN_COURSE_KEY.Price]: "Price",
@@ -37,12 +37,31 @@ export const CELL_WORDING_LESSON_IN_COURSE: {[key: string]: string}   = {
   [LESSON_IN_COURSE_KEY.Mentor]: 'Mentor',
 }
 
+interface CellWordingLessonInCourse {
+  [LESSON_IN_COURSE_KEY.LessonInCourseId]: string,
+  [LESSON_IN_COURSE_KEY.CourseId]: string,
+  [LESSON_IN_COURSE_KEY.CourseName]: string,
+  [LESSON_IN_COURSE_KEY.EachLessonSuffix]: string,
+  [LESSON_IN_COURSE_KEY.Teacher]: string,
+  [LESSON_IN_COURSE_KEY.Date]: string,
+  [LESSON_IN_COURSE_KEY.Price]: string,
+  [LESSON_IN_COURSE_KEY.PaymentRequestDay]: string,
+  [LESSON_IN_COURSE_KEY.LessonStatus]: string,
+  [LESSON_IN_COURSE_KEY.AdditionalPaidStudents]: string,
+  [LESSON_IN_COURSE_KEY.AdditionalFreeStudents]: string,
+  [LESSON_IN_COURSE_KEY.Absent]: string,
+  [LESSON_IN_COURSE_KEY.MakeUpParticipants]: string,
+  [LESSON_IN_COURSE_KEY.Mentor]: string,
+
+}
+
+
 
 export interface LessonInCourseData{
   [LESSON_IN_COURSE_KEY.LessonInCourseId]?: string,
   [LESSON_IN_COURSE_KEY.CourseId]?: string,
   [LESSON_IN_COURSE_KEY.CourseName]?: string,
-  [LESSON_IN_COURSE_KEY.EachLessonSuffux]?: string,
+  [LESSON_IN_COURSE_KEY.EachLessonSuffix]?: string,
   [LESSON_IN_COURSE_KEY.Teacher]?: string,
   [LESSON_IN_COURSE_KEY.Date]?: string,
   [LESSON_IN_COURSE_KEY.Price]?: string,
@@ -55,10 +74,10 @@ export interface LessonInCourseData{
   [LESSON_IN_COURSE_KEY.Mentor]?: string[],
 }
 
-const PAID_USER_MAX_NUM = 25;
-const FREE_USER_MAX_NUM = 5;
-const ABSENT_USER_MAX_NUM = 5;
-const MAKEUP_USER_MAX_NUM = 5;
+const PAID_USER_MAX_NUM = 20;
+const FREE_USER_MAX_NUM = 6;
+const ABSENT_USER_MAX_NUM = 3;
+const MAKEUP_USER_MAX_NUM = 3;
 const MENTOR_USER_MAX_NUM = 2;
 
 export class ListLessonInCourse {
@@ -72,7 +91,11 @@ export class ListLessonInCourse {
   }
 
   getMultipleItemKey(){
-    return [CELL_WORDING_LESSON_IN_COURSE.PaidStudents, CELL_WORDING_LESSON_IN_COURSE.FreeStudents, CELL_WORDING_LESSON_IN_COURSE.Mentor ];
+    return [CELL_WORDING_LESSON_IN_COURSE.AdditionalPaidStudents, 
+            CELL_WORDING_LESSON_IN_COURSE.AdditionalFreeStudents, 
+            CELL_WORDING_LESSON_IN_COURSE.Absent, 
+            CELL_WORDING_LESSON_IN_COURSE.MakeUpParticipants, 
+            CELL_WORDING_LESSON_IN_COURSE.Mentor ];
   }
 
   getLessonInCourseDataFromId(lessonInCourseId: string): LessonInCourseData | null{
@@ -147,7 +170,7 @@ export class ListLessonInCourse {
     const absent_students_column_index = lesson_in_course_index.Absent;
     Logger.log(`absent_students_column_index ~ ${absent_students_column_index}`);
     const absent_students_data  = 
-      this.spread_sheet.getHorzontalData(this.lesson_in_course_list_sheet, {row: lesson_in_course_row_num, column: absent_students_column_index}, FREE_USER_MAX_NUM )
+      this.spread_sheet.getHorzontalData(this.lesson_in_course_list_sheet, {row: lesson_in_course_row_num, column: absent_students_column_index}, ABSENT_USER_MAX_NUM )
       .filter((element) =>{ return !!element})
       .map((element)=>{ return String(element)});
 
@@ -155,7 +178,7 @@ export class ListLessonInCourse {
     const makeup_participants_column_index = lesson_in_course_index.MakeUpParticipants;
     Logger.log(`makeup_participants_column_index ~ ${makeup_participants_column_index}`);
     const makeup_participants_data  = 
-      this.spread_sheet.getHorzontalData(this.lesson_in_course_list_sheet, {row: lesson_in_course_row_num, column: makeup_participants_column_index}, FREE_USER_MAX_NUM )
+      this.spread_sheet.getHorzontalData(this.lesson_in_course_list_sheet, {row: lesson_in_course_row_num, column: makeup_participants_column_index}, MAKEUP_USER_MAX_NUM )
       .filter((element) =>{ return !!element})
       .map((element)=>{ return String(element)});
 
@@ -168,8 +191,8 @@ export class ListLessonInCourse {
       .map((element)=>{ return String(element)});      
 
 
-    lesson_in_course_data.PaidStudents = paid_students_data || [];
-    lesson_in_course_data.FreeStudents = free_students_data || [];
+    lesson_in_course_data.AdditionalPaidStudents = paid_students_data || [];
+    lesson_in_course_data.AdditionalFreeStudents = free_students_data || [];
     lesson_in_course_data.Absent = absent_students_data || [];
     lesson_in_course_data.MakeUpParticipants = makeup_participants_data || [];
     lesson_in_course_data.Mentor = mentor_data || [];
@@ -177,8 +200,6 @@ export class ListLessonInCourse {
 
     return lesson_in_course_data;
   }
-
-
 }
 
 

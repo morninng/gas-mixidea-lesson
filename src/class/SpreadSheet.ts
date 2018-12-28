@@ -93,7 +93,8 @@ export class SpreadSheet {
         }
       }
     }
-    Logger.log(`-------- index -------${index}-----`);
+    Logger.log(`-------- index ------------`);
+    Logger.log(index);
     for(let key in index){
       if(index[key] === -1){
         Browser.msgBox(`vertical index ${key} not found`);
