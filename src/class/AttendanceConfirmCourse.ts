@@ -10,7 +10,8 @@ export enum MAIL_CONFIRM_COURSE_KEY {
   CourseId = 'CourseId',
   CourseName = 'CourseName',
   Teacher = 'Teacher',
-  Students = 'Students',
+  RegularPaidStudents = 'RegularPaidStudents',
+  RegularFreeStudents = 'RegularFreeStudents',
   Number = 'Number',
   Term = 'Term',
   CoursePrice = 'CoursePrice',
@@ -49,7 +50,8 @@ export const CELL_WORDING_MAIL_CONFIRM_MailMaterialItem: CellWordingMailconfirmM
   [MAIL_CONFIRM_COURSE_KEY.CourseId]: "Course-ID",
   [MAIL_CONFIRM_COURSE_KEY.CourseName]: "Course-NAME",
   [MAIL_CONFIRM_COURSE_KEY.Teacher]: "Teacher",
-  [MAIL_CONFIRM_COURSE_KEY.Students]: "Students",
+  [MAIL_CONFIRM_COURSE_KEY.RegularPaidStudents]: "RegularPaidStudents",
+  [MAIL_CONFIRM_COURSE_KEY.RegularFreeStudents]: "RegularFreeStudents",
   [MAIL_CONFIRM_COURSE_KEY.Number]: "Number",
   [MAIL_CONFIRM_COURSE_KEY.Term]: "Term",
   [MAIL_CONFIRM_COURSE_KEY.CoursePrice]: "CoursePrice",
@@ -59,7 +61,8 @@ interface CellWordingMailconfirmMaterialItem {
   [MAIL_CONFIRM_COURSE_KEY.CourseId]: string,
   [MAIL_CONFIRM_COURSE_KEY.CourseName]: string,
   [MAIL_CONFIRM_COURSE_KEY.Teacher]: string,
-  [MAIL_CONFIRM_COURSE_KEY.Students]: string,
+  [MAIL_CONFIRM_COURSE_KEY.RegularPaidStudents]: string,
+  [MAIL_CONFIRM_COURSE_KEY.RegularFreeStudents]: string,
   [MAIL_CONFIRM_COURSE_KEY.Number]: string,
   [MAIL_CONFIRM_COURSE_KEY.Term]: string,
   [MAIL_CONFIRM_COURSE_KEY.CoursePrice]: string,
@@ -70,7 +73,9 @@ export interface MailConfirmCourseMaterialIndex {
   [MAIL_CONFIRM_COURSE_KEY.CourseId]: number,
   [MAIL_CONFIRM_COURSE_KEY.CourseName]: number,
   [MAIL_CONFIRM_COURSE_KEY.Teacher]: number,
-  [MAIL_CONFIRM_COURSE_KEY.Students]: number,
+  // [MAIL_CONFIRM_COURSE_KEY.RegularStudents]: number,
+  [MAIL_CONFIRM_COURSE_KEY.RegularPaidStudents]: number,
+  [MAIL_CONFIRM_COURSE_KEY.RegularFreeStudents]: number,
   [MAIL_CONFIRM_COURSE_KEY.Number]: number,
   [MAIL_CONFIRM_COURSE_KEY.Term]: number,
   [MAIL_CONFIRM_COURSE_KEY.CoursePrice]: number,
@@ -204,13 +209,16 @@ export class AttendanceConfirmCourse {
 
 // write 
 
-    for(let key in mailmaterial_index){
-      if(key === this.list_course.getStudentsKey()){
+    const multiple_items_key: string[] = this.list_course.getMultipleItemKey();
 
-        const students = course_data[key].join(' , ')
+
+    for(let key in mailmaterial_index){
+      if( multiple_items_key.indexOf(key) !== -1){
+
+        const name_arr: string[] = (course_data[key] || []).join(' , ')
         this.attendance_confirmation_sheet
         .getRange(mailmaterial_index[key], material_key_column + 1)
-        .setValue( students );
+        .setValue( name_arr );
       }else{
         this.attendance_confirmation_sheet
         .getRange(mailmaterial_index[key], material_key_column + 1)
@@ -223,12 +231,14 @@ export class AttendanceConfirmCourse {
   getEmailAddress(course_data: ListCourseNameSpace.CourseData ): string[]{
 
     const teacher = course_data.Teacher;
-    const students_arr = course_data.Students || [];
+    const regular_paid_students_arr = course_data.RegularPaidStudents || [];
+    const regular_free_students_arr = course_data.RegularFreeStudents || [];
 
     const teacher_email = this.user.getMail(teacher || '');
-    const students_email_arr = this.user.getMailList(students_arr) || [];
+    const regular_paid_students_email_arr = this.user.getMailList(regular_paid_students_arr) || [];
+    const regular_free_students_email_arr = this.user.getMailList(regular_free_students_arr) || [];
     
-    return [ ...students_email_arr, ...teacher_email ]
+    return [ ...regular_paid_students_email_arr, ...regular_free_students_email_arr, ...teacher_email ]
 
   }
 

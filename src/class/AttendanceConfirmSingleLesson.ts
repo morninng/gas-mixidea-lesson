@@ -213,7 +213,7 @@ export class AttendanceConfirmSingleLesson {
 
     const teacher = single_lesson_data.Teacher;
     const paid_students_arr = single_lesson_data.PaidStudents || [];
-    const free_students_arr = single_lesson_data.PaidStudents || [];
+    const free_students_arr = single_lesson_data.FreeStudents || [];
     const mentor_arr = single_lesson_data.Mentor || [];
 
     const teacher_email = this.user.getMail(teacher || '');

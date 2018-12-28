@@ -15,7 +15,8 @@ export enum COURSE_KEY {
   TotalRevenue = 'TotalRevenue',
   PaymentRequestDay = 'PaymentRequestDay',
   LessonStatus = 'LessonStatus',
-  Students = 'Students',
+  RegularPaidStudents = 'RegularPaidStudents',
+  RegularFreeStudents = 'RegularFreeStudents',
 }
 
 
@@ -49,7 +50,8 @@ export const CELL_WORDING_COURSE: {[key: string]: string}   = {
   [COURSE_KEY.TotalRevenue]: "TotalRevenue",
   [COURSE_KEY.PaymentRequestDay]: "PaymentRequestDay",
   [COURSE_KEY.LessonStatus]: "LessonStatus",
-  [COURSE_KEY.Students]: "Students",
+  [COURSE_KEY.RegularPaidStudents]: "RegularPaidStudents",
+  [COURSE_KEY.RegularFreeStudents]: "RegularFreeStudents",
 }
 
 
@@ -66,10 +68,13 @@ export interface CourseData{
   [COURSE_KEY.TotalRevenue]?:string;
   [COURSE_KEY.PaymentRequestDay]?: string;
   [COURSE_KEY.LessonStatus]?:string;
-  [COURSE_KEY.Students]?: string[];
-  studentsNameArr?: string[];
+  [COURSE_KEY.RegularPaidStudents]?: string[];
+  [COURSE_KEY.RegularFreeStudents]?: string[];
 }
 
+
+const PAID_USER_MAX_NUM = 13;
+const FREE_USER_MAX_NUM = 5;
 
 export class ListCourse {
 
@@ -82,8 +87,12 @@ export class ListCourse {
     this.course_list_sheet = this.spread_sheet.getSheet(SpreadSheetNamespace.SHEET_NAME.COURSE_LIST);
   }
 
-  getStudentsKey(){
-    return CELL_WORDING_COURSE.Students;
+  getMultipleItemKey(){
+    return [CELL_WORDING_COURSE.RegularPaidStudents, CELL_WORDING_COURSE.RegularFreeStudents];
+  }
+
+  getRegularStudents(course_id){
+    
   }
 
 
@@ -135,19 +144,23 @@ export class ListCourse {
     Logger.log('--------------course_data------------------------');
     Logger.log(course_data);
 
-    const students_column_index = course_index.Students;
-    const students_data  = 
-      this.spread_sheet.getHorzontalData(this.course_list_sheet, {row: course_row_num, column: students_column_index}, 20)
+    const paid_students_column_index = course_index.RegularPaidStudents;
+    Logger.log(`paid_students_column_index ~ ${paid_students_column_index}`);
+    const paid_students_data  = 
+      this.spread_sheet.getHorzontalData(this.course_list_sheet, {row: course_row_num, column: paid_students_column_index}, PAID_USER_MAX_NUM )
       .filter((element) =>{ return !!element})
       .map((element)=>{ return String(element)});
 
-    Logger.log(students_data);
 
+    const free_students_column_index = course_index.RegularFreeStudents;
+    Logger.log(`free_students_column_index ~ ${free_students_column_index}`);
+    const free_students_data  = 
+      this.spread_sheet.getHorzontalData(this.course_list_sheet, {row: course_row_num, column: free_students_column_index}, FREE_USER_MAX_NUM )
+      .filter((element) =>{ return !!element})
+      .map((element)=>{ return String(element)});
 
-    // course_data.studentsNameArr = course_arr.slice(course_index.Students, course_index.Students + 20)
-    //                                 .map((element)=>{ return String(element)});
-
-    course_data.Students = students_data;
+    course_data.RegularPaidStudents = paid_students_data;
+    course_data.RegularFreeStudents = free_students_data;
 
 
     return course_data;
