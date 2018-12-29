@@ -91,7 +91,11 @@ export class ListCourse {
     return [CELL_WORDING_COURSE.RegularPaidStudents, CELL_WORDING_COURSE.RegularFreeStudents];
   }
 
-  getRegularStudents(course_id){
+  getRegularStudents(course_id): string[]{
+
+    const courese_data: CourseData = this.getCourseDataFromCourseId(course_id) || {};
+
+    return [ ...courese_data.RegularPaidStudents || [], ...courese_data.RegularFreeStudents || [] ];
     
   }
 

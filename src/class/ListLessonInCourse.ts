@@ -19,8 +19,10 @@ export enum LESSON_IN_COURSE_KEY {
   MakeUpParticipants = 'MakeUpParticipants',
   Mentor = 'Mentor',
 }
+// it is better to use interface to check the proper key while you debug
+// export const CELL_WORDING_LESSON_IN_COURSE: CellWordingLessonInCourse   = {
 
-export const CELL_WORDING_LESSON_IN_COURSE: CellWordingLessonInCourse   = {
+export const CELL_WORDING_LESSON_IN_COURSE: {[key: string]: string}   = {
   [LESSON_IN_COURSE_KEY.LessonInCourseId]: "LessonInCourseId",
   [LESSON_IN_COURSE_KEY.CourseId]: "CourseId",
   [LESSON_IN_COURSE_KEY.CourseName]: "CourseName",

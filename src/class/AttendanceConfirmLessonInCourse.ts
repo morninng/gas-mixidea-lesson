@@ -1,5 +1,6 @@
 import { SpreadSheetNamespace } from './SpreadSheet';
 import { ListLessonInCourseNameSpace } from './ListLessonInCourse';
+import { ListCourseNameSpace } from './ListCourse';
 import { UserNameSpace } from './User';
 
 export namespace AttendanceConfirmLessonInCourseNameSpace {
@@ -72,6 +73,7 @@ export class AttendanceConfirmLessonInCourse {
 
   constructor(
     private list_lesson_in_course : ListLessonInCourseNameSpace.ListLessonInCourse,
+    private list_course : ListCourseNameSpace.ListCourse,
   ){
     this.user = UserNameSpace.User.instance;
     this.spread_sheet = SpreadSheetNamespace.SpreadSheet.instance;
@@ -103,7 +105,12 @@ export class AttendanceConfirmLessonInCourse {
       Logger.log("lesson_in_course_data");
       Logger.log(lesson_in_course_data);
     }
-    const result = this.writeLessonInCourseData(lesson_in_course_data);
+
+    const regular_students = this.list_course.getRegularStudents(lesson_in_course_data.CourseId);
+    Logger.log('-----------regular_students----------');
+    Logger.log(regular_students);
+
+    const result = this.writeLessonInCourseData(lesson_in_course_data, regular_students);
     if(!result){
       Logger.log("writeLessonInCourseData failed");
       return; 
@@ -157,13 +164,14 @@ export class AttendanceConfirmLessonInCourse {
 
     const objArgs = { bcc: email_bcc };
     const email_to = "mixidea.online.discuss@gmail.com";
+    Logger.log(objArgs);
 
     GmailApp.createDraft( String(email_to), String(email_title), String(email_content), objArgs );
 
   }
 
   
-  private writeLessonInCourseData(lesson_in_course_data: ListLessonInCourseNameSpace.LessonInCourseData): boolean{
+  private writeLessonInCourseData(lesson_in_course_data: ListLessonInCourseNameSpace.LessonInCourseData, regular_students: string[]): boolean{
 
 
     const material_key_column = 4;
@@ -194,11 +202,6 @@ export class AttendanceConfirmLessonInCourse {
 
 
 
-
-
-
-    
-
 // write 
 
     const multiple_items_key: string[] = this.list_lesson_in_course.getMultipleItemKey();
@@ -212,7 +215,13 @@ export class AttendanceConfirmLessonInCourse {
         .getRange(mailmaterial_index[key], material_key_column + 1)
         .setValue( name_arr );
 
-      }else{
+      }else if(key === CELL_WORDING_MAIL_CONFIRM_MailMaterialItem.RegularStudents){
+
+        this.attendance_confirmation_sheet
+        .getRange(mailmaterial_index[key], material_key_column + 1)
+        .setValue( regular_students.join(' , ') );
+      
+    }else{
         this.attendance_confirmation_sheet
         .getRange(mailmaterial_index[key], material_key_column + 1)
         .setValue( lesson_in_course_data[key] || '');

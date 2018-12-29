@@ -1,5 +1,6 @@
 import { AttendanceConfirmCourseNameSpace } from './class/AttendanceConfirmCourse';
 import { AttendanceConfirmSingleLessonNameSpace } from './class/AttendanceConfirmSingleLesson';
+import { AttendanceConfirmLessonInCourseNameSpace } from './class/AttendanceConfirmLessonInCourse';
 import { ListCourseNameSpace } from './class/ListCourse';
 import { ListSingleLessonNameSpace } from './class/ListSingleLesson';
 import { ListLessonInCourseNameSpace } from './class/ListLessonInCourse';
@@ -18,10 +19,39 @@ import { ListLessonInCourseNameSpace } from './class/ListLessonInCourse';
 //   attendanceConfirmSingleLesson.getMailSingleLessonId();
 // }
 
-function getLessonInCourseDataFromId(){
+// function getLessonInCourseDataFromId(){
+//   const lesson_in_course_list = new ListLessonInCourseNameSpace.ListLessonInCourse();
+//   lesson_in_course_list.getLessonInCourseDataFromId('1'); 
+// }
+
+function updateLessonInCourseData(){
+
+  const course_list = new ListCourseNameSpace.ListCourse();
+
   const lesson_in_course_list = new ListLessonInCourseNameSpace.ListLessonInCourse();
-  lesson_in_course_list.getLessonInCourseDataFromId('1'); 
+  const attendanceConfirmLessonInCourse = new AttendanceConfirmLessonInCourseNameSpace.AttendanceConfirmLessonInCourse(lesson_in_course_list, course_list);
+  attendanceConfirmLessonInCourse.updateLessonInCourseData(); 
 }
+
+function createMailDraftLessonInCourseData(){
+
+  const course_list = new ListCourseNameSpace.ListCourse();
+
+  const lesson_in_course_list = new ListLessonInCourseNameSpace.ListLessonInCourse();
+  const attendanceConfirmLessonInCourse = new AttendanceConfirmLessonInCourseNameSpace.AttendanceConfirmLessonInCourse(lesson_in_course_list, course_list);
+  attendanceConfirmLessonInCourse.createMailDraft(); 
+}
+
+
+
+// function getMailLessonInCourseId(){
+
+//   const course_list = new ListCourseNameSpace.ListCourse();
+//   const lesson_in_course_list = new ListLessonInCourseNameSpace.ListLessonInCourse();
+//   const attendanceConfirmLessonInCourse = new AttendanceConfirmLessonInCourseNameSpace.AttendanceConfirmLessonInCourse(lesson_in_course_list, course_list);
+//   attendanceConfirmLessonInCourse.getMailLessonInCourseId();
+// }
+
 
 function updateSingleLessonData(){
   const single_lesson_list = new ListSingleLessonNameSpace.ListSingleLesson();
