@@ -1,4 +1,5 @@
 import { SpreadSheetNamespace } from './SpreadSheet';
+import { InvoiceData } from '../model/invoice';
 
 export namespace ListCourseNameSpace {
 
@@ -18,7 +19,6 @@ export enum COURSE_KEY {
   RegularPaidStudents = 'RegularPaidStudents',
   RegularFreeStudents = 'RegularFreeStudents',
 }
-
 
 // export interface CourseCellKey{
 //   [COURSE_KEY.CourseId]?: string
@@ -99,6 +99,55 @@ export class ListCourse {
     
   }
 
+  getCourseDataWithPaymentRequestDay(payment_request_day: string): InvoiceData[]{
+
+    Logger.log(`----getCourseDataWithPaymentRequestDay ${payment_request_day} -------`)
+    const paidUserKey = COURSE_KEY.RegularPaidStudents;
+    const paidUserSearchNum = PAID_USER_MAX_NUM;
+    const priceKey = COURSE_KEY.CoursePrice;
+    const namekey = COURSE_KEY.CourseName;
+    const teacherkey = COURSE_KEY.Teacher;
+    const termkey = COURSE_KEY.Term;
+    const paymentRequestDaykey = COURSE_KEY.PaymentRequestDay;
+
+    // this.course_list_sheet.getActiveRange()
+
+    const range = this.course_list_sheet.getRange(1, 1, 100, 50 );
+    const item_map = range.getValues();
+    // Logger.log(item_map);
+    const title_items = item_map[0];
+
+    const paidUserIndex = title_items.indexOf(paidUserKey);
+    const priceIndex = title_items.indexOf(priceKey);
+    const nameIndex = title_items.indexOf(namekey);
+    const teacherIndex = title_items.indexOf(teacherkey);
+    const termIndex = title_items.indexOf(termkey);
+    const paymentRequestDayIndex = title_items.indexOf(paymentRequestDaykey);
+
+    const item_filtered_arr = item_map.filter((element)=>{return element[paymentRequestDayIndex] === payment_request_day});
+    // Logger.log(`------item_filtered_arr---${payment_request_day}----`);
+    Logger.log(item_filtered_arr);
+
+    const adjusted_data: InvoiceData[] = item_filtered_arr.map((element)=>{
+      const paidUsersArr = element
+                            .slice(paidUserIndex, paidUserIndex + paidUserSearchNum)
+                            .filter(element => {return !!element})
+                            .map((element)=>{return String(element)});
+
+      return {
+        price: Number(element[priceIndex]),
+        name: String(element[nameIndex]),
+        term: String(element[termIndex]),
+        teacher: String(element[teacherIndex]),
+        paidUsers: paidUsersArr
+      }
+    })
+    Logger.log(`--------adjusted_data -------------`)
+    Logger.log(adjusted_data);
+
+    return adjusted_data;
+  }
+
 
   getCourseDataFromCourseId(courseId: string): CourseData | null{
 
@@ -125,6 +174,7 @@ export class ListCourse {
     return course_row_num;
   }
   
+
   
   
   public getCourseDataFromRowNum(course_row_num: number): CourseData | null{

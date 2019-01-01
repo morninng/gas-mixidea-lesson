@@ -10,8 +10,11 @@ export enum SHEET_NAME {
   ATTENDANCE_CONFIRM_LESSON_IN_COURSE = 'メール（LessonInCourse）',
   LESSON_IN_COURSE_LIST = 'Lesson-In-Course',
   User = 'User',
+  INVOICE_DATA = 'InvoiceData',
+  INVOICE_PDF_FORMAT = 'Invoice-Pdf-Format',
+  INVOICE_MAIL = 'InvoiceMail',
+  INVOICE_SS_FILEID = 'InvoiceSsFileID',
 }
-
 
 export interface SheetPosition {
   row: number,
@@ -27,18 +30,29 @@ export class SpreadSheet {
   private static _instance: SpreadSheet;
 
   sheets: {[key: string]: GoogleAppsScript.Spreadsheet.Sheet} = {};
+  _ssid: string;
 
   private constructor(){}
 
   public static get instance():SpreadSheet{
     if(!this._instance){
       this._instance = new SpreadSheet();
+
+
       Logger.log('SpreadSheet instance created');
     } else {
       Logger.log('SpreadSheet instance called but already created');
     }
     return this._instance;
   };
+
+  get ssid(){
+    if(!this._ssid){
+      const ss = SpreadsheetApp.getActiveSpreadsheet();
+      this._ssid = ss.getId();
+    }
+    return this._ssid;
+  }
 
 
   getSheet (sheetName: SHEET_NAME): GoogleAppsScript.Spreadsheet.Sheet {
@@ -168,6 +182,65 @@ export class SpreadSheet {
 
     return item_arr;
   }
+
+
+
+
+createPDF( sheetid, filename){
+
+  const url = `https://docs.google.com/spreadsheets/d/${this.ssid}/export?`;
+
+  const opts = {
+    exportFormat: "pdf",    // ファイル形式の指定 pdf / csv / xls / xlsx
+    format:       "pdf",    // ファイル形式の指定 pdf / csv / xls / xlsx
+    size:         "A4",     // 用紙サイズの指定 legal / letter / A4
+    portrait:     "true",   // true → 縦向き、false → 横向き
+    fitw:         "true",   // 幅を用紙に合わせるか
+    sheetnames:   "false",  // シート名をPDF上部に表示するか
+    printtitle:   "false",  // スプレッドシート名をPDF上部に表示するか
+    pagenumbers:  "false",  // ページ番号の有無
+    gridlines:    "false",  // グリッドラインの表示有無
+    fzr:          "false",  // 固定行の表示有無
+    gid:          sheetid,   // シートIDを指定 sheetidは引数で取得
+    muteHttpExceptions: false,
+  };
+  
+  const url_ext: string[] = [];
+  for( const optName in opts ){
+    url_ext.push(`${optName}=${opts[optName]}`);
+  }
+  const options = url_ext.join("&");
+
+  const token = ScriptApp.getOAuthToken();
+
+  const pdf = UrlFetchApp.fetch(url + options, {
+    headers: {
+      'Authorization': 'Bearer ' +  token
+    }
+  }).getBlob().setName(filename + '.pdf');
+
+  return pdf;
+}
+
+ // https://officeforest.org/wp/2018/11/25/google-apps-script%E3%81%A7pdf%E3%82%92%E4%BD%9C%E6%88%90%E3%81%99%E3%82%8B/
+ // https://www.virment.com/create-pdf-google-apps-script/
+
+
+ createSpreadsheetInfolder(folderID, fileName) {
+  const folder = DriveApp.getFolderById(folderID);
+  const newSS=SpreadsheetApp.create(fileName);
+  const originalFile=DriveApp.getFileById(newSS.getId());
+  const copiedFile = originalFile.makeCopy(fileName, folder);
+  DriveApp.getRootFolder().removeFile(originalFile);
+  return copiedFile;
+}
+// https://qiita.com/matsuhandy/items/c6b408962c265c011440
+
+
+
+
+
+
 
 
 

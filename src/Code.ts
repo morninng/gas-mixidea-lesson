@@ -4,7 +4,107 @@ import { AttendanceConfirmLessonInCourseNameSpace } from './class/AttendanceConf
 import { ListCourseNameSpace } from './class/ListCourse';
 import { ListSingleLessonNameSpace } from './class/ListSingleLesson';
 import { ListLessonInCourseNameSpace } from './class/ListLessonInCourse';
+import { InvoiceNameSpace } from './class/Invoice';
 // import { UserNameSpace } from './class/User';
+
+
+// function createAnotherSheetAndCopyFormat(){
+//   const course_list = new ListCourseNameSpace.ListCourse();
+//   const single_lesson_list = new ListSingleLessonNameSpace.ListSingleLesson();
+//   const lesson_in_course_list = new ListLessonInCourseNameSpace.ListLessonInCourse();
+
+//   const invoice = new InvoiceNameSpace.Invoice(course_list, single_lesson_list, lesson_in_course_list)
+//   invoice.createAnotherSheetAndCopyFormatTest(); 
+// }
+
+
+
+// function developDecoration(){
+//   const course_list = new ListCourseNameSpace.ListCourse();
+//   const single_lesson_list = new ListSingleLessonNameSpace.ListSingleLesson();
+//   const lesson_in_course_list = new ListLessonInCourseNameSpace.ListLessonInCourse();
+
+//   const invoice = new InvoiceNameSpace.Invoice(course_list, single_lesson_list, lesson_in_course_list)
+//   invoice.developDecoration(); 
+// }
+
+
+
+// function createPdfFromExistingFile(){
+//   const course_list = new ListCourseNameSpace.ListCourse();
+//   const single_lesson_list = new ListSingleLessonNameSpace.ListSingleLesson();
+//   const lesson_in_course_list = new ListLessonInCourseNameSpace.ListLessonInCourse();
+
+//   const invoice = new InvoiceNameSpace.Invoice(course_list, single_lesson_list, lesson_in_course_list)
+//   invoice.createPdfFromExistingFileTest(); 
+
+// }
+
+// function editExistingFileAndCreatePdfFile(){
+//   const course_list = new ListCourseNameSpace.ListCourse();
+//   const single_lesson_list = new ListSingleLessonNameSpace.ListSingleLesson();
+//   const lesson_in_course_list = new ListLessonInCourseNameSpace.ListLessonInCourse();
+
+//   const invoice = new InvoiceNameSpace.Invoice(course_list, single_lesson_list, lesson_in_course_list)
+//   invoice.editExistingFileAndCreatePdfFileTest(); 
+// }
+function collectAndLocateData(){
+
+  const course_list = new ListCourseNameSpace.ListCourse();
+  const single_lesson_list = new ListSingleLessonNameSpace.ListSingleLesson();
+  const lesson_in_course_list = new ListLessonInCourseNameSpace.ListLessonInCourse();
+
+  const invoice = new InvoiceNameSpace.Invoice(course_list, single_lesson_list, lesson_in_course_list)
+  invoice.collectAndLocateData(); 
+}
+
+function createEmailDrat(){
+
+  const course_list = new ListCourseNameSpace.ListCourse();
+  const single_lesson_list = new ListSingleLessonNameSpace.ListSingleLesson();
+  const lesson_in_course_list = new ListLessonInCourseNameSpace.ListLessonInCourse();
+
+  const invoice = new InvoiceNameSpace.Invoice(course_list, single_lesson_list, lesson_in_course_list)
+  invoice.createEmailDrat(); 
+}
+
+
+// function createFileTest(){
+//   const course_list = new ListCourseNameSpace.ListCourse();
+//   const single_lesson_list = new ListSingleLessonNameSpace.ListSingleLesson();
+//   const lesson_in_course_list = new ListLessonInCourseNameSpace.ListLessonInCourse();
+
+//   const invoice = new InvoiceNameSpace.Invoice(course_list, single_lesson_list, lesson_in_course_list)
+//   invoice.createFileTest();
+// }
+
+// function attachFileTest(){
+//   const course_list = new ListCourseNameSpace.ListCourse();
+//   const single_lesson_list = new ListSingleLessonNameSpace.ListSingleLesson();
+//   const lesson_in_course_list = new ListLessonInCourseNameSpace.ListLessonInCourse();
+
+//   const invoice = new InvoiceNameSpace.Invoice(course_list, single_lesson_list, lesson_in_course_list)
+//   invoice.attachFileTest();
+
+// }
+
+function getAllDataTest(){
+
+  const course_list = new ListCourseNameSpace.ListCourse();
+  const single_lesson_list = new ListSingleLessonNameSpace.ListSingleLesson();
+  const lesson_in_course_list = new ListLessonInCourseNameSpace.ListLessonInCourse();
+  const invoice = new InvoiceNameSpace.Invoice(course_list, single_lesson_list, lesson_in_course_list);
+  invoice.getAllDataTest();
+}
+
+// function createInvoiceAndEmailDraft(){
+
+//   const course_list = new ListCourseNameSpace.ListCourse();
+//   const single_lesson_list = new ListSingleLessonNameSpace.ListSingleLesson();
+//   const lesson_in_course_list = new ListLessonInCourseNameSpace.ListLessonInCourse();
+//   const invoice = new InvoiceNameSpace.Invoice(course_list, single_lesson_list, lesson_in_course_list);
+//   invoice.createInvoiceAndEmailDraft();
+// }
 
 // function getMailCourseId(){
 //   const course_list = new ListCourseNameSpace.ListCourse();

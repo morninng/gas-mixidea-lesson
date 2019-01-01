@@ -1,4 +1,5 @@
 import { SpreadSheetNamespace } from './SpreadSheet';
+import { InvoiceData } from '../model/invoice';
 
 
 export namespace ListLessonInCourseNameSpace {
@@ -131,6 +132,61 @@ export class ListLessonInCourse {
     return single_lesson_row_num;
   }
   
+  getCourseDataWithPaymentRequestDay(payment_request_day: string): InvoiceData[]{
+
+
+    Logger.log(`-----getCourseDataWithPaymentRequestDay -----${payment_request_day}`)
+
+    const paidUserKey = LESSON_IN_COURSE_KEY.AdditionalPaidStudents;
+    const paidUserSearchNum = PAID_USER_MAX_NUM;
+    const priceKey = LESSON_IN_COURSE_KEY.Price;
+    const course_namekey = LESSON_IN_COURSE_KEY.CourseName;
+    const eachn_lesson_suffix = LESSON_IN_COURSE_KEY.EachLessonSuffix;
+    const teacherkey = LESSON_IN_COURSE_KEY.Teacher;
+    const termkey = LESSON_IN_COURSE_KEY.Date;
+    const paymentRequestDaykey = LESSON_IN_COURSE_KEY.PaymentRequestDay;
+
+    // this.single_lesson_list_sheet.getActiveRange()
+
+    const range = this.lesson_in_course_list_sheet.getRange(1, 1, 300, 50 );
+    const item_map = range.getValues();
+    // Logger.log(item_map);
+    const title_items = item_map[0];
+
+    const paidUserIndex = title_items.indexOf(paidUserKey);
+    const priceIndex = title_items.indexOf(priceKey);
+    const courseNameIndex = title_items.indexOf(course_namekey);
+    const eachLessonSuffixIndex = title_items.indexOf(eachn_lesson_suffix);
+    const teacherIndex = title_items.indexOf(teacherkey);
+    const termIndex = title_items.indexOf(termkey);
+    const paymentRequestDayIndex = title_items.indexOf(paymentRequestDaykey);
+
+    const item_filtered_arr = item_map.filter((element)=>{return element[paymentRequestDayIndex] === payment_request_day});
+    // Logger.log(`------item_filtered_arr---${payment_request_day}----`);
+    // Logger.log(item_filtered_arr);
+
+    const adjusted_data: InvoiceData[] = item_filtered_arr.map((element)=>{
+      const paidUsersArr = element
+                            .slice(paidUserIndex, paidUserIndex + paidUserSearchNum)
+                            .filter(element => {return !!element})
+                            .map((element)=>{return String(element)});
+
+      return {
+        price: Number(element[priceIndex]),
+        name: ` ${String(element[courseNameIndex])} - ${String(element[eachLessonSuffixIndex])}`,
+        term: String(element[termIndex]),
+        teacher: String(element[teacherIndex]),
+        paidUsers: paidUsersArr
+      }
+    })
+    Logger.log(`--------adjusted_data -------------`)
+    Logger.log(adjusted_data);
+
+    return adjusted_data;
+
+  }
+
+
   
   public getLessonInCourseDataFromRowNum(lesson_in_course_row_num: number): LessonInCourseData | null{
   

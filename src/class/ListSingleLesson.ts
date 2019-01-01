@@ -1,4 +1,5 @@
 import { SpreadSheetNamespace } from './SpreadSheet';
+import { InvoiceData } from '../model/invoice';
 
 
 export namespace ListSingleLessonNameSpace {
@@ -100,6 +101,61 @@ export class ListSingleLesson {
     return single_lesson_row_num;
   }
   
+
+
+
+
+  getSingleLessonDataWithPaymentRequestDay(payment_request_day: string): InvoiceData[]{
+
+    Logger.log(`-----getSingleLessonDataWithPaymentRequestDay -----${payment_request_day}`)
+
+    const paidUserKey = SINGLE_LESSON_KEY.PaidStudents;
+    const paidUserSearchNum = PAID_USER_MAX_NUM;
+    const priceKey = SINGLE_LESSON_KEY.Price;
+    const namekey = SINGLE_LESSON_KEY.SingleLessonName;
+    const teacherkey = SINGLE_LESSON_KEY.Teacher;
+    const termkey = SINGLE_LESSON_KEY.Date;
+    const paymentRequestDaykey = SINGLE_LESSON_KEY.PaymentRequestDay;
+
+    // this.single_lesson_list_sheet.getActiveRange()
+
+    const range = this.single_lesson_list_sheet.getRange(1, 1, 300, 50 );
+    const item_map = range.getValues();
+    // Logger.log(item_map);
+    const title_items = item_map[0];
+
+    const paidUserIndex = title_items.indexOf(paidUserKey);
+    const priceIndex = title_items.indexOf(priceKey);
+    const nameIndex = title_items.indexOf(namekey);
+    const teacherIndex = title_items.indexOf(teacherkey);
+    const termIndex = title_items.indexOf(termkey);
+    const paymentRequestDayIndex = title_items.indexOf(paymentRequestDaykey);
+
+    const item_filtered_arr = item_map.filter((element)=>{return element[paymentRequestDayIndex] === payment_request_day});
+    // Logger.log(`------item_filtered_arr---${payment_request_day}----`);
+    // Logger.log(item_filtered_arr);
+
+    const adjusted_data: InvoiceData[] = item_filtered_arr.map((element)=>{
+      const paidUsersArr = element
+                            .slice(paidUserIndex, paidUserIndex + paidUserSearchNum)
+                            .filter(element => {return !!element})
+                            .map((element)=>{return String(element)});
+
+      return {
+        price: Number(element[priceIndex]),
+        name: String(element[nameIndex]),
+        term: String(element[termIndex]),
+        teacher: String(element[teacherIndex]),
+        paidUsers: paidUsersArr
+      }
+    })
+    Logger.log(`--------adjusted_data -------------`)
+    Logger.log(adjusted_data);
+
+    return adjusted_data;
+
+
+  }
   
   
   public getSingleLessonDataFromRowNum(single_lesson_row_num: number): SingleLessonData | null{

@@ -64,6 +64,14 @@ export class User {
     }
   }
 
+
+  getUserData(){
+    if(!this.user_data){
+      this.retrieveUserdata();
+    } 
+    return this.user_data;
+  }
+
   getMailList(userNameArr: string[]){
     this.retrieveUserdata();
     let email_arr: string[] = [];
