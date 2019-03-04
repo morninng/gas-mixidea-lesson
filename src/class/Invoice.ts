@@ -352,7 +352,7 @@ export class Invoice {
   getAllData(request_day: string){
     const course_data: InvoiceData[] = this.list_course.getCourseDataWithPaymentRequestDay(request_day);
     const single_lesson_data: InvoiceData[] = this.list_single_lesson.getSingleLessonDataWithPaymentRequestDay(request_day);
-    const lesson_in_course: InvoiceData[] = this.list_lesson_in_course.getCourseDataWithPaymentRequestDay(request_day);
+    const lesson_in_course: InvoiceData[] = this.list_lesson_in_course.getLessonInCourseDataWithPaymentRequestDay(request_day);
 
     const sum_data: InvoiceData[] =[ ...single_lesson_data, ...course_data, ...lesson_in_course];
 

@@ -138,10 +138,19 @@ class Test {
     const pdf = this.spread_sheet.createPDF(this.sheet_pdf_format_id, title);
     const user_emails_arr = this.user.getMail(user);
     this.createEmailDraftTest(user_emails_arr, title, pdf);
-    
-    
   }
 
+  private calculatePrice( invoice_data_arr: InvoiceData[]): PriceSummary{
+    let price_sum = 0;
+
+    invoice_data_arr.forEach( (element: InvoiceData) => {
+      price_sum = price_sum + element.price;
+    })
+
+    const price_with_tax = Math.ceil(price_sum * 1.08);
+
+    return {total:price_sum, tax:price_with_tax - price_sum,  total_with_tax: price_with_tax  };
+  }
 
 
 

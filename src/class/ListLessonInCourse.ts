@@ -131,11 +131,11 @@ export class ListLessonInCourse {
     }
     return single_lesson_row_num;
   }
-  
-  getCourseDataWithPaymentRequestDay(payment_request_day: string): InvoiceData[]{
+   
+  getLessonInCourseDataWithPaymentRequestDay(payment_request_day: string): InvoiceData[]{
 
-
-    Logger.log(`-----getCourseDataWithPaymentRequestDay -----${payment_request_day}`)
+ 
+    Logger.log(`-----getLessonInCourseDataWithPaymentRequestDay -----${payment_request_day}`)
 
     const paidUserKey = LESSON_IN_COURSE_KEY.AdditionalPaidStudents;
     const paidUserSearchNum = PAID_USER_MAX_NUM;
