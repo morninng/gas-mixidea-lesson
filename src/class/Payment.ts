@@ -363,10 +363,19 @@ export class Payment {
             })
         }
 
-        cellData.push(this.fullfill([`revenue ${String(type_revenue)}`, ''], CELL_LENGTH, false));
-        cellData.push(this.fullfill([`margin ${String(type_platform_margin)}`, ''], CELL_LENGTH, false));
-        cellData.push(this.fullfill([`allowance ${String(type_allowance)}`, ''], CELL_LENGTH, false));
+        cellData.push(this.fullfill([`revenue`, ` ${String( Math.round(type_revenue))}`, '', '', ''], CELL_LENGTH, false));
+        cellData.push(this.fullfill([`margin`, ` ${String( Math.round(type_platform_margin))}`, '', '', ''], CELL_LENGTH, false));
+        cellData.push(this.fullfill([`allowance`, ` ${String( Math.round(type_allowance))}`, '', '', ''], CELL_LENGTH, false));
       })
+      if( summary_for_each_teacher &&  summary_for_each_teacher.revenue){
+        cellData.push(this.fullfill([`total revenue`, `${String(Math.round( summary_for_each_teacher.revenue))}`, ''], CELL_LENGTH, false));
+        cellData.push(this.fullfill([`total platform_margin`, ` ${String( Math.round(summary_for_each_teacher.platform_margin))}`, ''], CELL_LENGTH, false));
+        cellData.push(this.fullfill([`total allowance`, ` ${String( Math.round(summary_for_each_teacher.allowance))}`, ''], CELL_LENGTH, false));
+        cellData.push(this.fullfill([`tax`, ` ${String( Math.round(summary_for_each_teacher.tax))}`, ''], CELL_LENGTH, false));
+        cellData.push(this.fullfill([`net_income`, ` ${String( Math.round(summary_for_each_teacher.net_income))}`, ''], CELL_LENGTH, false));
+      }
+      cellData.push(this.fullfill([`---------`, `---------`, '---------', `---------`, '---------', `---------`, '---------', `---------`, '---------'], CELL_LENGTH, false));
+
     })
 
     this.clear_data();
