@@ -1,5 +1,6 @@
 import { SpreadSheetNamespace } from './SpreadSheet';
 import { InvoiceData } from '../model/invoice';
+import { PaymentDataForCourse } from '../model/payment';
 
 export namespace ListCourseNameSpace {
 
@@ -141,6 +142,48 @@ export class ListCourse {
         teacher: String(element[teacherIndex]),
         paidUsers: paidUsersArr
       }
+    })
+    Logger.log(`--------adjusted_data -------------`)
+    Logger.log(adjusted_data);
+
+    return adjusted_data;
+  }
+
+
+  getPaymentDataForCourse(): PaymentDataForCourse[]{
+
+    Logger.log(`----getPaymentDataForCourse -------`)
+
+    const range = this.course_list_sheet.getRange(1, 1, 100, 50 );
+    const item_map = range.getValues();
+    // Logger.log(item_map);
+    const title_items = item_map[0];
+
+    const CourseIdIndex = title_items.indexOf(COURSE_KEY.CourseId);
+    const CourseNameIndex = title_items.indexOf(COURSE_KEY.CourseName);
+    const NumberIndex = title_items.indexOf(COURSE_KEY.Number);
+    const CoursePriceIndex = title_items.indexOf(COURSE_KEY.CoursePrice);
+    const UnitLessonPriceIndex = title_items.indexOf(COURSE_KEY.UnitLessonPrice);
+    const ParticipantNumberIndex = title_items.indexOf(COURSE_KEY.ParticipantNumber);
+    const TeacherIndex = title_items.indexOf(COURSE_KEY.Teacher);
+    const PaymentRequestDayIndex = title_items.indexOf(COURSE_KEY.PaymentRequestDay);
+
+    // const item_filtered_arr = item_map.filter((element)=>{return element[paymentRequestDayIndex] === payment_request_day});
+    // Logger.log(`------item_filtered_arr---${payment_request_day}----`);
+
+    const adjusted_data: PaymentDataForCourse[] = item_map.map((element)=>{
+
+      const payment_data_for_course: PaymentDataForCourse = {
+        name: String(element[CourseNameIndex]),
+        unit_lesson_price: Number(element[UnitLessonPriceIndex]),
+        paid_students_num: Number(element[ParticipantNumberIndex]),
+        payment_request_day: String(element[PaymentRequestDayIndex]),
+        course_id: String(element[CourseIdIndex]),
+        lesson_num: Number(element[NumberIndex]),
+        course_revenue: Number(element[CoursePriceIndex]),
+        teacher: String(element[TeacherIndex]),
+      }
+      return payment_data_for_course;
     })
     Logger.log(`--------adjusted_data -------------`)
     Logger.log(adjusted_data);

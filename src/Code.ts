@@ -5,6 +5,7 @@ import { ListCourseNameSpace } from './class/ListCourse';
 import { ListSingleLessonNameSpace } from './class/ListSingleLesson';
 import { ListLessonInCourseNameSpace } from './class/ListLessonInCourse';
 import { InvoiceNameSpace } from './class/Invoice';
+import { PaymentNameSpace } from './class/Payment'
 // import { UserNameSpace } from './class/User';
 
 
@@ -203,3 +204,16 @@ function createCourseMailDraft(){
 //   const attendanceConfirmCourse = new AttendanceConfirmCourse(course_list, user);
 //   attendanceConfirmCourse.setEmailAddress(['aa@bb', 'cc@dd']);
 // }
+
+function calculatePaymentData(){
+
+
+  const course_list = new ListCourseNameSpace.ListCourse();
+  const single_lesson_list = new ListSingleLessonNameSpace.ListSingleLesson();
+  const lesson_in_course_list = new ListLessonInCourseNameSpace.ListLessonInCourse();
+
+  const payment = new PaymentNameSpace.Payment(course_list, single_lesson_list, lesson_in_course_list);
+  payment.calculatePaymentData();
+  // invoice.collectAndLocateData(); 
+}
+

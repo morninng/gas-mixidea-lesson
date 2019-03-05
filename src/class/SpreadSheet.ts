@@ -14,6 +14,9 @@ export enum SHEET_NAME {
   INVOICE_PDF_FORMAT = 'Invoice-Pdf-Format',
   INVOICE_MAIL = 'InvoiceMail',
   INVOICE_SS_FILEID = 'InvoiceSsFileID',
+  // PAYMENT_BY_FIXED_FEE = '講師支払い(固定費)',
+  // PAYMENT_BY_SHARE = '講師支払い（割合）',
+  PAYMENT_MONTHLY_SUMMARY = '講師支払い（月別集計）',
 }
 
 export interface SheetPosition {

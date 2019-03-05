@@ -106,7 +106,7 @@ export class Invoice {
     Logger.log("------------invoice_summary_cell---------------")
     Logger.log(invoice_summary_cell)
     if(invoice_summary_cell.length > 0){
-      this.sheet_invoice_data.getRange(2, 2,invoice_summary_cell.length, 6 ).setValues(invoice_summary_cell);
+      this.sheet_invoice_data.getRange(2, 2, invoice_summary_cell.length, 6 ).setValues(invoice_summary_cell);
     }
   }
 
