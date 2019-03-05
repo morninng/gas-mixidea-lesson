@@ -17,7 +17,8 @@ export interface SummaryOfPaymentData {
   platform_margin: number,
   allowance: number,
   paymentCourseDataArr?: PaymentDataForCourse[],
-  paymentLessonInCourseDataArr?: PaymentDataForLessonInCourse[]
+  paymentLessonInCourseDataArr?: PaymentDataForLessonInCourse[],
+  paymentSingleLessonDataArr?: PaymentDataForLesson[]
 }
 
 export interface PaymentDataForLesson {

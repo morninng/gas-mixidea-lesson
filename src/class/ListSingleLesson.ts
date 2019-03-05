@@ -1,6 +1,7 @@
 import { SpreadSheetNamespace } from './SpreadSheet';
 import { InvoiceData } from '../model/invoice';
 
+import { PaymentDataForLesson } from '../model/payment';
 
 export namespace ListSingleLessonNameSpace {
 
@@ -18,7 +19,6 @@ export enum SINGLE_LESSON_KEY {
   FreeStudents = 'FreeStudents',
   Mentor = 'Mentor',
 }
-
 
 export const CELL_WORDING_SINGLE_LESSON: {[key: string]: string}   = {
   [SINGLE_LESSON_KEY.SingleLessonId]: "SingleLessonId",
@@ -157,7 +157,43 @@ export class ListSingleLesson {
 
   }
   
-  
+
+
+  getPaymentDataForSingleLesson(){
+
+    Logger.log(`-----getPaymentDataForLessonInCourse`)
+
+    const range = this.single_lesson_list_sheet.getRange(1, 1, 300, 50 );
+    const item_map = range.getValues();
+    // Logger.log(item_map);
+    const title_items = item_map[0];
+
+    const SingleLessonName = title_items.indexOf(SINGLE_LESSON_KEY.SingleLessonName);
+    const TeacherIndex = title_items.indexOf(SINGLE_LESSON_KEY.Teacher);
+    const DateIndex = title_items.indexOf(SINGLE_LESSON_KEY.Date);
+    const PriceIndex = title_items.indexOf(SINGLE_LESSON_KEY.Price);
+    
+    const PaidStudentsNumIndex = title_items.indexOf(SINGLE_LESSON_KEY.PaidStudentsNum);
+    
+    const paymentRequestDayIndex = title_items.indexOf(SINGLE_LESSON_KEY.PaymentRequestDay);
+
+
+    const adjusted_data: PaymentDataForLesson[] = item_map.map((element)=>{
+
+      return {
+        name: ` ${String(element[SingleLessonName])} - ${String(element[DateIndex])}`,
+        teacher: String(element[TeacherIndex]),
+        unit_lesson_price: Number(element[PriceIndex]),
+        paid_students_num: Number(element[PaidStudentsNumIndex]),
+        payment_request_day: String(element[paymentRequestDayIndex]),
+      }
+    })
+    Logger.log(`--------adjusted_data -------------`)
+    Logger.log(adjusted_data);
+
+    return adjusted_data;
+  }
+
   public getSingleLessonDataFromRowNum(single_lesson_row_num: number): SingleLessonData | null{
   
     Logger.log(`------ getSingleLessonDataFromRowNum ------------- ${single_lesson_row_num} row`);

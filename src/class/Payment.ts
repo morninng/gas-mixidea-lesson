@@ -47,6 +47,12 @@ export class Payment {
         (lesson_in_course_data: PaymentDataForLessonInCourse) =>{return lesson_in_course_data.payment_request_day === target_month}
       );  
 
+    const single_lesson_data_arr: PaymentDataForLesson[] = this.list_single_lesson.getPaymentDataForSingleLesson();
+    const single_lesson_data_of_month: PaymentDataForLesson[] = 
+    single_lesson_data_arr.filter(
+        (single_lesson_data: PaymentDataForLesson) =>{return single_lesson_data.payment_request_day === target_month}
+      );  
+
 
     Logger.log(`course_data_of_month ${JSON.stringify(course_data_of_month)}`);
 
@@ -56,6 +62,7 @@ export class Payment {
       const teacher_name = teacher_data.name;
       const course_data_of_month_teacher_arr = course_data_of_month.filter((course_data)=>{return course_data.teacher === teacher_name});
       const lesson_in_course_data_of_month_teacher_arr = lesson_in_course_data_of_month.filter((course_data)=>{return course_data.teacher === teacher_name});
+      const single_lesson_data_of_month_teacher_arr = single_lesson_data_of_month.filter((course_data)=>{return course_data.teacher === teacher_name});
 
 
       const teacher_business_type = teacher_data.business_type;
@@ -63,6 +70,7 @@ export class Payment {
 
       let calculated_fixed_course_data;
       let calculated_fixed_lesson_in_course_data;
+      let calculated_fixed_single_lesson_data;
 
       if(teacher_business_type === BUSINESS_TYPE.FIXED){
         const fixed_margin_price = teacher_data.condition;
@@ -75,6 +83,10 @@ export class Payment {
         if(lesson_in_course_data_of_month_teacher_arr && lesson_in_course_data_of_month_teacher_arr.length > 0){
           calculated_fixed_lesson_in_course_data = this.calculateLessonInCourseDataFixed(lesson_in_course_data_of_month_teacher_arr, fixed_margin_price, fixed_margin_usernum);
           payment_for_eachteacher_arr.push(calculated_fixed_lesson_in_course_data);
+        }
+        if(single_lesson_data_of_month_teacher_arr && single_lesson_data_of_month_teacher_arr.length > 0){
+          calculated_fixed_single_lesson_data = this.calculateSingleLessonDataFixed(single_lesson_data_of_month_teacher_arr, fixed_margin_price, fixed_margin_usernum);
+          payment_for_eachteacher_arr.push(calculated_fixed_single_lesson_data);
         }
 
       }else if (teacher_business_type === BUSINESS_TYPE.SHARE){
@@ -198,6 +210,60 @@ export class Payment {
   }
 
 
+  calculateSingleLessonDataFixed(single_lesson_data_of_month_teacher_arr: PaymentDataForLesson[], fixed_margin_price: number, fixed_margin_usernum: number){
+
+    Logger.log(`fixed_margin_price ${fixed_margin_price}`);
+    Logger.log(`fixed_margin_usernum ${fixed_margin_usernum}`);
+
+    const calculated_single_lesson_data_arr =  single_lesson_data_of_month_teacher_arr.map( 
+      ( payment_data: PaymentDataForLesson) => {
+
+      Logger.log(`------------------------`);
+      Logger.log(`payment_data ${payment_data} --`);
+
+      const one_lesson_revenue = payment_data.unit_lesson_price * (payment_data.paid_students_num || 0);
+
+      let one_lesson_platform_margin = 0;
+
+
+      if( (payment_data.paid_students_num || 0) < fixed_margin_usernum){
+        one_lesson_platform_margin = (payment_data.paid_students_num || 0) / fixed_margin_usernum  * fixed_margin_price;
+      }else{
+        one_lesson_platform_margin = fixed_margin_price;
+      }
+      const one_lesson_allowance = one_lesson_revenue- one_lesson_platform_margin;
+
+
+      const single_lesson_data_copy: any = {};
+      for(const key in payment_data){
+        single_lesson_data_copy[key]=payment_data[key];
+      }
+      single_lesson_data_copy.one_lesson_revenue = one_lesson_revenue;
+      single_lesson_data_copy.one_lesson_platform_margin = one_lesson_platform_margin;
+      single_lesson_data_copy.one_lesson_allowance = one_lesson_allowance;
+
+      return single_lesson_data_copy;
+    })
+
+    const revenue = calculated_single_lesson_data_arr.reduce((acc, curr: PaymentDataForCourse)=>{ return acc + curr.one_lesson_revenue}, 0);
+    const platform_margin = calculated_single_lesson_data_arr.reduce((acc, curr: PaymentDataForCourse)=>{ return acc + curr.one_lesson_platform_margin}, 0);
+    const allowance = revenue - platform_margin;
+
+
+    const summary_course_data: SummaryOfPaymentData = {
+      type: PAYMENT_DATA_TYPE.SINGLE_LESSON_FIXED,
+      revenue,
+      platform_margin,
+      allowance,
+      paymentLessonInCourseDataArr: calculated_single_lesson_data_arr,
+    }
+
+    return summary_course_data;
+
+  }
+
+
+
   calculate_eachteacher_payment(teacher_name: string, paymentForEachTeacherArr: SummaryOfPaymentData[] ): SummaryForEachTeacher{
 
     const revenue = paymentForEachTeacherArr.reduce((acc, curr)=>{ return acc + curr.revenue}, 0);
@@ -275,9 +341,26 @@ export class Payment {
   
             cellData.push(this.fullfill(one_line_data, CELL_LENGTH, true))
           })
+        }else if(type === PAYMENT_DATA_TYPE.SINGLE_LESSON_FIXED){
 
-
-
+            cellData.push(this.fullfill(
+              ['single lesson name', 'unit_lesson_price', ' paid_students_num', ' one_lesson_revenue', 
+              'one_lesson_platform_margin', 'one_lesson_allowance' ], CELL_LENGTH, true))
+  
+              paymentLessonInCourseDataArr.forEach( (each_payment: PaymentDataForLessonInCourse) => {
+  
+              const name = String(each_payment.name);
+              const unit_lesson_price = String(each_payment.unit_lesson_price);
+              const paid_students_num = String(each_payment.paid_students_num);
+              const one_lesson_revenue = String(each_payment.one_lesson_revenue);
+              const one_lesson_platform_margin = String(each_payment.one_lesson_platform_margin);
+              const one_lesson_allowance = String(each_payment.one_lesson_allowance);
+              const one_line_data: string[] = 
+                [name, unit_lesson_price, paid_students_num, one_lesson_revenue,
+                  one_lesson_platform_margin, one_lesson_allowance ];
+    
+              cellData.push(this.fullfill(one_line_data, CELL_LENGTH, true))
+            })
         }
 
         cellData.push(this.fullfill([`revenue ${String(type_revenue)}`, ''], CELL_LENGTH, false));
