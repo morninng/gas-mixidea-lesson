@@ -1,4 +1,10 @@
-
+export interface GrandSummary {
+  revenue: number,
+  platform_margin: number,
+  allowance: number,
+  tax: number,
+  net_income: number,
+}
 
 
 export interface SummaryForEachTeacher {

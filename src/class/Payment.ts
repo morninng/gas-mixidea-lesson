@@ -4,7 +4,7 @@ import { ListSingleLessonNameSpace } from './ListSingleLesson';
 import { ListLessonInCourseNameSpace } from './ListLessonInCourse';
 import { ListCourseNameSpace } from './ListCourse';
 
-import { SummaryForEachTeacher, TeacherData, BUSINESS_TYPE, SummaryOfPaymentData, PAYMENT_DATA_TYPE, PaymentDataForCourse, PaymentDataForLesson, PaymentDataForLessonInCourse } from '../model/payment';
+import { SummaryForEachTeacher, TeacherData, BUSINESS_TYPE, SummaryOfPaymentData, PAYMENT_DATA_TYPE, PaymentDataForCourse, PaymentDataForLesson, PaymentDataForLessonInCourse, GrandSummary } from '../model/payment';
 
 
 export namespace PaymentNameSpace {
@@ -71,6 +71,9 @@ export class Payment {
       let calculated_fixed_course_data;
       let calculated_fixed_lesson_in_course_data;
       let calculated_fixed_single_lesson_data;
+      let calculated_shared_course_data;
+      let calculated_shared_lesson_in_course_data;
+      let calculated_shared_single_lesson_data;
 
       if(teacher_business_type === BUSINESS_TYPE.FIXED){
         const fixed_margin_price = teacher_data.condition;
@@ -91,13 +94,31 @@ export class Payment {
 
       }else if (teacher_business_type === BUSINESS_TYPE.SHARE){
 
+        const revenue_share_ratio = teacher_data.condition;
+
+        if(course_data_of_month_teacher_arr && course_data_of_month_teacher_arr.length > 0){
+          calculated_shared_course_data = this.calculateCourseDataShared(course_data_of_month_teacher_arr, revenue_share_ratio);
+          payment_for_eachteacher_arr.push(calculated_shared_course_data);
+        }
+
+        if(lesson_in_course_data_of_month_teacher_arr && lesson_in_course_data_of_month_teacher_arr.length > 0){
+          calculated_shared_lesson_in_course_data = this.calculateLessonInCourseDataShared(lesson_in_course_data_of_month_teacher_arr, revenue_share_ratio );
+          payment_for_eachteacher_arr.push(calculated_shared_lesson_in_course_data);
+        }
+        if(single_lesson_data_of_month_teacher_arr && single_lesson_data_of_month_teacher_arr.length > 0){
+          calculated_shared_single_lesson_data = this.calculateSingleLessonDataShared(single_lesson_data_of_month_teacher_arr, revenue_share_ratio );
+          payment_for_eachteacher_arr.push(calculated_shared_single_lesson_data);
+        }
       }
 
       const teacher_payment_summary = this.calculate_eachteacher_payment(teacher_name, payment_for_eachteacher_arr);
       summary_for_each_teacher_arr.push(teacher_payment_summary);
     })
 
-    this.write_all_data(summary_for_each_teacher_arr);
+    const grand_summary: GrandSummary = this.calculateGrandSummary(summary_for_each_teacher_arr);
+
+
+    this.write_all_data(summary_for_each_teacher_arr, grand_summary);
 
 
   }
@@ -155,6 +176,55 @@ export class Payment {
     return summary_course_data;
   }
 
+  calculateCourseDataShared(course_data_of_month_teacher_arr: PaymentDataForCourse[], revenue_share_ratio: number ){
+
+    Logger.log(`revenue_share_ratio ${revenue_share_ratio}`);
+
+    const calculated_course_data_arr =  course_data_of_month_teacher_arr.map((course_data: PaymentDataForCourse)=>{
+      Logger.log(`------------------------`)
+      Logger.log(`course_data ${course_data} --`);
+
+      const one_lesson_revenue = course_data.unit_lesson_price * (course_data.paid_students_num || 0);
+
+ 
+      const one_lesson_allowance = one_lesson_revenue * revenue_share_ratio;
+      const one_lesson_platform_margin = one_lesson_revenue - one_lesson_allowance;
+
+      const lesson_num = course_data.lesson_num;
+      const course_revenue = one_lesson_revenue * lesson_num;
+      const course_platform_margin = one_lesson_platform_margin * lesson_num;
+      const course_allowance = one_lesson_allowance * lesson_num;
+
+      const course_data_copy: any = {};
+      for(const key in course_data){
+        course_data_copy[key]=course_data[key];
+      }
+      course_data_copy.one_lesson_revenue = one_lesson_revenue;
+      course_data_copy.one_lesson_platform_margin = one_lesson_platform_margin;
+      course_data_copy.one_lesson_allowance = one_lesson_allowance;
+      course_data_copy.course_revenue = course_revenue;
+      course_data_copy.course_platform_margin = course_platform_margin;
+      course_data_copy.course_allowance = course_allowance;
+
+      return course_data_copy;
+    })
+
+    const revenue = calculated_course_data_arr.reduce((acc, curr: PaymentDataForCourse)=>{ return acc + curr.course_revenue}, 0);
+    const platform_margin = calculated_course_data_arr.reduce((acc, curr: PaymentDataForCourse)=>{ return acc + curr.course_platform_margin}, 0);
+    const allowance = revenue - platform_margin;
+
+
+    const summary_course_data: SummaryOfPaymentData = {
+      type: PAYMENT_DATA_TYPE.COURSE_SHARE,
+      revenue,
+      platform_margin,
+      allowance,
+      paymentCourseDataArr: calculated_course_data_arr,
+    }
+    return summary_course_data; 
+  }
+
+
   calculateLessonInCourseDataFixed(lesson_in_course_data_of_month_teacher_arr: PaymentDataForLessonInCourse[], fixed_margin_price: number, fixed_margin_usernum: number){
 
 
@@ -209,6 +279,53 @@ export class Payment {
     return summary_course_data;
   }
 
+  calculateLessonInCourseDataShared(lesson_in_course_data_of_month_teacher_arr: PaymentDataForLessonInCourse[], revenue_share_ratio: number){
+
+
+
+    Logger.log(`revenue_share_ratio ${revenue_share_ratio}`);
+
+    const calculated_lesson_in_course_data_arr =  lesson_in_course_data_of_month_teacher_arr.map( 
+      ( payment_data: PaymentDataForLessonInCourse) => {
+
+      Logger.log(`------------------------`);
+      Logger.log(`payment_data ${payment_data} --`);
+
+      const one_lesson_revenue = payment_data.unit_lesson_price * payment_data.additional_paid_students_num;
+
+
+      const one_lesson_allowance = one_lesson_revenue * revenue_share_ratio;
+      let one_lesson_platform_margin = one_lesson_revenue - one_lesson_allowance;
+
+
+      const lesson_in_course_data_copy: any = {};
+      for(const key in payment_data){
+        lesson_in_course_data_copy[key]=payment_data[key];
+      }
+      lesson_in_course_data_copy.one_lesson_revenue = one_lesson_revenue;
+      lesson_in_course_data_copy.one_lesson_platform_margin = one_lesson_platform_margin;
+      lesson_in_course_data_copy.one_lesson_allowance = one_lesson_allowance;
+
+      return lesson_in_course_data_copy;
+    })
+
+    const revenue = calculated_lesson_in_course_data_arr.reduce((acc, curr: PaymentDataForCourse)=>{ return acc + curr.one_lesson_revenue}, 0);
+    const platform_margin = calculated_lesson_in_course_data_arr.reduce((acc, curr: PaymentDataForCourse)=>{ return acc + curr.one_lesson_platform_margin}, 0);
+    const allowance = revenue - platform_margin;
+
+    const summary_course_data: SummaryOfPaymentData = {
+      type: PAYMENT_DATA_TYPE.LESSON_IN_COURSE_FIXED,
+      revenue,
+      platform_margin,
+      allowance,
+      paymentLessonInCourseDataArr: calculated_lesson_in_course_data_arr,
+    }
+
+    return summary_course_data;
+  }
+
+
+
 
   calculateSingleLessonDataFixed(single_lesson_data_of_month_teacher_arr: PaymentDataForLesson[], fixed_margin_price: number, fixed_margin_usernum: number){
 
@@ -262,6 +379,50 @@ export class Payment {
 
   }
 
+  calculateSingleLessonDataShared(single_lesson_data_of_month_teacher_arr: PaymentDataForLesson[], revenue_share_ratio: number,){
+
+    Logger.log(`revenue_share_ratio ${revenue_share_ratio}`);
+
+    const calculated_single_lesson_data_arr =  single_lesson_data_of_month_teacher_arr.map( 
+      ( payment_data: PaymentDataForLesson) => {
+
+      Logger.log(`------------------------`);
+      Logger.log(`payment_data ${payment_data} --`);
+
+      const one_lesson_revenue = payment_data.unit_lesson_price * (payment_data.paid_students_num || 0);
+      const one_lesson_allowance = one_lesson_revenue * revenue_share_ratio;
+      let one_lesson_platform_margin = 0;
+
+
+      const single_lesson_data_copy: any = {};
+      for(const key in payment_data){
+        single_lesson_data_copy[key]=payment_data[key];
+      }
+      single_lesson_data_copy.one_lesson_revenue = one_lesson_revenue;
+      single_lesson_data_copy.one_lesson_platform_margin = one_lesson_platform_margin;
+      single_lesson_data_copy.one_lesson_allowance = one_lesson_allowance;
+
+      return single_lesson_data_copy;
+    })
+
+    const revenue = calculated_single_lesson_data_arr.reduce((acc, curr: PaymentDataForCourse)=>{ return acc + curr.one_lesson_revenue}, 0);
+    const platform_margin = calculated_single_lesson_data_arr.reduce((acc, curr: PaymentDataForCourse)=>{ return acc + curr.one_lesson_platform_margin}, 0);
+    const allowance = revenue - platform_margin;
+
+
+    const summary_course_data: SummaryOfPaymentData = {
+      type: PAYMENT_DATA_TYPE.SINGLE_LESSON_SHARE,
+      revenue,
+      platform_margin,
+      allowance,
+      paymentLessonInCourseDataArr: calculated_single_lesson_data_arr,
+    }
+
+    return summary_course_data;
+
+  }
+
+
 
 
   calculate_eachteacher_payment(teacher_name: string, paymentForEachTeacherArr: SummaryOfPaymentData[] ): SummaryForEachTeacher{
@@ -276,7 +437,19 @@ export class Payment {
     return summary_each_teacher;
   }
 
-  write_all_data(summary_for_each_teacher_arr: SummaryForEachTeacher[]){
+  calculateGrandSummary( summary_for_each_teacher_arr: SummaryForEachTeacher[] ): GrandSummary{
+    const revenue = summary_for_each_teacher_arr.reduce((acc, curr)=>{ return acc + curr.revenue}, 0);
+    const platform_margin = summary_for_each_teacher_arr.reduce((acc, curr)=>{ return acc + curr.platform_margin}, 0);
+    const allowance = summary_for_each_teacher_arr.reduce((acc, curr)=>{ return acc + curr.allowance}, 0);
+    const tax = summary_for_each_teacher_arr.reduce((acc, curr)=>{ return acc + curr.tax}, 0);
+    const net_income = summary_for_each_teacher_arr.reduce((acc, curr)=>{ return acc + curr.net_income}, 0);
+
+    return {revenue, platform_margin, allowance, tax, net_income  };
+  }
+
+
+
+  write_all_data(summary_for_each_teacher_arr: SummaryForEachTeacher[], grand_summary: GrandSummary){
 
     const blank_spreadsheet_initial_data = ['','','','','','','','','','','','','','',];
     const CELL_LENGTH = blank_spreadsheet_initial_data.length;
@@ -295,7 +468,7 @@ export class Payment {
         const type_platform_margin = payment_data.platform_margin;
         const type_allowance = payment_data.allowance;
 
-        if(type === PAYMENT_DATA_TYPE.COURSE_FIXED){
+        if(type === PAYMENT_DATA_TYPE.COURSE_FIXED || type === PAYMENT_DATA_TYPE.COURSE_SHARE){
           cellData.push(this.fullfill(
             ['course name', 'unit_lesson_price', 'paid_students_num', ' one_lesson_revenue', 
             'one_lesson_platform_margin', 'one_lesson_allowance', 'lesson_num', 'course_price', 
@@ -320,7 +493,7 @@ export class Payment {
   
             cellData.push(this.fullfill(one_line_data, CELL_LENGTH, true))
           })
-        }else if(type === PAYMENT_DATA_TYPE.LESSON_IN_COURSE_FIXED){
+        }else if(type === PAYMENT_DATA_TYPE.LESSON_IN_COURSE_FIXED || type === PAYMENT_DATA_TYPE.LESSON_IN_COURSE_SHARE){
 
           cellData.push(this.fullfill(
             ['lesson in course name', 'unit_lesson_price', ' regular_students_num', ' additional_paid_students_num', ' one_lesson_revenue', 
@@ -341,7 +514,7 @@ export class Payment {
   
             cellData.push(this.fullfill(one_line_data, CELL_LENGTH, true))
           })
-        }else if(type === PAYMENT_DATA_TYPE.SINGLE_LESSON_FIXED){
+        }else if(type === PAYMENT_DATA_TYPE.SINGLE_LESSON_FIXED || type === PAYMENT_DATA_TYPE.SINGLE_LESSON_SHARE){
 
             cellData.push(this.fullfill(
               ['single lesson name', 'unit_lesson_price', ' paid_students_num', ' one_lesson_revenue', 
@@ -377,6 +550,16 @@ export class Payment {
       cellData.push(this.fullfill([`---------`, `---------`, '---------', `---------`, '---------', `---------`, '---------', `---------`, '---------'], CELL_LENGTH, false));
 
     })
+
+    cellData.push(this.fullfill([`---------`, `---------`, '---------', `---------`, '---------', `---------`, '---------', `---------`, '---------'], CELL_LENGTH, false));
+    cellData.push(this.fullfill([`---------`, `---------`, '---------', `---------`, '---------', `---------`, '---------', `---------`, '---------'], CELL_LENGTH, false));
+    cellData.push(this.fullfill([`---------`, `---------`, '---------', `---------`, '---------', `---------`, '---------', `---------`, '---------'], CELL_LENGTH, false));
+
+    cellData.push(this.fullfill([`revenue`, ` ${String( Math.round(grand_summary.revenue))}`, ''], CELL_LENGTH, false));
+    cellData.push(this.fullfill([`platform_margin`, ` ${String( Math.round(grand_summary.platform_margin))}`, ''], CELL_LENGTH, false));
+    cellData.push(this.fullfill([`allowance`, ` ${String( Math.round(grand_summary.allowance))}`, ''], CELL_LENGTH, false));
+    cellData.push(this.fullfill([`tax`, ` ${String( Math.round(grand_summary.tax))}`, ''], CELL_LENGTH, false));
+    cellData.push(this.fullfill([`net_income`, ` ${String( Math.round(grand_summary.net_income))}`, ''], CELL_LENGTH, false));
 
     this.clear_data();
     this.write_data(cellData)
