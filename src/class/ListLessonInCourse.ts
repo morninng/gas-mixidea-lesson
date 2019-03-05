@@ -1,6 +1,7 @@
 import { SpreadSheetNamespace } from './SpreadSheet';
 import { InvoiceData } from '../model/invoice';
 
+import { PaymentDataForLessonInCourse } from '../model/payment';
 
 export namespace ListLessonInCourseNameSpace {
 
@@ -12,6 +13,8 @@ export enum LESSON_IN_COURSE_KEY {
   Teacher = 'Teacher',
   Date = 'Date',
   Price = 'Price',
+  RegularStudentsNum = 'RegularStudentsNum',
+  PaidStudentsNum = 'PaidStudentsNum',
   PaymentRequestDay = 'PaymentRequestDay',
   LessonStatus = 'LessonStatus',
   AdditionalPaidStudents = 'AdditionalPaidStudents',
@@ -68,6 +71,8 @@ export interface LessonInCourseData{
   [LESSON_IN_COURSE_KEY.Teacher]?: string,
   [LESSON_IN_COURSE_KEY.Date]?: string,
   [LESSON_IN_COURSE_KEY.Price]?: string,
+  [LESSON_IN_COURSE_KEY.RegularStudentsNum]?: string,
+  [LESSON_IN_COURSE_KEY.PaidStudentsNum]?: string,
   [LESSON_IN_COURSE_KEY.PaymentRequestDay]?: string,
   [LESSON_IN_COURSE_KEY.LessonStatus]?: string,
   [LESSON_IN_COURSE_KEY.AdditionalPaidStudents]?: string[],
@@ -185,6 +190,58 @@ export class ListLessonInCourse {
     return adjusted_data;
 
   }
+
+
+  getPaymentDataForLessonInCourse(){
+
+
+ 
+    Logger.log(`-----getPaymentDataForLessonInCourse`)
+
+    // this.single_lesson_list_sheet.getActiveRange()
+
+    const range = this.lesson_in_course_list_sheet.getRange(1, 1, 300, 50 );
+    const item_map = range.getValues();
+    // Logger.log(item_map);
+    const title_items = item_map[0];
+
+    const CourseIdIndex = title_items.indexOf(LESSON_IN_COURSE_KEY.CourseId);
+    const TeacherIndex = title_items.indexOf(LESSON_IN_COURSE_KEY.Teacher);
+    const CourseNameIndex = title_items.indexOf(LESSON_IN_COURSE_KEY.CourseName);
+    const EachLessonSuffixIndex = title_items.indexOf(LESSON_IN_COURSE_KEY.EachLessonSuffix);
+    const DateIndex = title_items.indexOf(LESSON_IN_COURSE_KEY.Date);
+    const PriceIndex = title_items.indexOf(LESSON_IN_COURSE_KEY.Price);
+    
+    const RegularStudentsNumIndex = title_items.indexOf(LESSON_IN_COURSE_KEY.RegularStudentsNum);
+    const PaidStudentsNumIndex = title_items.indexOf(LESSON_IN_COURSE_KEY.PaidStudentsNum);
+    
+    const PaymentRequestDayIndex = title_items.indexOf(LESSON_IN_COURSE_KEY.PaymentRequestDay);
+
+
+    const paymentRequestDayIndex = title_items.indexOf(LESSON_IN_COURSE_KEY.PaymentRequestDay);
+
+
+    const adjusted_data: PaymentDataForLessonInCourse[] = item_map.map((element)=>{
+
+      return {
+        name: ` ${String(element[CourseNameIndex])} - ${String(element[EachLessonSuffixIndex])} - ${String(element[DateIndex])}`,
+        teacher: String(element[TeacherIndex]),
+        unit_lesson_price: Number(element[PriceIndex]),
+        payment_request_day: String(element[paymentRequestDayIndex]),
+        course_id: String(element[CourseIdIndex]),
+        regular_students_num: Number(element[RegularStudentsNumIndex]),
+        additional_paid_students_num:  Number(element[PaidStudentsNumIndex]),
+      }
+    })
+    Logger.log(`--------adjusted_data -------------`)
+    Logger.log(adjusted_data);
+
+    return adjusted_data;
+
+
+  }
+
+
 
 
   

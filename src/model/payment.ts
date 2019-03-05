@@ -16,18 +16,25 @@ export interface SummaryOfPaymentData {
   revenue: number,
   platform_margin: number,
   allowance: number,
-  paymentDataArr: PaymentDataForCourse[],
+  paymentCourseDataArr?: PaymentDataForCourse[],
+  paymentLessonInCourseDataArr?: PaymentDataForLessonInCourse[]
 }
 
 export interface PaymentDataForLesson {
   name: string,
   teacher: string,
   unit_lesson_price: number,
-  paid_students_num: number,
+  paid_students_num?: number,
   one_lesson_revenue?: number,
   one_lesson_platform_margin?: number,
   one_lesson_allowance?: number,
   payment_request_day: string,
+}
+
+export interface PaymentDataForLessonInCourse extends PaymentDataForLesson {
+  course_id: string;
+  regular_students_num: number;
+  additional_paid_students_num: number;
 }
 
 export interface PaymentDataForCourse extends PaymentDataForLesson {
