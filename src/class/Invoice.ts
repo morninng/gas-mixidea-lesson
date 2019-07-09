@@ -337,7 +337,7 @@ export class Invoice {
       price_sum = price_sum + element.price;
     })
 
-    const price_with_tax = Math.ceil(price_sum * 1.08);
+    const price_with_tax = Math.round(price_sum * 1.08);
 
     return {total:price_sum, tax:price_with_tax - price_sum,  total_with_tax: price_with_tax  };
   }

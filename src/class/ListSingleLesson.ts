@@ -161,7 +161,7 @@ export class ListSingleLesson {
 
   getPaymentDataForSingleLesson(){
 
-    Logger.log(`-----getPaymentDataForLessonInCourse`)
+    Logger.log(`-----getPaymentDataForSingleLesson`)
 
     const range = this.single_lesson_list_sheet.getRange(1, 1, 300, 50 );
     const item_map = range.getValues();

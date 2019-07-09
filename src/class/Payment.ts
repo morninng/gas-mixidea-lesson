@@ -60,12 +60,14 @@ export class Payment {
 
     teacher_data_arr.forEach((teacher_data: TeacherData)=>{
       const teacher_name = teacher_data.name;
+      Logger.log(`teacher_name ${teacher_name}`);
       const course_data_of_month_teacher_arr = course_data_of_month.filter((course_data)=>{return course_data.teacher === teacher_name});
       const lesson_in_course_data_of_month_teacher_arr = lesson_in_course_data_of_month.filter((course_data)=>{return course_data.teacher === teacher_name});
       const single_lesson_data_of_month_teacher_arr = single_lesson_data_of_month.filter((course_data)=>{return course_data.teacher === teacher_name});
 
 
       const teacher_business_type = teacher_data.business_type;
+      Logger.log(`teacher_business_type ${teacher_business_type}`)
       const payment_for_eachteacher_arr: SummaryOfPaymentData[] = [];
 
       let calculated_fixed_course_data;
@@ -125,6 +127,7 @@ export class Payment {
 
   calculateCourseDataFixed(course_data_of_month_teacher_arr: PaymentDataForCourse[], fixed_margin_price: number, fixed_margin_usernum: number): SummaryOfPaymentData{
     // const course_data_arr = [...course_data_of_month_teacher_arr];
+    Logger.log(`calculateCourseDataFixed`);
     Logger.log(`fixed_margin_price ${fixed_margin_price}`);
     Logger.log(`fixed_margin_usernum ${fixed_margin_usernum}`);
 
@@ -177,7 +180,7 @@ export class Payment {
   }
 
   calculateCourseDataShared(course_data_of_month_teacher_arr: PaymentDataForCourse[], revenue_share_ratio: number ){
-
+    Logger.log(`calculateCourseDataShared`);
     Logger.log(`revenue_share_ratio ${revenue_share_ratio}`);
 
     const calculated_course_data_arr =  course_data_of_month_teacher_arr.map((course_data: PaymentDataForCourse)=>{
@@ -228,7 +231,7 @@ export class Payment {
   calculateLessonInCourseDataFixed(lesson_in_course_data_of_month_teacher_arr: PaymentDataForLessonInCourse[], fixed_margin_price: number, fixed_margin_usernum: number){
 
 
-
+    Logger.log(`calculateLessonInCourseDataFixed`);
     Logger.log(`fixed_margin_price ${fixed_margin_price}`);
     Logger.log(`fixed_margin_usernum ${fixed_margin_usernum}`);
 
@@ -282,7 +285,7 @@ export class Payment {
   calculateLessonInCourseDataShared(lesson_in_course_data_of_month_teacher_arr: PaymentDataForLessonInCourse[], revenue_share_ratio: number){
 
 
-
+    Logger.log(`calculateLessonInCourseDataShared`);
     Logger.log(`revenue_share_ratio ${revenue_share_ratio}`);
 
     const calculated_lesson_in_course_data_arr =  lesson_in_course_data_of_month_teacher_arr.map( 
@@ -328,7 +331,7 @@ export class Payment {
 
 
   calculateSingleLessonDataFixed(single_lesson_data_of_month_teacher_arr: PaymentDataForLesson[], fixed_margin_price: number, fixed_margin_usernum: number){
-
+    Logger.log(`calculateSingleLessonDataFixed`);
     Logger.log(`fixed_margin_price ${fixed_margin_price}`);
     Logger.log(`fixed_margin_usernum ${fixed_margin_usernum}`);
 
@@ -380,18 +383,18 @@ export class Payment {
   }
 
   calculateSingleLessonDataShared(single_lesson_data_of_month_teacher_arr: PaymentDataForLesson[], revenue_share_ratio: number,){
-
+    Logger.log(`calculateSingleLessonDataShared`);
     Logger.log(`revenue_share_ratio ${revenue_share_ratio}`);
 
     const calculated_single_lesson_data_arr =  single_lesson_data_of_month_teacher_arr.map( 
       ( payment_data: PaymentDataForLesson) => {
 
       Logger.log(`------------------------`);
-      Logger.log(`payment_data ${payment_data} --`);
+      Logger.log(`payment_data ${JSON.stringify(payment_data)} --`);
 
       const one_lesson_revenue = payment_data.unit_lesson_price * (payment_data.paid_students_num || 0);
       const one_lesson_allowance = one_lesson_revenue * revenue_share_ratio;
-      let one_lesson_platform_margin = 0;
+      let one_lesson_platform_margin = one_lesson_revenue - one_lesson_allowance;
 
 
       const single_lesson_data_copy: any = {};
@@ -401,6 +404,8 @@ export class Payment {
       single_lesson_data_copy.one_lesson_revenue = one_lesson_revenue;
       single_lesson_data_copy.one_lesson_platform_margin = one_lesson_platform_margin;
       single_lesson_data_copy.one_lesson_allowance = one_lesson_allowance;
+
+      Logger.log(`single_lesson_data_copy ${JSON.stringify(single_lesson_data_copy)}`);
 
       return single_lesson_data_copy;
     })
@@ -598,7 +603,7 @@ export class Payment {
 
 
   getTeacherData(): TeacherData[] {
-    const range = this.payment_summary_sheet.getRange(6, 1, 5, 5 );
+    const range = this.payment_summary_sheet.getRange(6, 1, 10, 5 );
     const teacher_map = range.getValues();
     const teacher_data_arr: TeacherData[] = 
     teacher_map.map((data)=>{
@@ -610,7 +615,7 @@ export class Payment {
       }
       return teacher_data;
     })
-    Logger.log(`-- -teacher_data_arr --  ${JSON.stringify(teacher_data_arr)}`)
+    Logger.log(`-- -teacher_data_arr 2 --  ${JSON.stringify(teacher_data_arr)}`)
     return teacher_data_arr;
   }
 

@@ -34,7 +34,9 @@ export class User {
 
     if(!this.user_data){
       Logger.log('userdata retrieve');
-      const range = this.user_sheet.getRange( 1 , 1, 100, 10 );
+
+
+      const range = this.user_sheet.getRange( 1 , 1, 300, 10 ); // number of students
       const item_map = range.getValues();
       // Logger.log(item_map);
 
