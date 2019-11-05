@@ -119,7 +119,8 @@ export class ListSingleLesson {
 
     // this.single_lesson_list_sheet.getActiveRange()
 
-    const range = this.single_lesson_list_sheet.getRange(1, 1, 300, 50 );
+    Logger.log('data retrieve1, 1, 250, 35 ');
+    const range = this.single_lesson_list_sheet.getRange(1, 1, 300, 35 );
     const item_map = range.getValues();
     // Logger.log(item_map);
     const title_items = item_map[0];
@@ -133,7 +134,7 @@ export class ListSingleLesson {
 
     const item_filtered_arr = item_map.filter((element)=>{return element[paymentRequestDayIndex] === payment_request_day});
     // Logger.log(`------item_filtered_arr---${payment_request_day}----`);
-    // Logger.log(item_filtered_arr);
+    Logger.log(item_filtered_arr);
 
     const adjusted_data: InvoiceData[] = item_filtered_arr.map((element)=>{
       const paidUsersArr = element

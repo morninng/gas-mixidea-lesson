@@ -337,7 +337,7 @@ export class Invoice {
       price_sum = price_sum + element.price;
     })
 
-    const price_with_tax = Math.round(price_sum * 1.08);
+    const price_with_tax = Math.round(price_sum * 1.10);
 
     return {total:price_sum, tax:price_with_tax - price_sum,  total_with_tax: price_with_tax  };
   }
@@ -350,11 +350,12 @@ export class Invoice {
   }
 
   getAllData(request_day: string){
-    const course_data: InvoiceData[] = this.list_course.getCourseDataWithPaymentRequestDay(request_day);
+    // const course_data: InvoiceData[] = this.list_course.getCourseDataWithPaymentRequestDay(request_day);
     const single_lesson_data: InvoiceData[] = this.list_single_lesson.getSingleLessonDataWithPaymentRequestDay(request_day);
-    const lesson_in_course: InvoiceData[] = this.list_lesson_in_course.getLessonInCourseDataWithPaymentRequestDay(request_day);
+    // const lesson_in_course: InvoiceData[] = this.list_lesson_in_course.getLessonInCourseDataWithPaymentRequestDay(request_day);
 
-    const sum_data: InvoiceData[] =[ ...single_lesson_data, ...course_data, ...lesson_in_course];
+    // const sum_data: InvoiceData[] =[ ...single_lesson_data, ...course_data, ...lesson_in_course];
+    const sum_data: InvoiceData[] =[ ...single_lesson_data];
 
     const users: {[key: string]: string[]} = this.user.getUserData() || {};
 

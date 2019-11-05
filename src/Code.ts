@@ -50,6 +50,7 @@ import { PaymentNameSpace } from './class/Payment'
 //   invoice.editExistingFileAndCreatePdfFileTest(); 
 // }
 function collectAndLocateData(){
+  Logger.log(' -- collectAndLocateData --')
 
   const course_list = new ListCourseNameSpace.ListCourse();
   const single_lesson_list = new ListSingleLessonNameSpace.ListSingleLesson();
