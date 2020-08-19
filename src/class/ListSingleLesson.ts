@@ -120,7 +120,7 @@ export class ListSingleLesson {
     // this.single_lesson_list_sheet.getActiveRange()
 
     Logger.log('data retrieve1, 1, 250, 35 ');
-    const range = this.single_lesson_list_sheet.getRange(1, 1, 300, 35 );
+    const range = this.single_lesson_list_sheet.getRange(1, 1, 800, 35 );
     const item_map = range.getValues();
     // Logger.log(item_map);
     const title_items = item_map[0];
@@ -164,7 +164,7 @@ export class ListSingleLesson {
 
     Logger.log(`-----getPaymentDataForSingleLesson`)
 
-    const range = this.single_lesson_list_sheet.getRange(1, 1, 300, 50 );
+    const range = this.single_lesson_list_sheet.getRange(1, 1, 800, 50 );
     const item_map = range.getValues();
     // Logger.log(item_map);
     const title_items = item_map[0];

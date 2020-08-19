@@ -27,6 +27,8 @@ const PDF_FORMAT_TAX_ROW = 34;
 const PDF_FORMAT_TAX_COLUMN = 7;
 const PDF_FORMAT_PRICE_TOTAL_WITH_TAX_ROW = 35;
 const PDF_FORMAT_PRICE_TOTAL_WITH_TAX_COLUMN = 7;
+const PDF_FORMAT_PAYMENTDATE_ROW = 1;
+const PDF_FORMAT_PAYMENTDATE_COLUMN = 7;
 const PDF_FORMAT_WIDTH = 8;
 const PDF_FORMAT_HEIGHT = 36;
 
@@ -163,13 +165,13 @@ export class Invoice {
     masterSheet.getRange(1,1, PDF_FORMAT_HEIGHT, PDF_FORMAT_WIDTH ).setValues(default_pdf_format_data)    
 // customize for user
 
-    this.writeUserIndivicualDataToUserSS(masterSheet, user_invoice_data, user)
+    this.writeUserIndivicualDataToUserSS(masterSheet, user_invoice_data, user, request_day)
     this.decorateUserSS( masterSheet )
 
     return ssNewID;
   }
 
-  private writeUserIndivicualDataToUserSS( user_spreadsheet: GoogleAppsScript.Spreadsheet.Sheet, user_invoice_data: InvoiceData[], user: string ){
+  private writeUserIndivicualDataToUserSS( user_spreadsheet: GoogleAppsScript.Spreadsheet.Sheet, user_invoice_data: InvoiceData[], user: string, request_day: string ){
     
 
     const price_summary: PriceSummary = this.calculatePrice(user_invoice_data);
@@ -207,6 +209,13 @@ export class Invoice {
     user_spreadsheet
     .getRange(PDF_FORMAT_PRICE_TOTAL_WITH_TAX_ROW, PDF_FORMAT_PRICE_TOTAL_WITH_TAX_COLUMN)
     .setValue( price_summary.total_with_tax );
+
+    // write payment date
+    user_spreadsheet
+    .getRange(PDF_FORMAT_PAYMENTDATE_ROW, PDF_FORMAT_PAYMENTDATE_COLUMN)
+    .setValue( request_day );
+
+
   }
 
   // developDecoration(){

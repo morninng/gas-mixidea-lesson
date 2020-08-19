@@ -603,7 +603,7 @@ export class Payment {
 
 
   getTeacherData(): TeacherData[] {
-    const range = this.payment_summary_sheet.getRange(6, 1, 10, 5 );
+    const range = this.payment_summary_sheet.getRange(6, 1, 15, 5 );
     const teacher_map = range.getValues();
     const teacher_data_arr: TeacherData[] = 
     teacher_map.map((data)=>{
